@@ -6,4 +6,5 @@ namespace bielu.Umbraco.Cdn.Cloudflare.Services
     {
         public Dictionary<string, string> GetAuthenticationHeaders();
     }
+    
 }

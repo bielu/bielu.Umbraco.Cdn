@@ -7,14 +7,14 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Media
 {
     public class MediaEventsNotificationNotificationHandler : INotificationAsyncHandler<MediaMovedNotification>, INotificationAsyncHandler<MediaCacheRefresherNotification>
     {
-        public Task HandleAsync(MediaMovedNotification notification, CancellationToken cancellationToken)
+        public async Task HandleAsync(MediaMovedNotification notification, CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
+            
         }
 
-        public Task HandleAsync(MediaCacheRefresherNotification notification, CancellationToken cancellationToken)
+        public async Task HandleAsync(MediaCacheRefresherNotification notification, CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
+            
         }
     }
 }

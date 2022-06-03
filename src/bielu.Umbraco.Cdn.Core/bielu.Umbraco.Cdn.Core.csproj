@@ -12,4 +12,8 @@
       <ProjectReference Include="..\bielu.Umbraco.Cdn.Abstraction\bielu.Umbraco.Cdn.Abstraction.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="__Content\App_Plugins\bielu.Umbraco.Cdn.Core" />
+    </ItemGroup>
+
 </Project>
