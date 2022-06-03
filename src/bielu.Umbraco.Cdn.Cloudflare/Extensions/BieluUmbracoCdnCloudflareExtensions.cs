@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
 using Umbraco.Cms.Core.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace bielu.Umbraco.Cdn.Cloudflare.Extensions

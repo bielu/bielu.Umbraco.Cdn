@@ -29,7 +29,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
             //todo: optimize as now we dont valide which domains is valid for either of cdns
             foreach (var cdnServices in   _cdnServices)
             {
-                cdnServices.PurgePages(pages);
+             await  cdnServices.PurgePages(pages);
             }
         }
 
@@ -45,7 +45,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
             //todo: optimize as now we dont valide which domains is valid for either of cdns
             foreach (var cdnServices in   _cdnServices)
             {
-                cdnServices.PurgePages(pages);
+                await cdnServices.PurgePages(pages);
             }
         }
 
@@ -59,7 +59,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
             //todo: optimize as now we dont valide which domains is valid for either of cdns
             foreach (var cdnServices in   _cdnServices)
             {
-                cdnServices.PurgePages(pages);
+              await  cdnServices.PurgePages(pages);
             }
         }
 

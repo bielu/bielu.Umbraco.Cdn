@@ -27,7 +27,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Domain
             foreach (var cdnServices in _cdnServices)
             {
                 //todo: split on / as umbraco is dump to count / as part of domain
-                cdnServices.PurgeByAssignedHostnames(notification.SavedEntities.Select(x => x.DomainName));
+             await   cdnServices.PurgeByAssignedHostnames(notification.SavedEntities.Select(x => x.DomainName));
             }
         }
 
@@ -38,7 +38,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Domain
             foreach (var cdnServices in _cdnServices)
             {
                 //todo: split on / as umbraco is dump to count / as part of domain
-                cdnServices.PurgeByAssignedHostnames(notification.DeletedEntities.Select(x => x.DomainName));
+                await cdnServices.PurgeByAssignedHostnames(notification.DeletedEntities.Select(x => x.DomainName));
             }
         }
     }

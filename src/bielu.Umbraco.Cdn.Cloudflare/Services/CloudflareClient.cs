@@ -30,7 +30,7 @@ namespace bielu.Umbraco.Cdn.Cloudflare.Services
                 request.Content = new StringContent(JsonSerializer.Serialize(data));
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 AddAuthenticationHeaders(request);
-               var answer = client.Send(request);
+               var answer = await client.SendAsync(request);
                return answer;
             }
         }
