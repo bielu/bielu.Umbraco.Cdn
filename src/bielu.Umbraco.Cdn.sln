@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bielu.Umbraco.Cdn.Core", "b
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bielu.Umbraco.Cdn.Akamai", "bielu.Umbraco.Cdn.Akamai\bielu.Umbraco.Cdn.Akamai.csproj", "{6D96D8B4-2EC0-40C6-992C-02D7A9C520D8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bielu.Umbraco.TestProject", "bielu.Umbraco.TestProject\bielu.Umbraco.TestProject.csproj", "{28996D97-75A3-4CF6-A070-6D72227356EA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{6D96D8B4-2EC0-40C6-992C-02D7A9C520D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D96D8B4-2EC0-40C6-992C-02D7A9C520D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D96D8B4-2EC0-40C6-992C-02D7A9C520D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28996D97-75A3-4CF6-A070-6D72227356EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28996D97-75A3-4CF6-A070-6D72227356EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28996D97-75A3-4CF6-A070-6D72227356EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28996D97-75A3-4CF6-A070-6D72227356EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
