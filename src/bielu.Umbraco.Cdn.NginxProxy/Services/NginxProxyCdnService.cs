@@ -3,19 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using bielu.Umbraco.Cdn.Models;
-using Microsoft.Extensions.Logging;
 
 namespace bielu.Umbraco.Cdn.Cloudflare.Services
 {
     public class CloudflareCdnService : ICdnService
     {
         private readonly ICloudflareClient _cloudflare;
-        private readonly ILogger<CloudflareCdnService> _logger;
 
-        public CloudflareCdnService(ICloudflareClient cloudflare, ILogger<CloudflareCdnService> logger)
+        public CloudflareCdnService(ICloudflareClient cloudflare)
         {
             _cloudflare = cloudflare;
-            _logger = logger;
         }
 
         public async Task<IEnumerable<Status>> PurgePages(IEnumerable<string> urls)
@@ -24,12 +21,7 @@ namespace bielu.Umbraco.Cdn.Cloudflare.Services
             var statuses = new List<Status>();
             foreach (var domain in zones)
             {
-                var requestUrls = urls.Where(x =>
-                    Uri.TryCreate(x, UriKind.Absolute, out var targetUri) && x.Contains(domain.Name));
-                var request = await _cloudflare.PurgeCache(domain,
-                    requestUrls);
-                _logger.LogInformation("Cache refreshed, domains: {urls} for zone(id: {id}): {name}", string.Join(",",requestUrls),domain.Id,domain.Name);
-                statuses.Add( request);
+                statuses.Add( await _cloudflare.PurgeCache(domain,urls.Where(x=>urls.Contains(new Uri(x).Host))));
             }
             return statuses;
         }

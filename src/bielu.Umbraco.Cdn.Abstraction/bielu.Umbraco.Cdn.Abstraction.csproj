@@ -5,4 +5,8 @@
         <RootNamespace>bielu.Umbraco.Cdn</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Umbraco.Cms.Core" Version="9.1.2" />
+    </ItemGroup>
+
 </Project>

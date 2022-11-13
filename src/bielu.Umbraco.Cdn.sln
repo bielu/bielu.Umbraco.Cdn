@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bielu.Umbraco.Cdn.Akamai", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bielu.Umbraco.TestProject", "bielu.Umbraco.TestProject\bielu.Umbraco.TestProject.csproj", "{28996D97-75A3-4CF6-A070-6D72227356EA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bielu.Umbraco.Cdn.NginxProxy", "bielu.Umbraco.Cdn.NginxProxy\bielu.Umbraco.Cdn.NginxProxy.csproj", "{541251BB-5174-4A45-B532-7771A11477EF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{28996D97-75A3-4CF6-A070-6D72227356EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28996D97-75A3-4CF6-A070-6D72227356EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28996D97-75A3-4CF6-A070-6D72227356EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{541251BB-5174-4A45-B532-7771A11477EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{541251BB-5174-4A45-B532-7771A11477EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{541251BB-5174-4A45-B532-7771A11477EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{541251BB-5174-4A45-B532-7771A11477EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

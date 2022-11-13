@@ -10,7 +10,6 @@ using System.Web;
 using bielu.Umbraco.Cdn.Cloudflare.Models;
 using bielu.Umbraco.Cdn.Models;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 
 namespace bielu.Umbraco.Cdn.Cloudflare.Services
 {
@@ -19,14 +18,12 @@ namespace bielu.Umbraco.Cdn.Cloudflare.Services
         public const string CLOUDFLARE_API_BASE_URL = "https://api.cloudflare.com/client/v4/";
         private readonly IClouflareAuthentication _authentication;
         private readonly IConfiguration _configuration;
-        private readonly ILogger<CloudflareClient> _logger;
         private readonly bool _isEnterprise;
 
-        public CloudflareClient(IClouflareAuthentication authentication, IConfiguration configuration, ILogger<CloudflareClient> logger)
+        public CloudflareClient(IClouflareAuthentication authentication, IConfiguration configuration)
         {
             _authentication = authentication;
             _configuration = configuration;
-            _logger = logger;
             _isEnterprise = Convert.ToBoolean(_configuration.GetSection("bielu")?.GetSection("cdn")?.GetSection("cloudflare")?.GetSection("enterprise")?.Value);
         }
 
@@ -40,8 +37,6 @@ namespace bielu.Umbraco.Cdn.Cloudflare.Services
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 AddAuthenticationHeaders(request);
                 var answer = await client.SendAsync(request);
-                var contents = await answer.Content.ReadAsStringAsync();
-                _logger.LogInformation(contents);
                 return answer;
             }
         }
@@ -71,7 +66,7 @@ namespace bielu.Umbraco.Cdn.Cloudflare.Services
             var result = (await SendRequest(HttpMethod.Get, url, null));
             if (result.IsSuccessStatusCode)
             {
-                var response = await result.Content.ReadFromJsonAsync<CloudflareZoneResponse>();
+                var response = await result.Content.ReadFromJsonAsync<CloudflareResponse>();
                 return response.Result;
             }
 
@@ -86,12 +81,10 @@ namespace bielu.Umbraco.Cdn.Cloudflare.Services
                 Files = urls.ToList(),
                 PurgeEverything = purgeEverything
             }));
-            var results = await result.Content.ReadFromJsonAsync<CloudflareResponse>();
             //todo: add more details
             return new Status()
             {
-                Success = result.IsSuccessStatusCode && results.Success,
-                Errors = results.Errors,
+                Success = result.IsSuccessStatusCode,
                 Message = result.IsSuccessStatusCode? "Cloudflare purged" : "Something went wrong, ask administrator to check logs."
             };
         }
@@ -118,7 +111,7 @@ namespace bielu.Umbraco.Cdn.Cloudflare.Services
             return new Status()
             {
                 Success = result.IsSuccessStatusCode,
-                Details = await result.Content.ReadAsStringAsync(),
+                
             };
         }
     }

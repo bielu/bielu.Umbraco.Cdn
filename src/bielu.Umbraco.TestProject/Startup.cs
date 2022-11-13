@@ -44,7 +44,7 @@ namespace bielu.Umbraco.TestProject
                 .AddBackOffice()
                 .AddWebsite()
                 .AddComposers()
-                .UseBieluUmbracoCdnForCloudflare()
+                .AddBieluUmbracoCdnForCloudflare()
                 .Build();
             
             services.AddTransient(typeof(IClouflareAuthentication), typeof(TokenApiClouflareAuthentication));
