@@ -42,7 +42,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
             _auditing = true;
             if (configuration.GetSection("bielu")?.GetSection("cdn")?.GetSection("Auditing").Exists() ?? false)
             {
-                _auditing=  Convert.ToBoolean(_configuration.GetSection("bielu")?.GetSection("cdn").GetSection("Auditing"));
+                _auditing=  Convert.ToBoolean(_configuration.GetSection("bielu")?.GetSection("cdn").GetSection("Auditing").Value);
             }
         }
 
