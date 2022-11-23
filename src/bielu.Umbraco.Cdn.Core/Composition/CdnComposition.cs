@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Umbraco.Cms.Core.Composing;
 using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Cms.Core.Notifications;
+using Umbraco.Cms.Web.BackOffice.Trees;
+using Umbraco.Extensions;
 
 namespace bielu.Umbraco.Cdn.Core.Composition
 {
@@ -15,21 +17,27 @@ namespace bielu.Umbraco.Cdn.Core.Composition
         {
             //services
             composition.Services.AddTransient(typeof(IUmbracoUrlDeliveryService), typeof(UmbracoUrlDeliveryService));
-            
+
             //content
             composition
                 .AddNotificationAsyncHandler<ContentMovingNotification,ContentEventsNotificationNotificationHandler>()
+                .AddNotificationAsyncHandler<ContentSavedNotification,ContentEventsNotificationNotificationHandler>()
                 .AddNotificationAsyncHandler<ContentDeletingNotification,ContentEventsNotificationNotificationHandler>()
+                .AddNotificationAsyncHandler<ContentUnpublishingNotification,ContentEventsNotificationNotificationHandler>()
+                .AddNotificationAsyncHandler<ContentPublishingNotification,ContentEventsNotificationNotificationHandler>()
+                .AddNotificationAsyncHandler<ContentPublishedNotification,ContentEventsNotificationNotificationHandler>()
                 .AddNotificationAsyncHandler<ContentUnpublishedNotification,ContentEventsNotificationNotificationHandler>();
         
             //domain
             composition
                 .AddNotificationAsyncHandler<DomainSavedNotification,DomainEventNotificationNotificationHandler>() 
                 .AddNotificationAsyncHandler<DomainDeletedNotification,DomainEventNotificationNotificationHandler>();
-            
+            //media
             composition
-                .AddNotificationAsyncHandler<MediaMovedNotification,MediaEventsNotificationNotificationHandler>()
-                .AddNotificationAsyncHandler<MediaCacheRefresherNotification,MediaEventsNotificationNotificationHandler>();
+                .AddNotificationAsyncHandler<MediaSavedNotification,MediaEventsNotificationNotificationHandler>();
+            //Menu
+            // composition
+            //     .AddNotificationAsyncHandler<MenuRenderingNotification,TreeRenderingNotification>();
         }
     }
     

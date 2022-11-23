@@ -6,33 +6,33 @@ using bielu.Umbraco.Cdn.Models;
 
 namespace bielu.Umbraco.Cdn.Cloudflare.Services
 {
-    public class CloudflareCdnService : ICdnService
+    public class NginxProxyCdnService : ICdnService
     {
-        private readonly ICloudflareClient _cloudflare;
+        private readonly INginxProxyClient _nginxProxy;
 
-        public CloudflareCdnService(ICloudflareClient cloudflare)
+        public NginxProxyCdnService(INginxProxyClient nginxProxy)
         {
-            _cloudflare = cloudflare;
+            _nginxProxy = nginxProxy;
         }
 
         public async Task<IEnumerable<Status>> PurgePages(IEnumerable<string> urls)
         {
-            var zones = (await _cloudflare.GetZones());
+            var zones = (await _nginxProxy.GetZones());
             var statuses = new List<Status>();
             foreach (var domain in zones)
             {
-                statuses.Add( await _cloudflare.PurgeCache(domain,urls.Where(x=>urls.Contains(new Uri(x).Host))));
+                statuses.Add( await _nginxProxy.PurgeCache(domain,urls.Where(x=>urls.Contains(new Uri(x).Host))));
             }
             return statuses;
         }
 
         public async Task<IEnumerable<Status>> PurgeAll()
         {
-            var zones = (await _cloudflare.GetZones());
+            var zones = (await _nginxProxy.GetZones());
             var statuses = new List<Status>();
             foreach (var domain in zones)
             {
-            statuses.Add( await _cloudflare.PurgeCache(domain,null,true));
+            statuses.Add( await _nginxProxy.PurgeCache(domain,null,true));
             }
             return statuses;
         }
@@ -42,8 +42,8 @@ namespace bielu.Umbraco.Cdn.Cloudflare.Services
             var statuses = new List<Status>();
             foreach (var domain in domains)
             {
-                var zone = (await _cloudflare.GetZones(domain)).FirstOrDefault();
-                statuses.Add( await _cloudflare.PurgeCache(zone, domain));
+                var zone = (await _nginxProxy.GetZones(domain)).FirstOrDefault();
+                statuses.Add( await _nginxProxy.PurgeCache(zone, domain));
             }
 
             return statuses;

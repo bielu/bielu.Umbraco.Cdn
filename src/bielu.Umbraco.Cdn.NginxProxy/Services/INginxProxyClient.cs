@@ -6,7 +6,7 @@ using bielu.Umbraco.Cdn.Models;
 
 namespace bielu.Umbraco.Cdn.Cloudflare.Services
 {
-    public interface ICloudflareClient
+    public interface INginxProxyClient
     {
         public Task<IEnumerable<Zone>> GetZones(string domainName = null);
 

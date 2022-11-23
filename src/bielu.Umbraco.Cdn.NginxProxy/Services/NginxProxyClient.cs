@@ -13,18 +13,14 @@ using Microsoft.Extensions.Configuration;
 
 namespace bielu.Umbraco.Cdn.Cloudflare.Services
 {
-    public class CloudflareClient : ICloudflareClient
+    public class NginxProxyClient : INginxProxyClient
     {
         public const string CLOUDFLARE_API_BASE_URL = "https://api.cloudflare.com/client/v4/";
-        private readonly IClouflareAuthentication _authentication;
         private readonly IConfiguration _configuration;
         private readonly bool _isEnterprise;
 
-        public CloudflareClient(IClouflareAuthentication authentication, IConfiguration configuration)
+        public NginxProxyClient()
         {
-            _authentication = authentication;
-            _configuration = configuration;
-            _isEnterprise = Convert.ToBoolean(_configuration.GetSection("bielu")?.GetSection("cdn")?.GetSection("cloudflare")?.GetSection("enterprise")?.Value);
         }
 
         private async Task<HttpResponseMessage> SendRequest(HttpMethod method, string url, object data)
@@ -35,20 +31,12 @@ namespace bielu.Umbraco.Cdn.Cloudflare.Services
                 if (data != null)
                     request.Content = new StringContent(JsonSerializer.Serialize(data));
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                AddAuthenticationHeaders(request);
                 var answer = await client.SendAsync(request);
                 return answer;
             }
         }
 
-        private void AddAuthenticationHeaders(HttpRequestMessage request)
-        {
-            var headers = _authentication.GetAuthenticationHeaders();
-            foreach (var header in headers)
-            {
-                request.Headers.Add(header.Key.ToLowerInvariant(), header.Value);
-            }
-        }
+     
 
         public async Task<IEnumerable<Zone>> GetZones(string domainName = null)
         {

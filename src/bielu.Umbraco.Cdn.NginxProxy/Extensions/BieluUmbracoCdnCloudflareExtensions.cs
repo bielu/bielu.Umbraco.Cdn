@@ -20,7 +20,7 @@ namespace bielu.Umbraco.Cdn.Cloudflare.Extensions
                     .AddClasses(c => c.AssignableTo(typeof(ICdnService)))
                     .AsImplementedInterfaces()
                     .WithTransientLifetime());
-            builder.Services.AddSingleton(typeof(ICloudflareClient), typeof(CloudflareClient));
+            builder.Services.AddSingleton(typeof(INginxProxyClient), typeof(NginxProxyClient));
 
             return builder;
         }

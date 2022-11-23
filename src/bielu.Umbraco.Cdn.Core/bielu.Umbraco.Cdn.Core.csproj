@@ -5,7 +5,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Umbraco.Cms.Core" Version="9.5.1" />
+      <PackageReference Include="Umbraco.Cms.Core" Version="9.1.2" />
+      <PackageReference Include="Umbraco.Cms.Infrastructure" Version="9.1.2" />
+      <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="9.1.2" />
     </ItemGroup>
 
     <ItemGroup>
@@ -13,7 +15,12 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="NotitificationHandlers\Tree" />
       <Folder Include="__Content\App_Plugins\bielu.Umbraco.Cdn.Core" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="NotitificationHandlers\Tree\TreeRenderingNotification.cs" />
     </ItemGroup>
 
 </Project>

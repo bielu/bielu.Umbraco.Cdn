@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Umbraco.Cms.Core.Models;
+using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Web;
+using Umbraco.Extensions;
 
 namespace bielu.Umbraco.Cdn.Core.Services
 {
@@ -25,8 +27,11 @@ namespace bielu.Umbraco.Cdn.Core.Services
             {
                 return urls;
             }
-            string url = GetUrl(content);
-            urls.AddRange(BuildDomainUrls(new List<string>() { url }, GetDomains(content)));
+            foreach (var url in GetUrl(content))
+            {
+                urls.AddRange(BuildDomainUrls(new List<string>() { url }, GetDomains(content)));
+
+            }
             return urls;
         }
 
@@ -71,11 +76,24 @@ namespace bielu.Umbraco.Cdn.Core.Services
 
             return list;
         }
-        private string GetUrl(IContent content)
+        private List<string> GetUrl(IContent content)
         {
             using (var contextReference = _contextFactory.EnsureUmbracoContext())
             {
-                return contextReference.UmbracoContext.Content.GetRouteById(content.Id);
+                var urls = new List<string>();
+                var route = contextReference.UmbracoContext.Content.GetRouteById(content.Id);
+             
+                if (!string.IsNullOrWhiteSpace(route))
+                {
+                  urls.Add(route);
+                }
+                urls.Add(content.Id.ToString());
+                    IPublishedContent publishedContent = contextReference.UmbracoContext.Content.GetById(content.Id);
+                    foreach (var culture in content.EditedCultures)
+                    {
+                        urls.Add(contextReference.UmbracoContext.Content.GetRouteById(false, content.Id, culture));
+                    }
+                    return urls;
             }
         }
         public string CombinePaths(string domain, string url)
@@ -95,7 +113,7 @@ namespace bielu.Umbraco.Cdn.Core.Services
                 domain = domain + "/";
             }
             //on purpose we support only https
-            return "https://"+ domain + url;
+            return (domain.Contains("https://")? "": "https://")+ domain + url;
         }
     }
 }
