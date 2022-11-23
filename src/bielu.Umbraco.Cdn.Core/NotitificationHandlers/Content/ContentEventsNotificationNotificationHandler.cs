@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using bielu.Umbraco.Cdn.Core.Services;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Umbraco.Cms.Core.Events;
 using Umbraco.Cms.Core.Models;
@@ -25,27 +26,37 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
         private readonly ILogger<ContentEventsNotificationNotificationHandler> _logger;
         private readonly IAuditService _auditService;
         private readonly IBackOfficeSecurityAccessor _accessor;
+        private readonly IConfiguration _configuration;
+        private readonly bool _auditing;
 
         public ContentEventsNotificationNotificationHandler(IUmbracoUrlDeliveryService umbracoUrlDeliveryService,
             IEnumerable<ICdnService> cdnServices, ILogger<ContentEventsNotificationNotificationHandler> logger,
-            IAuditService auditService, IBackOfficeSecurityAccessor accessor)
+            IAuditService auditService, IBackOfficeSecurityAccessor accessor, IConfiguration configuration)
         {
             _umbracoUrlDeliveryService = umbracoUrlDeliveryService;
             _cdnServices = cdnServices;
             _logger = logger;
             _auditService = auditService;
             _accessor = accessor;
+            _configuration = configuration;
+            _auditing = true;
+            if (configuration.GetSection("bielu")?.GetSection("cdn")?.GetSection("Auditing").Exists() ?? false)
+            {
+                _auditing=  Convert.ToBoolean(_configuration.GetSection("bielu")?.GetSection("cdn").GetSection("Auditing"));
+            }
         }
 
         public async Task HandleAsync(ContentMovingNotification notification, CancellationToken cancellationToken)
         {
             var pages = new List<string>();
             var currentUser = _accessor.BackOfficeSecurity.CurrentUser;
-
             foreach (var content in notification.MoveInfoCollection)
             {
-                _auditService.Add(AuditType.Custom, currentUser.Id, content.Entity.Id, "CDN Refresh",
-                    $"Cloudflare cache was purged", $"Clouflare cache purged");
+                if (_auditing)
+                {
+                    _auditService.Add(AuditType.Custom, currentUser.Id, content.Entity.Id, "CDN Refresh",
+                        $"CDN cache was purged", $"CDN cache purged");
+                }
 
                 pages.AddRange(_umbracoUrlDeliveryService.GetUrlsById(content.Entity));
             }
