@@ -85,9 +85,11 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
 
             foreach (var content in notification.DeletedEntities)
             {
-                _auditService.Add(AuditType.Custom, currentUser.Id, content.Id, "CDN Refresh",
-                    $"Cloudflare cache was purged", $"Clouflare cache purged");
-
+                      if (_auditing)
+                {
+                    _auditService.Add(AuditType.Custom, currentUser.Id, content.Id, "CDN Refresh",
+                        $"CDN cache was purged", $"CDN cache purged");
+                }
                 pages.AddRange(_umbracoUrlDeliveryService.GetUrlsById(content));
             }
 
@@ -164,9 +166,11 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
             var pages = new List<string>();
             foreach (var content in notification.PublishedEntities)
             {
-                _auditService.Add(AuditType.Custom, currentUser.Id, content.Id, "CDN Refresh",
-                    $"Cloudflare cache was purged", $"Clouflare cache purged");
-
+                if (_auditing)
+                {
+                    _auditService.Add(AuditType.Custom, currentUser.Id, content.Id, "CDN Refresh",
+                        $"CDN cache was purged", $"CDN cache purged");
+                }
                 pages.AddRange(_umbracoUrlDeliveryService.GetUrlsById(content));
             }
 
@@ -208,9 +212,11 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
 
             foreach (var content in notification.UnpublishedEntities)
             {
-                _auditService.Add(AuditType.Custom, currentUser.Id, content.Id, "CDN Refresh",
-                    $"Cloudflare cache was purged", $"Clouflare cache purged");
-
+                if (_auditing)
+                {
+                    _auditService.Add(AuditType.Custom, currentUser.Id, content.Id, "CDN Refresh",
+                        $"CDN cache was purged", $"CDN cache purged");
+                }
                 pages.AddRange(_umbracoUrlDeliveryService.GetUrlsById(content));
             }
 
@@ -256,9 +262,11 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
                 {
                     if (content.Published)
                     {
-                        _auditService.Add(AuditType.Custom, currentUser.Id, content.Id, "CDN Refresh",
-                            $"Cloudflare cache was purged", $"Clouflare cache purged");
-
+                        if (_auditing)
+                        {
+                            _auditService.Add(AuditType.Custom, currentUser.Id, content.Id, "CDN Refresh",
+                                $"CDN cache was purged", $"CDN cache purged");
+                        }
                         pages.AddRange(_umbracoUrlDeliveryService.GetUrlsById(content));
                     }
                 }

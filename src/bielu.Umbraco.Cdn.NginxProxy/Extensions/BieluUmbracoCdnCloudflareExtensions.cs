@@ -15,11 +15,7 @@ namespace bielu.Umbraco.Cdn.Cloudflare.Extensions
         {
             if (builder == null)
                 throw new ArgumentNullException(nameof(builder));
-            builder.Services.Scan(s =>
-                s.FromAssemblies(new List<Assembly>() { typeof(BieluUmbracoCdnCloudflareExtensions).Assembly })
-                    .AddClasses(c => c.AssignableTo(typeof(ICdnService)))
-                    .AsImplementedInterfaces()
-                    .WithTransientLifetime());
+          
             builder.Services.AddSingleton(typeof(INginxProxyClient), typeof(NginxProxyClient));
 
             return builder;
