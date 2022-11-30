@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text.Json;
 using Newtonsoft.Json;
 using Umbraco.Cms.Core.Media;
@@ -19,15 +20,25 @@ namespace bielu.Umbraco.Cdn.Core.Helpers
             if (image.Properties.Contains("umbracoFile"))
             {
                 var imageProperty = image.Properties.TryGetValue("umbracoFile",  out var property);
-                var imageCropper = JsonConvert.DeserializeObject<ImageCropperValue>(property.GetValue().ToString())   ;
-                cropUrls.Add("none",imageCropper.Src);
-                if(imageCropper.Crops!= null){
-                foreach (var crop in imageCropper.Crops)
+                var propertyValue = property.GetValue().ToString();
+                try
                 {
-                    
-                    //Get the cropped URL and add it to the dictionary that I will return
-                    cropUrls.Add(crop.Alias, imageCropper.GetCropUrl(crop.Alias, urlGenerator,true, true,null));
+                    var imageCropper = JsonConvert.DeserializeObject<ImageCropperValue>(propertyValue);
+                    cropUrls.Add("none", imageCropper.Src);
+                    if (imageCropper.Crops != null)
+                    {
+                        foreach (var crop in imageCropper.Crops)
+                        {
+
+                            //Get the cropped URL and add it to the dictionary that I will return
+                            cropUrls.Add(crop.Alias,
+                                imageCropper.GetCropUrl(crop.Alias, urlGenerator, true, true, null));
+                        }
+                    }
                 }
+                catch (JsonReaderException e)
+                {
+                    cropUrls.Add("none",propertyValue);
                 }
             }
 
