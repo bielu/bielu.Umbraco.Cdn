@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using Newtonsoft.Json;
+using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Media;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Models.PublishedContent;
@@ -19,26 +20,32 @@ namespace bielu.Umbraco.Cdn.Core.Helpers
 
             if (image.Properties.Contains("umbracoFile"))
             {
-                var imageProperty = image.Properties.TryGetValue("umbracoFile",  out var property);
+                var imageProperty = image.Properties.TryGetValue("umbracoFile", out var property);
                 var propertyValue = property.GetValue().ToString();
-                try
+                switch (image.ContentType.Alias)
                 {
-                    var imageCropper = JsonConvert.DeserializeObject<ImageCropperValue>(propertyValue);
-                    cropUrls.Add("none", imageCropper.Src);
-                    if (imageCropper.Crops != null)
-                    {
-                        foreach (var crop in imageCropper.Crops)
+                    case Constants.Conventions.MediaTypes.Image:
+                        var imageCropper = JsonConvert.DeserializeObject<ImageCropperValue>(propertyValue);
+                        cropUrls.Add("none", imageCropper.Src);
+                        if (imageCropper.Crops != null)
                         {
-
-                            //Get the cropped URL and add it to the dictionary that I will return
-                            cropUrls.Add(crop.Alias,
-                                imageCropper.GetCropUrl(crop.Alias, urlGenerator, true, true, null));
+                            foreach (var crop in imageCropper.Crops)
+                            {
+                                //Get the cropped URL and add it to the dictionary that I will return
+                                cropUrls.Add(crop.Alias,
+                                    imageCropper.GetCropUrl(crop.Alias, urlGenerator, true, true, null));
+                            }
                         }
-                    }
-                }
-                catch (JsonReaderException e)
-                {
-                    cropUrls.Add("none",propertyValue);
+
+                        break;
+                    case Constants.Conventions.MediaTypes.VectorGraphicsAlias:
+                    case Constants.Conventions.MediaTypes.ArticleAlias:
+                    case Constants.Conventions.MediaTypes.File:
+                    case Constants.Conventions.MediaTypes.VideoAlias:
+                    case Constants.Conventions.MediaTypes.AudioAlias:
+                    default:
+                        cropUrls.Add("none", propertyValue);
+                        break;
                 }
             }
 
