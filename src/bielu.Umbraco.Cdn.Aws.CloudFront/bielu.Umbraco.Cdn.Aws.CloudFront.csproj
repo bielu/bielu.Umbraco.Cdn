@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <RootNamespace>bielu.Umbraco.Cdn.Aws</RootNamespace>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="AWSSDK.CloudFront" Version="3.7.300" />
+        <PackageReference Include="Scrutor" Version="3.3.0"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0"/>
+        <PackageReference Include="Umbraco.Cms.Core" Version="10.0.0"/>
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\bielu.Umbraco.Cdn.Abstraction\bielu.Umbraco.Cdn.Abstraction.csproj"/>
+    </ItemGroup>
+</Project>

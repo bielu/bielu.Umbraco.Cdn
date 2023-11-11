@@ -1,12 +1,13 @@
-﻿namespace bielu.Umbraco.Cdn.Azure.Models;
+﻿using Amazon;
 
-public class FrontDoorOptions
+namespace bielu.Umbraco.Cdn.Aws.Models;
+
+public class CloudFrontOptions
 {
-    public static string SectionName = "bielu:cdn:Azure:FrontDoor";
-    public AuthenticationType AuthenticationType { get; set; }
-    public string FrontDoorName { get; set; }
-    public string ResourceGroupName { get; set; }
-    public string SubscriptionId { get; set; }
+    public static string SectionName = "bielu:cdn:AWS:CloudFront";
+    public RegionEndpoint Region { get; set; }
+    public string SecretKey { get; set; }
+    public string AccessKey { get; set; }
 }
 
 public enum AuthenticationType
