@@ -1,21 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
     <PropertyGroup>
+        <RootNamespace>bielu.Umbraco.Cdn.Azure</RootNamespace>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
-
     <ItemGroup>
-        <ProjectReference Include="..\bielu.Umbraco.Cdn.Abstraction\bielu.Umbraco.Cdn.Abstraction.csproj"/>
-        <ProjectReference Include="..\bielu.Umbraco.Cdn.Core\bielu.Umbraco.Cdn.Core.csproj"/>
-    </ItemGroup>
-
-    <ItemGroup>
+        <PackageReference Include="Azure.Identity" Version="1.3.0"/>
+        <PackageReference Include="Azure.ResourceManager.FrontDoor" Version="1.2.0-beta.1"/>
         <PackageReference Include="Scrutor" Version="3.3.0"/>
         <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0"/>
         <PackageReference Include="Umbraco.Cms.Core" Version="10.0.0"/>
     </ItemGroup>
-
     <ItemGroup>
-        <Folder Include="__Content\App_Plugins\bielu.Umbraco.Cdn.Cloudflare"/>
+        <ProjectReference Include="..\bielu.Umbraco.Cdn.Abstraction\bielu.Umbraco.Cdn.Abstraction.csproj"/>
     </ItemGroup>
-
 </Project>

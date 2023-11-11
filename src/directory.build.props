@@ -6,6 +6,7 @@
         <Title>bielu.Umbraco.Cdn</Title>
         <AssemblyName>$(MSBuildProjectName)</AssemblyName>
         <AssemblyVersion>$(Version)</AssemblyVersion>
+        <TargetFramework>net6.0</TargetFramework>
     </PropertyGroup>    
 
     <PropertyGroup>

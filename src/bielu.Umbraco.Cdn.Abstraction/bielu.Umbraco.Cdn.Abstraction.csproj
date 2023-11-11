@@ -1,12 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
         <RootNamespace>bielu.Umbraco.Cdn</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Umbraco.Cms.Core" Version="9.1.2" />
+      <PackageReference Include="Umbraco.Cms.Core" Version="10.0.0" />
     </ItemGroup>
 
 </Project>
