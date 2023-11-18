@@ -56,5 +56,11 @@ namespace bielu.Umbraco.Cdn.Cloudflare.Services
 
             return statuses;
         }
+
+        public async Task<IList<string>> GetSupportedHostnames()
+        {
+            var zones = (await _cloudflare.GetZones());
+            return zones.Select(x => x.Name).ToList();
+        }
     }
 }

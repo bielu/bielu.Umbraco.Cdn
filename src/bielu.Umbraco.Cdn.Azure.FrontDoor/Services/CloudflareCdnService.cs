@@ -93,6 +93,11 @@ namespace bielu.Umbraco.Cdn.Azure.Services
         return await PurgeAll();
     }
 
+    public async Task<IList<string>> GetSupportedHostnames()
+    {
+        return _client.Data.FrontendEndpoints.Select(x => x.HostName).ToList();
+    }
+
     private async Task<IEnumerable<Status>> PurgeAll(params string[] paths)
     {
         var zones = _client.Data.FrontendEndpoints.Select(x => new Zone()

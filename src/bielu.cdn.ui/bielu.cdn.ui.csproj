@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Umbraco.Cms.Core" Version="10.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="App_Plugins\bielu.cdn.ui\assets\" />
+      <Folder Include="App_Plugins\bielu.cdn.ui\css\" />
+      <Folder Include="App_Plugins\bielu.cdn.ui\js\" />
+      <Folder Include="src\umbraco\" />
+    </ItemGroup>
+
+</Project>

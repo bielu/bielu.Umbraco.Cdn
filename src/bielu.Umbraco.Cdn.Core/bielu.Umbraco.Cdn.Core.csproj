@@ -14,12 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="NotitificationHandlers\Tree" />
       <Folder Include="__Content\App_Plugins\bielu.Umbraco.Cdn.Core" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Remove="NotitificationHandlers\Tree\TreeRenderingNotification.cs" />
     </ItemGroup>
 
 </Project>
