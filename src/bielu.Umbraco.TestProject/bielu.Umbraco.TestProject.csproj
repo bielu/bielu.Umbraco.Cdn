@@ -5,8 +5,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Umbraco.Cms" Version="10.0.0" />
-        <PackageReference Include="Umbraco.Cms.Web.Common" Version="10.0.0" />
+        <PackageReference Include="NSwag.CodeGeneration" Version="13.20.0" />
+        <PackageReference Include="Umbraco.Cms" Version="10.7.0" />
+        <PackageReference Include="Umbraco.Cms.Infrastructure" Version="10.7.0" />
+        <PackageReference Include="Umbraco.Cms.Web.Common" Version="10.7.0" />
+        <PackageReference Include="NSwag.AspNetCore" Version="13.20.0" />
+        <PackageReference Include="NSwag.MSBuild" Version="13.20.0">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
     </ItemGroup>
 
     <!-- Force Windows to use ICU. Otherwise Windows 10 2019H1+ will do it, but older Windows 10 and most, if not all, Windows Server editions will run NLS -->
@@ -23,6 +30,15 @@
     </ItemGroup>
 
 
+    <Target Name="NSwag" BeforeTargets="AfterBuild" Condition="'$(TF_BUILD)'!='True'">
+        <Exec ConsoleToMSBuild="true" ContinueOnError="true" Command="$(NSwagExe_Net60) run nswag.json /variables:Configuration=$(Configuration),TypescriptOutputPath=$(MSBuildThisFileDirectory)..\bielu.cdn.ui\src\services\umbraco\generated">
+            <Output TaskParameter="ExitCode" PropertyName="NSwagExitCode"/>
+            <Output TaskParameter="ConsoleOutput" PropertyName="NSwagOutput" />
+        </Exec>
+
+        <Message Text="$(NSwagOutput)" Condition="'$(NSwagExitCode)' == '0'" Importance="low"/>
+        <Error Text="$(NSwagOutput)" Condition="'$(NSwagExitCode)' != '0'"/>
+    </Target>
     <PropertyGroup>
         <CopyRazorGenerateFilesToPublishDirectory>true</CopyRazorGenerateFilesToPublishDirectory>
     </PropertyGroup>

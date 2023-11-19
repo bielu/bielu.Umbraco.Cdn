@@ -48,5 +48,10 @@ namespace bielu.Umbraco.Cdn.Cloudflare.Services
 
             return statuses;
         }
+
+        public Task<IList<string>> GetSupportedHostnames()
+        {
+            return Task.FromResult<IList<string>>(new List<string>());
+        }
     }
 }

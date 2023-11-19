@@ -124,6 +124,11 @@ namespace bielu.Umbraco.Cdn.Aws.Services
         return await PurgeAll();
     }
 
+    public Task<IList<string>> GetSupportedHostnames()
+    {
+        
+    }
+
     private async Task<IEnumerable<Status>> PurgeAll(params string[] paths)
     {
         var zones = _client.Data.FrontendEndpoints.Select(x => new Zone()

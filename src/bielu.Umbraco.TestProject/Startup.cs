@@ -41,6 +41,8 @@ namespace bielu.Umbraco.TestProject
         /// </remarks>
         public void ConfigureServices(IServiceCollection services)
         {
+            
+            services.AddOpenApiDocument();
             services.AddUmbraco(_env, _config)
                 .AddBackOffice()
                 .AddWebsite()
@@ -62,6 +64,13 @@ namespace bielu.Umbraco.TestProject
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                // Add OpenAPI 3.0 document serving middleware
+                // Available at: http://localhost:<port>/swagger/v1/swagger.json
+                app.UseOpenApi();
+
+                // Add web UIs to interact with the document
+                // Available at: http://localhost:<port>/swagger
+                app.UseSwaggerUi3();
             }
 
             app.UseUmbraco()

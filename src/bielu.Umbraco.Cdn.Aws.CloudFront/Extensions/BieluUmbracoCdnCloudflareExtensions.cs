@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using bielu.Umbraco.Cdn.Azure.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Umbraco.Cms.Core.DependencyInjection;
 using FrontDoorClientFactory = bielu.Umbraco.Cdn.Aws.Services.FrontDoorClientFactory;
@@ -20,8 +19,7 @@ namespace bielu.Umbraco.Cdn.Aws.Extensions
                     .AddClasses(c => c.AssignableTo(typeof(ICdnService)))
                     .AsImplementedInterfaces()
                     .WithTransientLifetime());
-            builder.Services.AddSingleton(typeof(IFrontDoorClientFactory), typeof(FrontDoorClientFactory));
-            builder.Services.AddSingleton(typeof(IArmClientFactory), typeof(ArmClientFactory));
+
 
             return builder;
         }
