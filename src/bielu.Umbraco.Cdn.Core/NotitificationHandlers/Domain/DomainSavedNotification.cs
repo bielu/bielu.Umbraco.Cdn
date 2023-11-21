@@ -37,7 +37,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Domain
                 }).Result;
                 foreach (var resultStatus in result)
                 {
-                    var message = new EventMessage("CDN", resultStatus.Message, resultStatus.MessageType);
+                    var message = new EventMessage("CDN", resultStatus.Message, resultStatus.MessageType ?? EventMessageType.Warning);
                     notification.Messages.Add(message);
                     if (resultStatus.MessageType == EventMessageType.Error)
                     {
@@ -61,7 +61,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Domain
                 }).Result;
                 foreach (var resultStatus in result)
                 {
-                    var message = new EventMessage("CDN", resultStatus.Message, resultStatus.MessageType);
+                    var message = new EventMessage("CDN", resultStatus.Message, resultStatus.MessageType ?? EventMessageType.Warning);
                     notification.Messages.Add(message);
                     if (resultStatus.MessageType == EventMessageType.Error)
                     {

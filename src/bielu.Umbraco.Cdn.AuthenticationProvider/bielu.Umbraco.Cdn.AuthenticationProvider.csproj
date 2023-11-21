@@ -6,7 +6,4 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
-<ItemGroup>
-    <PackageReference Include="Umbraco.AuthorizedServices" Version="0.3.2" />
-</ItemGroup>
 </Project>

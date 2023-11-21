@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Umbraco.Cms.Core.Composing;
 using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Cms.Core.Notifications;
+using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Web.BackOffice.Trees;
 using Umbraco.Extensions;
 
@@ -18,7 +19,8 @@ namespace bielu.Umbraco.Cdn.Core.Composition
         {
             //services
             composition.Services.AddTransient(typeof(IUmbracoUrlDeliveryService), typeof(UmbracoUrlDeliveryService));
-
+            composition.Services.AddSingleton<ICdnManager, CdnManager>();
+            composition.Services.AddSingleton<ICdnAuditService, CdnAuditService>();
             //content
             composition
                 .AddNotificationAsyncHandler<ContentMovingNotification,ContentEventsNotificationNotificationHandler>()

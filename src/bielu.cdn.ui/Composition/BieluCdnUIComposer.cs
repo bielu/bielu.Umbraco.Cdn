@@ -4,7 +4,7 @@ using Umbraco.Cms.Core.DependencyInjection;
 
 namespace bielu.cdn.ui.Composition;
 
-public class BieluCdnUIComposer: IComposer
+public class BieluCdnUIComposer : IComposer
 {
     public void Compose(IUmbracoBuilder builder)
     {

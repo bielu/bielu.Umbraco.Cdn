@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using bielu.Umbraco.Cdn.Core.Extensions;
+using bielu.Umbraco.Cdn.Core.Services;
 using bielu.Umbraco.Cdn.Models;
 using Microsoft.AspNetCore.Mvc;
 using Umbraco.Cms.Core.Models.PublishedContent;
@@ -11,16 +12,26 @@ using Umbraco.Cms.Web.BackOffice.Controllers;
 using Umbraco.Extensions;
 
 namespace bielu.Umbraco.Cdn.Core.Controllers;
-[Route("cdn/api/[controller]")]
+[Route("cdn/api/management/[action]")]
 public class BieluCdnManagmentController : UmbracoAuthorizedJsonController
 {
     private readonly ICdnManager _manager;
     private readonly IUmbracoContextFactory _contextFactory;
+    private readonly ICdnAuditService _auditService;
 
-    public BieluCdnManagmentController(ICdnManager manager, IUmbracoContextFactory contextFactory)
+    public BieluCdnManagmentController(ICdnManager manager, IUmbracoContextFactory contextFactory, Services.ICdnAuditService auditService)
     {
         _manager = manager;
         _contextFactory = contextFactory;
+        _auditService = auditService;
+    }
+    public async Task<IEnumerable<AuditRecord>> GetAuditHistory()
+    {
+        return await _auditService.GetAllRecords();
+    }
+    public async Task<IEnumerable<Provider>> GetProviders()
+    {
+        return await _manager.GetProviders();
     }
 
     public async Task<Status> RefreshForNode(Guid id)

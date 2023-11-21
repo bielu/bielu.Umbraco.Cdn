@@ -1,7 +1,5 @@
 
 import type { Meta, StoryObj } from '@storybook/vue3';
-
-import Button from './Button.vue';
 import RefreshNode from "../components/RefreshNode.vue";
 
 // More on how to set up stories at: https://storybook.js.org/docs/vue/writing-stories/introduction

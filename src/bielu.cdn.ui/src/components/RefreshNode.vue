@@ -2,9 +2,18 @@
 import '@umbraco-ui/uui-button';
 import '@umbraco-ui/uui-select';
 import { defineComponent } from 'vue'
+import {serviceContainer} from "../Services/service-container.ts";
+import {Provider} from "../Services/umbraco/generated/api.generated.clients.ts";
 
 export default defineComponent({
   name: 'RefreshNode',
+  mounted() {
+    console.log('mounted')
+var service = serviceContainer.managmentApiClient;
+    service.getProviders().then((result:Provider[]|null) => {
+      console.log(result);
+    });
+  },
   data() {
     return {
       message: 'Hello Vue 3 + TypeScript + Vite'

@@ -22,11 +22,16 @@
         <RuntimeHostConfigurationOption Include="System.Globalization.AppLocalIcu" Value="68.2.0.9" Condition="$(RuntimeIdentifier.StartsWith('linux')) Or $(RuntimeIdentifier.StartsWith('win')) Or ('$(RuntimeIdentifier)' == '' And !$([MSBuild]::IsOSPlatform('osx')))" />
     </ItemGroup>
     <ItemGroup>
+      <ProjectReference Include="..\bielu.cdn.ui\bielu.cdn.ui.csproj" />
       <ProjectReference Include="..\bielu.Umbraco.Cdn.Abstraction\bielu.Umbraco.Cdn.Abstraction.csproj" />
       <ProjectReference Include="..\bielu.Umbraco.Cdn.Akamai\bielu.Umbraco.Cdn.Akamai.csproj" />
       <ProjectReference Include="..\bielu.Umbraco.Cdn.Azure.FrontDoor\bielu.Umbraco.Cdn.Azure.FrontDoor.csproj" />
       <ProjectReference Include="..\bielu.Umbraco.Cdn.Cloudflare\bielu.Umbraco.Cdn.Cloudflare.csproj" />
       <ProjectReference Include="..\bielu.Umbraco.Cdn.Core\bielu.Umbraco.Cdn.Core.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="App_Plugins\" />
+      <Folder Include="wwwroot\media\" />
     </ItemGroup>
 
 
