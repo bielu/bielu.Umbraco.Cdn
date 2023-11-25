@@ -1,12 +1,17 @@
 import {resolve} from "path";
 import {defineConfig} from 'vite';
 import vue from '@vitejs/plugin-vue';
+import { viteVueCE } from 'unplugin-vue-ce'
+import type { PluginOption } from 'vite'
 import libAssetsPlugin from '@laynezh/vite-plugin-lib-assets'
 import basicSsl from '@vitejs/plugin-basic-ssl'
 // https://vitejs.dev/config/
 import { cert, key } from "./build/certs"
 export default defineConfig({
-    plugins: [vue()],
+    plugins: [vue({
+        customElement: true,
+    }),
+        viteVueCE() as PluginOption,],
     build: {
         lib: {
             entry: resolve(__dirname, 'src/main.ts'),

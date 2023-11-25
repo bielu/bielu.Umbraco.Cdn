@@ -9,11 +9,12 @@ using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Routing;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Web.BackOffice.Controllers;
+using Umbraco.Cms.Web.Common.Controllers;
 using Umbraco.Extensions;
 
 namespace bielu.Umbraco.Cdn.Core.Controllers;
 [Route("cdn/api/management/[action]")]
-public class BieluCdnManagmentController : UmbracoAuthorizedJsonController
+public class BieluCdnManagmentController : UmbracoApiController
 {
     private readonly ICdnManager _manager;
     private readonly IUmbracoContextFactory _contextFactory;

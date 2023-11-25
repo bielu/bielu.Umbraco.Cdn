@@ -2,22 +2,35 @@
 using System.Linq;
 using System.Threading.Tasks;
 using bielu.Umbraco.Cdn.Models;
+using Umbraco.Cms.Core.Web;
 
 namespace bielu.Umbraco.Cdn.Core.Services;
 
 public class CdnManager : ICdnManager
 {
     private readonly IEnumerable<ICdnService> _services;
+    private readonly IUmbracoContextFactory _contextFactory;
     private readonly IEnumerable<Provider> _providers;
 
-    public CdnManager(IEnumerable<ICdnService> services)
+    public CdnManager(IEnumerable<ICdnService> services, IUmbracoContextFactory contextFactory)
     {
         _services = services;
+        _contextFactory = contextFactory;
         _providers = services.Select(x => new Provider()
         {
             Name = x.GetType().Name,
             Id = x.GetType().Name,
-            SupportedHostnames = Task.Run(async ()=> await x.GetSupportedHostnames()).Result
+            SupportedHostnames = Task.Run(async () =>
+            {
+                using (var contextReference = _contextFactory.EnsureUmbracoContext())
+                {
+                    var umbracoDomains = contextReference.UmbracoContext.Domains.GetAll(false);
+                    var supportedHostNames=   await x.GetSupportedHostnames();
+                    return umbracoDomains.Where(domain => supportedHostNames.Contains(domain.Name)).Select(domain => domain.Name).ToList();
+                }
+            
+
+            }).Result
         });
     }
 
