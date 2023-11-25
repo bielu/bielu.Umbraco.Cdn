@@ -2,7 +2,7 @@
 import '@umbraco-ui/uui-button';
 import '@umbraco-ui/uui-select';
 import '@umbraco-ui/uui-loader-bar';
-import {defineComponent, ref, watch} from 'vue'
+import {defineComponent, PropType, ref, watch} from 'vue'
 import {serviceContainer} from "../Services/service-container.ts";
 import {Provider} from "../Services/umbraco/generated/api.generated.clients.ts";
 
@@ -20,25 +20,58 @@ export default defineComponent({
     return {
       loading: true,
       message: "test",
-      options: []
+      providers: [],
+      currentDomain: "",
+      currentProvider: ""
     }
   },
   methods: {
+    async selectProvider(object: any) {
+      console.log(object.target);
+      console.log(object.target.id);
+      if(object.target.id != "providers") {
+        return;
+      }
+      this.currentDomains.length = 0;
+      this.currentProvider = object.target.value;
+      this.domains.forEach((item: Option) => {
+        if (item.group ===  this.currentProvider) {
+          this.currentDomains.push(item);
+        }
+      });
+      console.log(this.currentDomains);
+    },
+    async selectDomain(object: any) {
+      if(object.target.id != "domains") {
+        return;
+      }
+      this.currentDomain = object.target.value;
+      console.log("test");
+      console.log(this.currentDomain);
+    },
     async sendData() {
-     console.log("send")
+      console.log("send");
+      var service = serviceContainer.managmentApiClient;
+        service.refreshForNode(this.nodeId, this.currentProvider, this.currentDomain).then((result: any) => {
+        console.log(result);
+      });
+      
+      console.log(this.currentDomain, this.currentProvider);
+      service
     },
     async fetchData() {
       var service = serviceContainer.managmentApiClient;
-      service.getProviders().then((result: Provider[] | null) => {
+      service.getProviders(this.nodeId).then((result: Provider[] | null) => {
         console.log(result);
         result?.forEach((item: Provider) => {
-          this.options?.push({name: item.name ?? "", value: item.id ?? ""});
+          this.providers?.push({name: item.name ?? "", value: item.id ?? "", group: item.name ?? "", selected: false} as Option);
           item.supportedHostnames?.forEach((endpoint) => {
-            this.options?.push({name: item.name + " " + endpoint ?? "", value: endpoint ?? ""});
+            this.domains?.push({name: endpoint ?? "", value: endpoint ?? "", group: item.name ?? "", selected: false} as Option);
+            this.currentDomains?.push({name: endpoint ?? "", value: endpoint ?? "", group: item.name ?? "", selected: false} as Option);
           });
         });
         this.loading = false;
-        console.log(this.options)
+        console.log(this.providers)
         console.log(this.loading)
       });
     },
@@ -49,16 +82,28 @@ export default defineComponent({
       type: Boolean,
       default: true,
     },
+    nodeId: {
+      type: Number,
+      default: -1,
+    },
     message: String,
-    options: {
-      type: Array,
+    providers: {
+      type: Array as PropType<Option[]>,
+      default: () => []
+    },
+    currentDomains: {
+      type: Array as PropType<Option[]>,
+      default: () => []
+    },
+    domains: {
+      type: Array as PropType<Option[]>,
       default: () => []
     }
   },
   setup: function (props) {
     props.message // type: string | undefined
     console.log("Setup props:", props);
-    const name = ref("options");
+    const name = ref("providers");
 
     watch(name, (first, second) => {
       console.log(
@@ -80,15 +125,18 @@ export default defineComponent({
   </div>
   <div class="umb-dialog-body " v-else>
     <div class="umb-pane">
-      <uui-select placeholder="Select an CND provider or an endpoint" :options="options"></uui-select>
+      <uui-select placeholder="Select an CND provider or an endpoint" :options="providers" id="providers"
+                  @change="selectProvider"></uui-select>
+      <div class="spacer"></div>
+
+      <uui-select placeholder="Select an domain for provider" :options="currentDomains"  id="domains"
+                  @change="selectDomain"></uui-select>
       <div class="spacer"></div>
       <uui-button
           look="primary"
           label="Refresh All CDNs"
-      :click="SendData"
+          @click="sendData"
       >
-        
-        
       </uui-button>
     </div>
   </div>
@@ -100,7 +148,8 @@ export default defineComponent({
   margin-top: 15px;
 
 }
-.spacer{
+
+.spacer {
   margin-top: 20px;
 }
 </style>

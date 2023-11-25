@@ -36,6 +36,7 @@ namespace bielu.Umbraco.Cdn.Azure.Services
             {
                 var requestUrls = urls.Where(x =>
                     Uri.TryCreate(x, UriKind.Absolute, out var targetUri) && x.Contains(domain.Name));
+                if(!requestUrls.Any()) continue;
                 var request =
                     await _client.PurgeContentAsync(WaitUntil.Started, new FrontDoorEndpointPurgeContent(requestUrls));
                 _logger.LogInformation("Cache refreshed, domains: {urls} for zone(id: {id}): {name}",

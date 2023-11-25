@@ -26,6 +26,7 @@ namespace bielu.Umbraco.Cdn.Cloudflare.Services
             {
                 var requestUrls = urls.Where(x =>
                     Uri.TryCreate(x, UriKind.Absolute, out var targetUri) && x.Contains(domain.Name));
+                if(!requestUrls.Any()) continue;
                 var request = await _cloudflare.PurgeCache(domain,
                     requestUrls);
                 _logger.LogInformation("Cache refreshed, domains: {urls} for zone(id: {id}): {name}", string.Join(",",requestUrls),domain.Id,domain.Name);

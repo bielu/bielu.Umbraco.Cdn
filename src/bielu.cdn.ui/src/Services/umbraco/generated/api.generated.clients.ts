@@ -14,9 +14,9 @@ export interface IManagementClient {
 
     getAuditHistory(): Promise<AuditRecord[] | null>;
 
-    getProviders(): Promise<Provider[] | null>;
+    getProviders(id?: number | undefined): Promise<Provider[] | null>;
 
-    refreshForNode(id: string): Promise<Status | null>;
+    refreshForNode(id: number, providerId?: string | null | undefined, domain?: string | null | undefined): Promise<Status | null>;
 }
 
 export class ManagementClient implements IManagementClient {
@@ -71,8 +71,12 @@ export class ManagementClient implements IManagementClient {
         return Promise.resolve<AuditRecord[] | null>(null as any);
     }
 
-    getProviders(): Promise<Provider[] | null> {
-        let url_ = this.baseUrl + "/cdn/api/management/GetProviders";
+    getProviders(id?: number | undefined): Promise<Provider[] | null> {
+        let url_ = this.baseUrl + "/cdn/api/management/GetProviders?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: RequestInit = {
@@ -113,12 +117,16 @@ export class ManagementClient implements IManagementClient {
         return Promise.resolve<Provider[] | null>(null as any);
     }
 
-    refreshForNode(id: string): Promise<Status | null> {
+    refreshForNode(id: number, providerId?: string | null | undefined, domain?: string | null | undefined): Promise<Status | null> {
         let url_ = this.baseUrl + "/cdn/api/management/RefreshForNode?";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined and cannot be null.");
         else
             url_ += "id=" + encodeURIComponent("" + id) + "&";
+        if (providerId !== undefined && providerId !== null)
+            url_ += "providerId=" + encodeURIComponent("" + providerId) + "&";
+        if (domain !== undefined && domain !== null)
+            url_ += "domain=" + encodeURIComponent("" + domain) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: RequestInit = {
@@ -207,6 +215,7 @@ export class Provider implements IProvider {
     id!: string | null;
     name!: string | null;
     supportedHostnames!: string[] | null;
+    nodeId!: number;
 
     constructor(data?: IProvider) {
         if (data) {
@@ -229,6 +238,7 @@ export class Provider implements IProvider {
             else {
                 this.supportedHostnames = <any>null;
             }
+            this.nodeId = _data["nodeId"] !== undefined ? _data["nodeId"] : <any>null;
         }
     }
 
@@ -246,6 +256,7 @@ export class Provider implements IProvider {
             for (let item of this.supportedHostnames)
                 data["supportedHostnames"].push(item);
         }
+        data["nodeId"] = this.nodeId !== undefined ? this.nodeId : <any>null;
         return data;
     }
 }
@@ -254,6 +265,7 @@ export interface IProvider {
     id: string | null;
     name: string | null;
     supportedHostnames: string[] | null;
+    nodeId: number;
 }
 
 export class Status implements IStatus {

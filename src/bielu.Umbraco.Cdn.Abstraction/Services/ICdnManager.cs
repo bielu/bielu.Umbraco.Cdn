@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using bielu.Umbraco.Cdn.Models;
 
@@ -6,7 +7,7 @@ namespace bielu.Umbraco.Cdn;
 
 public interface ICdnManager
 {
-    Task<IEnumerable<Provider>> GetProviders();
+    Task<IEnumerable<Provider>> GetProviders(int guid);
     Task<Provider> GetProvider(string id);
     Task<ICdnService> GetService(string id);
     Task<IEnumerable<ICdnService>> GetServices();

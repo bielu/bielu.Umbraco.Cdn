@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using bielu.Umbraco.Cdn.Models;
@@ -16,37 +17,41 @@ public class CdnManager : ICdnManager
     {
         _services = services;
         _contextFactory = contextFactory;
-        _providers = services.Select(x => new Provider()
+        using (var contextReference = _contextFactory.EnsureUmbracoContext())
         {
-            Name = x.GetType().Name,
-            Id = x.GetType().Name,
-            SupportedHostnames = Task.Run(async () =>
-            {
-                using (var contextReference = _contextFactory.EnsureUmbracoContext())
-                {
-                    var umbracoDomains = contextReference.UmbracoContext.Domains.GetAll(false);
-                    var supportedHostNames=   await x.GetSupportedHostnames();
-                    return umbracoDomains.Where(domain => supportedHostNames.Contains(domain.Name)).Select(domain => domain.Name).ToList();
-                }
-            
+            var umbracoDomains = contextReference.UmbracoContext.Domains.GetAll(false);
 
-            }).Result
-        });
+            _providers = umbracoDomains.SelectMany(domain =>
+            {
+                return services.Select(x => new Provider()
+                {
+                    Name = x.GetType().Name,
+                    Id = x.GetType().Name,
+                    NodeId = domain.ContentId,
+                    SupportedHostnames = Task.Run(async () =>
+                    {
+                        var supportedHostNames = await x.GetSupportedHostnames();
+                        return umbracoDomains.Where(domain => supportedHostNames.Contains(domain.Name))
+                            .Select(domain => domain.Name).ToList();
+                    }).Result
+                });
+            });
+        }
     }
 
-    public async Task<IEnumerable<Provider>> GetProviders()
+    public async Task<IEnumerable<Provider>> GetProviders(int guid)
     {
         return _providers;
     }
 
     public async Task<Provider> GetProvider(string id)
     {
-       return _providers.FirstOrDefault(x => x.Id == id);
+        return _providers.FirstOrDefault(x => x.Id == id);
     }
 
     public async Task<ICdnService> GetService(string id)
     {
-      return _services.FirstOrDefault(x => x.GetType().Name == id);
+        return _services.FirstOrDefault(x => x.GetType().Name == id);
     }
 
     public async Task<IEnumerable<ICdnService>> GetServices()

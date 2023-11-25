@@ -18,7 +18,10 @@ public class BieluCdnUIManifestFilter: IManifestFilter
             },
             Scripts = new[]
             {
-                "/App_Plugins/bielu.cdn.ui/dev-bootstrapper.js"
+                "/App_Plugins/bielu.cdn.ui/dev-bootstrapper.js",
+                "/App_Plugins/bielu.cdn.ui/bielu.cdn.ui.js",
+                "/App_Plugins/bielu.cdn.ui/bielu.cdn.ui.angularController.js",
+                
             }, 
             Version = assembly.GetName()?.Version?.ToString(3) ?? "0.1.0",
          

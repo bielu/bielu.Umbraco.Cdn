@@ -1526,7 +1526,7 @@ var us = Object.defineProperty, ds = Object.getOwnPropertyDescriptor, k = (t, e,
 };
 let I = class extends lo(de) {
   constructor() {
-    super(), this.placeholder = "", this.disabled = !1, this.error = !1, this.options = [], this._groups = [], this.disabledGroups = "", this._disabledGroups = [], this._values = [], this.addEventListener("mousedown", () => {
+    super(), this.placeholder = "", this.disabled = !1, this.error = !1, this.providers = [], this._groups = [], this.disabledGroups = "", this._disabledGroups = [], this._values = [], this.addEventListener("mousedown", () => {
       this.style.setProperty("--uui-show-focus-outline", "0");
     }), this.addEventListener("blur", () => {
       this.style.setProperty("--uui-show-focus-outline", "");
