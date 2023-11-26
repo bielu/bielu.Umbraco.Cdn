@@ -10,6 +10,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\bielu.cdn.ui\bielu.cdn.ui.csproj" />
       <ProjectReference Include="..\bielu.Umbraco.Cdn.Abstraction\bielu.Umbraco.Cdn.Abstraction.csproj" />
     </ItemGroup>
 

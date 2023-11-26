@@ -1,4 +1,6 @@
-﻿using bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content;
+﻿using bielu.Umbraco.Cdn.Core.Configuration;
+using bielu.Umbraco.Cdn.Core.ManifestFilters;
+using bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content;
 using bielu.Umbraco.Cdn.Core.NotitificationHandlers.Domain;
 using bielu.Umbraco.Cdn.Core.NotitificationHandlers.Media;
 using bielu.Umbraco.Cdn.Core.NotitificationHandlers.Tree;
@@ -17,6 +19,9 @@ namespace bielu.Umbraco.Cdn.Core.Composition
     {
         public void Compose(IUmbracoBuilder composition)
         {
+            composition.Services.AddOptions<BieluCdnOptions>().BindConfiguration(BieluCdnOptions.SectionName);
+            composition.ManifestFilters().Append<BieluCdnUIManifestFilter>();
+
             //services
             composition.Services.AddTransient(typeof(IUmbracoUrlDeliveryService), typeof(UmbracoUrlDeliveryService));
             composition.Services.AddSingleton<ICdnManager, CdnManager>();

@@ -4,8 +4,7 @@ import '@umbraco-ui/uui-select';
 import '@umbraco-ui/uui-loader-bar';
 import {defineComponent, PropType, ref, watch} from 'vue'
 import {serviceContainer} from "../Services/service-container.ts";
-import {Provider} from "../Services/umbraco/generated/api.generated.clients.ts";
-
+import {Provider, Status} from "../Services/umbraco/generated/api.generated.clients.ts";
 export default defineComponent({
   name: 'RefreshNode',
   created: function () {
@@ -46,18 +45,21 @@ export default defineComponent({
         return;
       }
       this.currentDomain = object.target.value;
-      console.log("test");
       console.log(this.currentDomain);
     },
     async sendData() {
-      console.log("send");
       var service = serviceContainer.managmentApiClient;
+      this.loading=true;
         service.refreshForNode(this.nodeId, this.currentProvider, this.currentDomain).then((result: any) => {
         console.log(result);
+          console.log(this.currentDomain, this.currentProvider);
+
+          
+          this.$emit("refrehsnodesubmit", (result as Status))
+          
       });
       
-      console.log(this.currentDomain, this.currentProvider);
-      service
+    
     },
     async fetchData() {
       var service = serviceContainer.managmentApiClient;
@@ -74,6 +76,12 @@ export default defineComponent({
         console.log(this.providers)
         console.log(this.loading)
       });
+    },
+  },
+  emits: {
+    refrehsnodesubmit: (result:Status) => {
+      console.log(result);
+      return true;
     },
   },
   // type inference enabled

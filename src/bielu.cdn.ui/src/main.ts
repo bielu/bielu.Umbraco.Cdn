@@ -10,6 +10,6 @@ const myCustomElement2 = defineCustomElement(CdnDashboard);
 window.customElements.define(`refresh-node`, myCustomElement);
 window.customElements.define(`cdn-dashboard`, myCustomElement2);
 import './style.css'
-// inside setup() scope...
+// inside setup() scope... 
 // default, returns classes for <style module>
 useCssModule()

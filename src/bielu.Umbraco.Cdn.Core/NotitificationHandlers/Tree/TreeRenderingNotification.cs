@@ -43,8 +43,9 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Tree
 
                 
                     var menu = notification.Menu.Items.Add<CdnTreeAction>(_localizationService, true, true);
+                    menu.Name = "Refresh node in CDNs";
                     menu.AdditionalData.Add("nodeId",node.Id);
-                    menu.LaunchDialogView("/App_Plugins/bielu.cdn.ui/RefreshNodeEditor.html", "Refresh Node");
+                    menu.AdditionalData.Add("actionView", "/App_Plugins/bielu.cdn.ui/RefreshNodeEditor.html");
             }
         }
     }

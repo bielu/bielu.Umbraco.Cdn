@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using bielu.Umbraco.Cdn.Cloudflare.Configuration;
 using bielu.Umbraco.Cdn.Cloudflare.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Umbraco.Cms.Core.DependencyInjection;
@@ -15,6 +16,7 @@ namespace bielu.Umbraco.Cdn.Cloudflare.Extensions
         {
             if (builder == null)
                 throw new ArgumentNullException(nameof(builder));
+            builder.Services.AddOptions<BieluCdnCloudflareOptions>().BindConfiguration(BieluCdnCloudflareOptions.SectionName);
             builder.Services.Scan(s =>
                 s.FromAssemblies(new List<Assembly>() { typeof(BieluUmbracoCdnCloudflareExtensions).Assembly })
                     .AddClasses(c => c.AssignableTo(typeof(ICdnService)))

@@ -1,11 +1,19 @@
-﻿using Umbraco.Cms.Core;
-using Umbraco.Cms.Core.Dashboards;
+﻿using System.Collections.Generic;
+using bielu.Umbraco.Cdn.Core.Configuration;
+using Microsoft.Extensions.Options;
 using Umbraco.Cms.Core.Manifest;
 
-namespace bielu.cdn.ui.ManifestFilters;
+namespace bielu.Umbraco.Cdn.Core.ManifestFilters;
 
 public class BieluCdnUIManifestFilter: IManifestFilter
 {
+    private readonly BieluCdnOptions _options;
+
+    public BieluCdnUIManifestFilter(IOptionsMonitor<BieluCdnOptions> optionsMonitor)
+    {
+        _options = optionsMonitor.CurrentValue;
+    }
+
     public void Filter(List<PackageManifest> manifests)
     {
         var assembly = typeof(BieluCdnUIManifestFilter).Assembly;
@@ -19,7 +27,7 @@ public class BieluCdnUIManifestFilter: IManifestFilter
             Scripts = new[]
             {
                 "/App_Plugins/bielu.cdn.ui/dev-bootstrapper.js",
-                "/App_Plugins/bielu.cdn.ui/bielu.cdn.ui.js",
+                $"/App_Plugins/bielu.cdn.ui/{(_options.DevMode ? "dev-bootstrapper" : "bielu.cdn.ui.")}.js",
                 "/App_Plugins/bielu.cdn.ui/bielu.cdn.ui.angularController.js",
                 
             }, 
