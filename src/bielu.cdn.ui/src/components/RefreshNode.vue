@@ -132,6 +132,7 @@ export default defineComponent({
     <uui-loader-bar animationDuration="1.5" style="color: black"></uui-loader-bar>
   </div>
   <div class="umb-dialog-body " v-else>
+    hello
     <div class="umb-pane">
       <uui-select placeholder="Select an CND provider or an endpoint" :options="providers" id="providers"
                   @change="selectProvider"></uui-select>

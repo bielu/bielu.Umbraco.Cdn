@@ -13,12 +13,12 @@ using Umbraco.Cms.Core.Events;
 
 namespace bielu.Umbraco.Cdn.Aws.Services
 {
-    public class CloudflareCdnService : ICdnService
+    public class CloudFrontCdnService : ICdnService
     {
         private readonly AmazonCloudFrontClient _client;
-        private readonly ILogger<CloudflareCdnService> _logger;
+        private readonly ILogger<CloudFrontCdnService> _logger;
 
-        public CloudflareCdnService(IAmazonCloudFrontClientFactory cloudflare, ILogger<CloudflareCdnService> logger)
+        public CloudFrontCdnService(IAmazonCloudFrontClientFactory cloudflare, ILogger<CloudflareCdnService> logger)
         {
             _client = cloudflare.GetCloudFrontClient();
             _logger = logger;

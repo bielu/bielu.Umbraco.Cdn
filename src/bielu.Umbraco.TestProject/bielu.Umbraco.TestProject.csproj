@@ -10,6 +10,8 @@
         <PackageReference Include="Umbraco.Cms" Version="10.7.0" />
         <PackageReference Include="Umbraco.Cms.Infrastructure" Version="10.7.0" />
         <PackageReference Include="Umbraco.Cms.Web.Common" Version="10.7.0" />
+        <PackageReference Include="NSwag.CodeGeneration" Version="13.20.0" />
+        
         <PackageReference Include="NSwag.AspNetCore" Version="13.20.0" />
         <PackageReference Include="NSwag.MSBuild" Version="13.20.0">
           <PrivateAssets>all</PrivateAssets>

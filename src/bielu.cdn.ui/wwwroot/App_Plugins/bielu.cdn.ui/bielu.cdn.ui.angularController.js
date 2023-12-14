@@ -1,4 +1,6 @@
-﻿angular.module('umbraco')
+﻿import RefreshNode from "../../../src/components/RefreshNode.vue";
+
+angular.module('umbraco')
     .controller('bielu.cdn.ui.controller',
         function (
             $scope,
@@ -21,7 +23,6 @@
             var todo = document.createElement("refresh-node");
             todo.setAttribute("node-id", $scope.nodeId);
             wrapper.appendChild(todo);
-
             todo
                 .addEventListener('refrehsnodesubmit', function (e) {
                     console.log(e);

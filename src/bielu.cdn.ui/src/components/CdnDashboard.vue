@@ -24,6 +24,7 @@ export default defineComponent({
   <div>
     <h1>CDN Dashboard</h1>
     <p>CDN Dashboard</p>
+    hello :D
   </div>
 </template>
 
