@@ -1,10 +1,11 @@
 ﻿using System.Text.Json.Serialization;
 using bielu.SchemaGenerator.Core.Attributes;
+using bielu.Umbraco.Cdn.Core.Configuration;
 using bielu.Umbraco.Cdn.Core.Constants;
 
 namespace bielu.Umbraco.Cdn.Azure.Models;
 [SchemaGeneration]
-public class FrontDoorOptions
+public class FrontDoorOptions : ConfigurationBaseOptions
 {
     [SchemaPrefix]
     [JsonIgnore]

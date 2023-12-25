@@ -9,6 +9,7 @@ using bielu.Umbraco.Cdn.Aws.Models;
 using bielu.Umbraco.Cdn.Models;
 using bielu.Umbraco.Cdn.Services;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Umbraco.Cms.Core.Events;
 
 namespace bielu.Umbraco.Cdn.Aws.Services;
@@ -17,11 +18,22 @@ public class CloudFrontCdnService : ICdnService
 {
     private readonly AmazonCloudFrontClient _client;
     private readonly ILogger<CloudFrontCdnService> _logger;
+    private  CloudFrontOptions _options;
 
-    public CloudFrontCdnService(IAmazonCloudFrontClientFactory cloudflare, ILogger<CloudFrontCdnService> logger)
+    public CloudFrontCdnService(IAmazonCloudFrontClientFactory cloudflare, ILogger<CloudFrontCdnService> logger, IOptionsMonitor<CloudFrontOptions> optionsMonitor)
     {
         _client = cloudflare.GetCloudFrontClient();
         _logger = logger;
+        _options = optionsMonitor.CurrentValue;
+        optionsMonitor.OnChange((options, s) =>
+        {
+            _options = options;
+        });
+    }
+
+    public bool IsEnabled()
+    {
+        return !_options.Disabled;
     }
 
     public async Task<IEnumerable<Status>> PurgePages(IEnumerable<string> urls)

@@ -1,11 +1,12 @@
 ﻿using Amazon;
 using bielu.SchemaGenerator.Core.Attributes;
+using bielu.Umbraco.Cdn.Core.Configuration;
 using bielu.Umbraco.Cdn.Core.Constants;
 using Newtonsoft.Json;
 
 namespace bielu.Umbraco.Cdn.Aws.Models;
 [SchemaGeneration]
-public class CloudFrontOptions
+public class CloudFrontOptions : ConfigurationBaseOptions
 {
     [SchemaPrefix]
     [JsonIgnore]

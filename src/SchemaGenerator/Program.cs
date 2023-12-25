@@ -13,7 +13,7 @@ internal class Program
     static readonly IList<Assembly> Assemblies = new List<Assembly>()
     {
         typeof(CloudFrontOptions).Assembly,
-        typeof(BieluCdnCloudflareOptions).Assembly,
+        typeof(CloudflareOptions).Assembly,
         typeof(FrontDoorOptions).Assembly,
         typeof(BieluCdnOptions).Assembly
     };

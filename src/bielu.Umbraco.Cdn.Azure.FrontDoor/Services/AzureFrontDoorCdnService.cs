@@ -9,19 +9,26 @@ using bielu.Umbraco.Cdn.Azure.Models;
 using bielu.Umbraco.Cdn.Models;
 using bielu.Umbraco.Cdn.Services;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Umbraco.Cms.Core.Events;
 
 namespace bielu.Umbraco.Cdn.Azure.Services
 {
-    public class CloudflareCdnService : ICdnService
+    public class AzureFrontDoorCdnService : ICdnService
     {
         private readonly FrontDoorResource _client;
-        private readonly ILogger<CloudflareCdnService> _logger;
+        private readonly ILogger<AzureFrontDoorCdnService> _logger;
+        private FrontDoorOptions _options;
 
-        public CloudflareCdnService(IFrontDoorClientFactory cloudflare, ILogger<CloudflareCdnService> logger)
+        public AzureFrontDoorCdnService(IFrontDoorClientFactory cloudflare, ILogger<AzureFrontDoorCdnService> logger, IOptionsMonitor<FrontDoorOptions> optionsMonitor)
         {
             _client = cloudflare.GetFrontDoorClient();
             _logger = logger;
+            _options = optionsMonitor.CurrentValue;
+            optionsMonitor.OnChange((options, s) =>
+            {
+                _options = options;
+            });
         }
 
         public async Task<IEnumerable<Status>> PurgePages(IEnumerable<string> urls)
@@ -57,7 +64,10 @@ namespace bielu.Umbraco.Cdn.Azure.Services
 
             return statuses;
         }
-
+        public bool IsEnabled()
+        {
+            return !_options.Disabled;
+        }
         public async Task<IEnumerable<Status>> PurgeAll()
         {
             var zones = _client.Data.FrontendEndpoints.Select(x => new Zone()

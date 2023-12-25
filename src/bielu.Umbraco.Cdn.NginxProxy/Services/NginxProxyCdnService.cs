@@ -16,6 +16,11 @@ namespace bielu.Umbraco.Cdn.NginxProxy.Services
             _nginxProxy = nginxProxy;
         }
 
+        public bool IsEnabled()
+        {
+            return true;
+        }
+
         public async Task<IEnumerable<Status>> PurgePages(IEnumerable<string> urls)
         {
             var zones = (await _nginxProxy.GetZones());

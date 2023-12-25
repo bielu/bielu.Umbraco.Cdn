@@ -1,7 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <IsPackable>false</IsPackable>
+        <IsPackable>false</IsPackable>    
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RazorCompileOnPublish>true</RazorCompileOnPublish>
+        <StaticWebAssetBasePath>/</StaticWebAssetBasePath>
+        <ContentTargetFolders>.</ContentTargetFolders>
+        <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+        <EmbedRazorGenerateSources>true</EmbedRazorGenerateSources>
     </PropertyGroup>
 
     <ItemGroup>

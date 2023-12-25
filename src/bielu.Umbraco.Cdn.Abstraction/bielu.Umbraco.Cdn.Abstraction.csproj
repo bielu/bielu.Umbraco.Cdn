@@ -2,8 +2,15 @@
 
     <PropertyGroup>
         <RootNamespace>bielu.Umbraco.Cdn</RootNamespace>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RazorCompileOnPublish>true</RazorCompileOnPublish>
+        <StaticWebAssetBasePath>/</StaticWebAssetBasePath>
+        <ContentTargetFolders>.</ContentTargetFolders>
+        <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+        <EmbedRazorGenerateSources>true</EmbedRazorGenerateSources>
     </PropertyGroup>
-
     <ItemGroup>
       <PackageReference Include="Umbraco.Cms.Core" Version="10.7.0" />
     </ItemGroup>

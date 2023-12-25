@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using bielu.Umbraco.Cdn.Cloudflare.Configuration;
 using bielu.Umbraco.Cdn.Models;
 using bielu.Umbraco.Cdn.Services;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace bielu.Umbraco.Cdn.Cloudflare.Services
 {
@@ -12,13 +14,22 @@ namespace bielu.Umbraco.Cdn.Cloudflare.Services
     {
         private readonly ICloudflareClient _cloudflare;
         private readonly ILogger<CloudflareCdnService> _logger;
+        private CloudflareOptions _options;
 
-        public CloudflareCdnService(ICloudflareClient cloudflare, ILogger<CloudflareCdnService> logger)
+        public CloudflareCdnService(ICloudflareClient cloudflare, ILogger<CloudflareCdnService> logger, IOptionsMonitor<CloudflareOptions> optionsMonitor)
         {
             _cloudflare = cloudflare;
             _logger = logger;
+            _options = optionsMonitor.CurrentValue;
+            optionsMonitor.OnChange((options, s) =>
+            {
+                _options = options;
+            });
         }
-
+        public bool IsEnabled()
+        {
+            return !_options.Disabled;
+        }
         public async Task<IEnumerable<Status>> PurgePages(IEnumerable<string> urls)
         {
             var zones = (await _cloudflare.GetZones());
