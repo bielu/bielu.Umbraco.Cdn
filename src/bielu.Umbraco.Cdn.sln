@@ -26,7 +26,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bielu.Umbraco.Cdn.Aws.Cloud
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bielu.cdn.ui", "..\src\bielu.cdn.ui\bielu.cdn.ui.csproj", "{2E0E3034-0873-4ADF-8831-10CE99AB8012}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bielu.Umbraco.Cdn.SchemaGenerator", "bielu.Umbraco.Cdn.SchemaGenerator\bielu.Umbraco.Cdn.SchemaGenerator.csproj", "{DD83D77E-6A3D-4401-821B-ECE63695CCBC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchemaGenerator", "SchemaGenerator\SchemaGenerator.csproj", "{DD83D77E-6A3D-4401-821B-ECE63695CCBC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

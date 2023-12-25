@@ -5,7 +5,7 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>bielu.Umbraco.Cdn.SchemageGerator</RootNamespace>
+        <RootNamespace>SchemageGerator</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
