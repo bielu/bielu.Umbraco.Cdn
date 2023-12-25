@@ -1,5 +1,5 @@
 <Project>
 	<ItemGroup>
-		<UmbracoJsonSchemaFiles Include="$(MSBuildThisFileDirectory)..\Schema\appsettings-schema.CloudFrontOptions.json" Weight="-80" />
+		<UmbracoJsonSchemaFiles Include="$(MSBuildThisFileDirectory)..\Schema\appsettings-schema.CloudFrontOptions.json"  />
 	</ItemGroup>
 </Project>

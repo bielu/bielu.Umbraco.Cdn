@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using bielu.Umbraco.Cdn.Core.Configuration;
 using bielu.Umbraco.Cdn.Core.Services;
 using bielu.Umbraco.Cdn.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Umbraco.Cms.Core.Events;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Notifications;
@@ -28,32 +30,19 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
         private readonly ILogger<ContentEventsNotificationNotificationHandler> _logger;
         private readonly IAuditService _auditService;
         private readonly IBackOfficeSecurityAccessor _accessor;
-        private readonly IConfiguration _configuration;
-        private readonly bool _auditing;
-        private readonly bool _preview;
+        private readonly BieluCdnOptions _configuration;
 
         public ContentEventsNotificationNotificationHandler(IUmbracoUrlDeliveryService umbracoUrlDeliveryService,
             IEnumerable<ICdnService> cdnServices, ILogger<ContentEventsNotificationNotificationHandler> logger,
-            IAuditService auditService, IBackOfficeSecurityAccessor accessor, IConfiguration configuration)
+            IAuditService auditService, IBackOfficeSecurityAccessor accessor, IOptionsMonitor<BieluCdnOptions> configuration)
         {
             _umbracoUrlDeliveryService = umbracoUrlDeliveryService;
             _cdnServices = cdnServices;
             _logger = logger;
             _auditService = auditService;
             _accessor = accessor;
-            _configuration = configuration;
-            _auditing = true;
-            if (configuration.GetSection("bielu")?.GetSection("cdn")?.GetSection("Auditing").Exists() ?? false)
-            {
-                _auditing = Convert.ToBoolean(_configuration.GetSection("bielu")?.GetSection("cdn")
-                    .GetSection("Auditing").Value);
-            }
+            _configuration = configuration.CurrentValue;
 
-            if (configuration.GetSection("bielu")?.GetSection("cdn")?.GetSection("Preview").Exists() ?? false)
-            {
-                _preview = Convert.ToBoolean(_configuration.GetSection("bielu")?.GetSection("cdn").GetSection("Preview")
-                    .Value);
-            }
         }
 
         public async Task HandleAsync(ContentMovingNotification notification, CancellationToken cancellationToken)
@@ -62,7 +51,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
             var currentUser = _accessor.BackOfficeSecurity.CurrentUser;
             foreach (var content in notification.MoveInfoCollection)
             {
-                if (_auditing)
+                if (_configuration.Auditing)
                 {
                     _auditService.Add(AuditType.Custom, currentUser.Id, content.Entity.Id, "CDN Refresh",
                         $"CDN cache was purged", $"CDN cache purged");
@@ -110,7 +99,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
 
             foreach (var content in notification.DeletedEntities)
             {
-                if (_auditing)
+                if (_configuration.Auditing)
                 {
                     _auditService.Add(AuditType.Custom, currentUser.Id, content.Id, "CDN Refresh",
                         $"CDN cache was purged", $"CDN cache purged");
@@ -219,7 +208,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
             var pages = new List<string>();
             foreach (var content in notification.PublishedEntities)
             {
-                if (_auditing)
+                if (_configuration.Auditing)
                 {
                     _auditService.Add(AuditType.Custom, currentUser.Id, content.Id, "CDN Refresh",
                         $"CDN cache was purged", $"CDN cache purged");
@@ -276,7 +265,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
 
             foreach (var content in notification.UnpublishedEntities)
             {
-                if (_auditing)
+                if (_configuration.Auditing)
                 {
                     _auditService.Add(AuditType.Custom, currentUser.Id, content.Id, "CDN Refresh",
                         $"CDN cache was purged", $"CDN cache purged");
@@ -316,7 +305,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
 
         public async Task HandleAsync(ContentSavedNotification notification, CancellationToken cancellationToken)
         {
-            if (!_preview)
+            if (!_configuration.Preview)
             {
                 return;
             }
@@ -331,7 +320,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
                 {
                     if (content.Published)
                     {
-                        if (_auditing)
+                        if (_configuration.Auditing)
                         {
                             _auditService.Add(AuditType.Custom, currentUser.Id, content.Id, "CDN Refresh",
                                 $"CDN cache was purged", $"CDN cache purged");

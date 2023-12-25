@@ -18,7 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="bielu.SchemaGenerator.Build" Version="1.0.0-alpha.47" />
+        <PackageReference Include="bielu.SchemaGenerator.Build" Version="1.0.0-alpha.50" />
         <PackageReference Include="NJsonSchema" Version="10.9.0" />
         <PackageReference Include="CommandLineParser" Version="2.9.1" />
     </ItemGroup>
