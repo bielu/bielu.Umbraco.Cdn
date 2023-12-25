@@ -1,26 +1,30 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>bielu.Umbraco.Cdn.SchemageGerator</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\bielu.Umbraco.Cdn.Akamai\bielu.Umbraco.Cdn.Akamai.csproj" />
+      <ProjectReference Include="..\bielu.Umbraco.Cdn.Aws.CloudFront\bielu.Umbraco.Cdn.Aws.CloudFront.csproj" />
+      <ProjectReference Include="..\bielu.Umbraco.Cdn.Azure.FrontDoor\bielu.Umbraco.Cdn.Azure.FrontDoor.csproj" />
+      <ProjectReference Include="..\bielu.Umbraco.Cdn.Cloudflare\bielu.Umbraco.Cdn.Cloudflare.csproj" />
+      <ProjectReference Include="..\bielu.Umbraco.Cdn.Core\bielu.Umbraco.Cdn.Core.csproj" />
+      <ProjectReference Include="..\bielu.Umbraco.Cdn.NginxProxy\bielu.Umbraco.Cdn.NginxProxy.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="bielu.SchemaGenerator.Build" Version="1.0.0-alpha.47" />
         <PackageReference Include="NJsonSchema" Version="10.9.0" />
         <PackageReference Include="CommandLineParser" Version="2.9.1" />
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="file\" />
     </ItemGroup>
 
-    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-        <DocumentationFile>bin\Release\$(TargetFramework)\bielu.Cdn.SchemaGenerator.xml</DocumentationFile>
-    </PropertyGroup>
-
-    <Target Name="CopyPackagesXml" BeforeTargets="Build">
-        <ItemGroup>
-            <PackageReferenceFiles Include="$(NugetPackageRoot)%(PackageReference.Identity)\%(PackageReference.Version)%(PackageReference.CopyToOutputDirectory)\lib\**\*.xml" />
-        </ItemGroup>
-        <Copy SourceFiles="@(PackageReferenceFiles)" DestinationFolder="$(OutDir)" />
-    </Target>
 </Project>

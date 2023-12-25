@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using bielu.Umbraco.Cdn.Cloudflare.Configuration;
 using bielu.Umbraco.Cdn.Cloudflare.Services;
+using bielu.Umbraco.Cdn.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Umbraco.Cms.Core.DependencyInjection;
 using Microsoft.Extensions.Hosting;

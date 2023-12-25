@@ -16,6 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="generated\" />
       <Folder Include="src\umbraco\" />
     </ItemGroup>
 

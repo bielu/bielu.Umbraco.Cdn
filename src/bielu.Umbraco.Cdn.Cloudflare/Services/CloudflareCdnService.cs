@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using bielu.Umbraco.Cdn.Models;
+using bielu.Umbraco.Cdn.Services;
 using Microsoft.Extensions.Logging;
 
 namespace bielu.Umbraco.Cdn.Cloudflare.Services

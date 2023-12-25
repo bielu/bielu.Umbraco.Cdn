@@ -5,7 +5,7 @@ namespace bielu.Umbraco.Cdn.Core.Dashboard;
 
 public class CdnDashboard: IDashboard
 {
-    public string[] Sections => new[] { Constants.Applications.Settings };
+    public string[] Sections => new[] { global::Umbraco.Cms.Core.Constants.Applications.Settings };
 
     public IAccessRule[] AccessRules
     {
@@ -13,7 +13,7 @@ public class CdnDashboard: IDashboard
         {
             var rules = new IAccessRule[]
             {
-                new AccessRule {Type = AccessRuleType.Grant, Value = Constants.Security.AdminGroupAlias}
+                new AccessRule {Type = AccessRuleType.Grant, Value = global::Umbraco.Cms.Core.Constants.Security.AdminGroupAlias}
             };
             return rules;
         }

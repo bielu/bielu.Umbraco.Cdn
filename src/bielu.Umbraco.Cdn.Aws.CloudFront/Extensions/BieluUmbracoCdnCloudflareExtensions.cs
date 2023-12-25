@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using bielu.Umbraco.Cdn.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Umbraco.Cms.Core.DependencyInjection;
-using FrontDoorClientFactory = bielu.Umbraco.Cdn.Aws.Services.FrontDoorClientFactory;
 
 namespace bielu.Umbraco.Cdn.Aws.Extensions
 {

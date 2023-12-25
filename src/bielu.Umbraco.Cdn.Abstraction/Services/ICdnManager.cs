@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using bielu.Umbraco.Cdn.Models;
 
-namespace bielu.Umbraco.Cdn;
+namespace bielu.Umbraco.Cdn.Services;
 
 public interface ICdnManager
 {

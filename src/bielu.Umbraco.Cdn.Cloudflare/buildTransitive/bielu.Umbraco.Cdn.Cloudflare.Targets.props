@@ -1,0 +1,5 @@
+<Project>
+	<ItemGroup>
+		<UmbracoJsonSchemaFiles Include="$(MSBuildThisFileDirectory)..\Schema\appsettings-schema.BieluCdnCloudflareOptions.json" Weight="-80" />
+	</ItemGroup>
+</Project>

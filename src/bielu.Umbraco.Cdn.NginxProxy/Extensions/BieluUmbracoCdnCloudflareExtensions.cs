@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using bielu.Umbraco.Cdn.Cloudflare.Services;
+using bielu.Umbraco.Cdn.NginxProxy.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Umbraco.Cms.Core.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
-namespace bielu.Umbraco.Cdn.Cloudflare.Extensions
+namespace bielu.Umbraco.Cdn.NginxProxy.Extensions
 {
     public static class BieluUmbracoCdnCloudflareExtensions
     {

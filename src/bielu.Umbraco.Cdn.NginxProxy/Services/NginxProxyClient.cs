@@ -7,11 +7,11 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
-using bielu.Umbraco.Cdn.Cloudflare.Models;
 using bielu.Umbraco.Cdn.Models;
+using bielu.Umbraco.Cdn.NginxProxy.Models;
 using Microsoft.Extensions.Configuration;
 
-namespace bielu.Umbraco.Cdn.Cloudflare.Services
+namespace bielu.Umbraco.Cdn.NginxProxy.Services
 {
     public class NginxProxyClient : INginxProxyClient
     {

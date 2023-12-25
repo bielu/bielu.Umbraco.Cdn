@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using bielu.Umbraco.Cdn.Core.Extensions;
 using bielu.Umbraco.Cdn.Core.Services;
 using bielu.Umbraco.Cdn.Models;
+using bielu.Umbraco.Cdn.Services;
 using Microsoft.AspNetCore.Mvc;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Routing;

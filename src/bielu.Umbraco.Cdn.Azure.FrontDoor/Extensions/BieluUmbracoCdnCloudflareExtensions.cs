@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using bielu.Umbraco.Cdn.Azure.Services;
+using bielu.Umbraco.Cdn.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Umbraco.Cms.Core.DependencyInjection;
 

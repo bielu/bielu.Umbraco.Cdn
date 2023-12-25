@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using bielu.Umbraco.Cdn.Models;
+using bielu.Umbraco.Cdn.Services;
 using Umbraco.Cms.Core.Web;
 
 namespace bielu.Umbraco.Cdn.Core.Services;

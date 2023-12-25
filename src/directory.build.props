@@ -7,11 +7,16 @@
         <AssemblyName>$(MSBuildProjectName)</AssemblyName>
         <AssemblyVersion>$(Version)</AssemblyVersion>
         <TargetFramework>net6.0</TargetFramework>
+        <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+        <CompilerGeneratedFilesOutputPath>Generated</CompilerGeneratedFilesOutputPath>
     </PropertyGroup>    
 
     <PropertyGroup>
         <Authors>Arkadiusz Biel</Authors>
         <PackageOutputPath>$(MSBuildProjectDirectory)/../../dist</PackageOutputPath>
     </PropertyGroup>
-
+<ItemGroup>
+    <Content Include="buildTransitive\**" PackagePath="buildTransitive" />
+    <Content Include="Schema\appsettings-schema.*.json" PackagePath="Schema" />
+</ItemGroup>
 </Project>

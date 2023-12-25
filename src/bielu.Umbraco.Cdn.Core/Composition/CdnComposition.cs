@@ -5,6 +5,7 @@ using bielu.Umbraco.Cdn.Core.NotitificationHandlers.Domain;
 using bielu.Umbraco.Cdn.Core.NotitificationHandlers.Media;
 using bielu.Umbraco.Cdn.Core.NotitificationHandlers.Tree;
 using bielu.Umbraco.Cdn.Core.Services;
+using bielu.Umbraco.Cdn.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Umbraco.Cms.Core.Composing;
 using Umbraco.Cms.Core.DependencyInjection;

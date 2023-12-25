@@ -1,4 +1,4 @@
-namespace bielu.Umbraco.Cdn.Cloudflare.Models
+namespace bielu.Umbraco.Cdn.Models
 {
     public class Errors
     {

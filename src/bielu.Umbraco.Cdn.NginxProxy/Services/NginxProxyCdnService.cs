@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using bielu.Umbraco.Cdn.Models;
+using bielu.Umbraco.Cdn.Services;
 
-namespace bielu.Umbraco.Cdn.Cloudflare.Services
+namespace bielu.Umbraco.Cdn.NginxProxy.Services
 {
     public class NginxProxyCdnService : ICdnService
     {

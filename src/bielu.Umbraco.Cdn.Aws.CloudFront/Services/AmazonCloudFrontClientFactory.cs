@@ -3,12 +3,11 @@ using bielu.Umbraco.Cdn.Aws.Models;
 using Microsoft.Extensions.Options;
 
 namespace bielu.Umbraco.Cdn.Aws.Services;
-
-public class FrontDoorClientFactory : IAmazonCloudFrontClientFactory
+public class AmazonCloudFrontClientFactory : IAmazonCloudFrontClientFactory
 {
     private readonly IOptionsMonitor<CloudFrontOptions> _frontDoorOptions;
 
-    public FrontDoorClientFactory( IOptionsMonitor<CloudFrontOptions> frontDoorOptions)
+    public AmazonCloudFrontClientFactory( IOptionsMonitor<CloudFrontOptions> frontDoorOptions)
     {
         _frontDoorOptions = frontDoorOptions;
     }

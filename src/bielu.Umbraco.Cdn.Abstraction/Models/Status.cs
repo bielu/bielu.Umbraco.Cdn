@@ -1,7 +1,6 @@
 ﻿#nullable enable
 using System;
 using System.Collections.Generic;
-using bielu.Umbraco.Cdn.Cloudflare.Models;
 using Umbraco.Cms.Core.Events;
 
 namespace bielu.Umbraco.Cdn.Models
