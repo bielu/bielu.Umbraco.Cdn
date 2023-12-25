@@ -26,60 +26,108 @@
         <description>Created after removal of "Changes" from API Docs</description>
         <accepts>Changes-XML.html</accepts>
     </rule>
-    <rule id="16907da6">
+    <rule id="5f0fbac4">
         <description>Created after removal of "Pet" from API Docs</description>
         <accepts>Pet.html</accepts>
     </rule>
-    <rule id="19288017">
+    <rule id="2bf20bf2">
         <description>Created after removal of "Find pet inventories by status" from API Docs</description>
         <accepts>Returns-pet-inventories-by-status.html</accepts>
     </rule>
-    <rule id="2bd02de8">
+    <rule id="1d9472fa">
         <description>Created after removal of "Place order for pet" from API Docs</description>
         <accepts>Place-an-order-for-a-pet.html</accepts>
     </rule>
-    <rule id="2d43cd5b">
+    <rule id="554ec4b2">
         <description>Created after removal of "Find purchase order by ID" from API Docs</description>
         <accepts>Find-purchase-order-by-ID.html</accepts>
     </rule>
-    <rule id="281036fb">
+    <rule id="3394ddbb">
         <description>Created after removal of "Delete purchase order by ID" from API Docs</description>
         <accepts>Delete-purchase-order-by-ID.html</accepts>
     </rule>
-    <rule id="391dee98">
+    <rule id="42a169c2">
         <description>Created after removal of "Create user" from API Docs</description>
         <accepts>Create-user.html</accepts>
     </rule>
-    <rule id="164456b2">
+    <rule id="7e54189a">
         <description>Created after removal of "Create list of users with given input array" from API Docs</description>
         <accepts>Creates-list-of-users-with-given-input-array.html</accepts>
     </rule>
-    <rule id="12791f36">
+    <rule id="708be0dc">
         <description>Created after removal of "Log user into the system" from API Docs</description>
         <accepts>Logs-user-into-the-system.html</accepts>
     </rule>
-    <rule id="7f57680e">
+    <rule id="57efab2c">
         <description>Created after removal of "Log current user out" from API Docs</description>
         <accepts>Logs-out-current-logged-in-user-session.html</accepts>
     </rule>
-    <rule id="2eb83ac9">
+    <rule id="3af7b171">
         <description>Created after removal of "Find user" from API Docs</description>
         <accepts>Get-user-by-user-name.html</accepts>
     </rule>
-    <rule id="27506a94">
+    <rule id="6c6d1966">
         <description>Created after removal of "Update user" from API Docs</description>
         <accepts>Update-user.html</accepts>
     </rule>
-    <rule id="2b877cfd">
+    <rule id="1d7626e7">
         <description>Created after removal of "Delete user" from API Docs</description>
         <accepts>Delete-user.html</accepts>
     </rule>
-    <rule id="331e6717">
+    <rule id="103ed696">
+        <description>Created after removal of "Find pet inventories by status" from API Docs</description>
+        <accepts>Returns-pet-inventories-by-status.html</accepts>
+    </rule>
+    <rule id="2ece4967">
+        <description>Created after removal of "Place order for pet" from API Docs</description>
+        <accepts>Place-an-order-for-a-pet.html</accepts>
+    </rule>
+    <rule id="569d3f02">
+        <description>Created after removal of "Find purchase order by ID" from API Docs</description>
+        <accepts>Find-purchase-order-by-ID.html</accepts>
+    </rule>
+    <rule id="e9c8b17">
+        <description>Created after removal of "Delete purchase order by ID" from API Docs</description>
+        <accepts>Delete-purchase-order-by-ID.html</accepts>
+    </rule>
+    <rule id="361e3289">
+        <description>Created after removal of "Create user" from API Docs</description>
+        <accepts>Create-user.html</accepts>
+    </rule>
+    <rule id="4482d28a">
+        <description>Created after removal of "Create list of users with given input array" from API Docs</description>
+        <accepts>Creates-list-of-users-with-given-input-array.html</accepts>
+    </rule>
+    <rule id="1ceae2aa">
+        <description>Created after removal of "Log user into the system" from API Docs</description>
+        <accepts>Logs-user-into-the-system.html</accepts>
+    </rule>
+    <rule id="300741c3">
+        <description>Created after removal of "Log current user out" from API Docs</description>
+        <accepts>Logs-out-current-logged-in-user-session.html</accepts>
+    </rule>
+    <rule id="6ece5e48">
+        <description>Created after removal of "Find user" from API Docs</description>
+        <accepts>Get-user-by-user-name.html</accepts>
+    </rule>
+    <rule id="350c81f0">
+        <description>Created after removal of "Update user" from API Docs</description>
+        <accepts>Update-user.html</accepts>
+    </rule>
+    <rule id="38df648b">
+        <description>Created after removal of "Delete user" from API Docs</description>
+        <accepts>Delete-user.html</accepts>
+    </rule>
+    <rule id="2e31c802">
+        <description>Created after removal of "API Quickstart" from API Docs</description>
+        <accepts>API-quickstart.html</accepts>
+    </rule>
+    <rule id="1c175024">
         <description>Created after removal of "API Reference" from API Docs</description>
         <accepts>API-reference.html</accepts>
     </rule>
-    <rule id="58558ec7">
-        <description>Created after removal of "API Quickstart" from API Docs</description>
-        <accepts>API-quickstart.html</accepts>
+    <rule id="113fa4b7">
+        <description>Created after removal of "Pet" from API Docs</description>
+        <accepts>Pet.html</accepts>
     </rule>
 </rules>
