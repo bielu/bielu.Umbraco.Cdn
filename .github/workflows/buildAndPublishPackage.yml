@@ -12,20 +12,22 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
       # Runs a single command using the runners shell
-  build:
-    if: github.event_name == 'release'
-    uses: bielu/bielu.GithubActions.Templates/.github/workflows/ci.yml@main
-  build2:
+  buildPr:
     if: github.event_name == 'pull_request'
     uses: bielu/bielu.GithubActions.Templates/.github/workflows/ci.yml@main
     with:
       suffix: "pr"
-  build3:
+
+  build:
+    if: github.event_name == 'release'
+    uses: bielu/bielu.GithubActions.Templates/.github/workflows/ci.yml@main
+  
+  buildBeta:
     if: github.event_name != 'pull_request' && github.event_name != 'release'
     uses: bielu/bielu.GithubActions.Templates/.github/workflows/ci.yml@main
     with:
       suffix: "beta"
 
   deploy:
-    needs: build
+    needs: [build,buildBeta]
     uses: bielu/bielu.GithubActions.Templates/.github/workflows/releaseNuget.yml@main
