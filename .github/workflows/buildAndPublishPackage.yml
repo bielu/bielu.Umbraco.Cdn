@@ -15,12 +15,12 @@ jobs:
   build:
     if: github.event_name == 'release'
     uses: bielu/bielu.GithubActions.Templates/.github/workflows/ci.yml@main
-  build:
+  build2:
     if: github.event_name == 'pull_request'
     uses: bielu/bielu.GithubActions.Templates/.github/workflows/ci.yml@main
     with:
       suffix: "pr"
-  build:
+  build3:
     if: github.event_name != 'pull_request' && github.event_name != 'release'
     uses: bielu/bielu.GithubActions.Templates/.github/workflows/ci.yml@main
     with:
