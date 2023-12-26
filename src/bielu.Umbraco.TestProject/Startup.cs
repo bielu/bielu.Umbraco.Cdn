@@ -47,7 +47,7 @@ namespace bielu.Umbraco.TestProject
                 .AddBackOffice()
                 .AddWebsite()
                 .AddComposers()
-                .AddBieluUmbracoCdnForCloudflare()
+                .AddCloudflareCdnProvider()
                 .AddBieluUmbracoCdnForFrontDoor()
                 .Build();
             

@@ -11,5 +11,4 @@ public enum AuthenticationType
     AzureCliCredential,
     AzurePowerShellCredential,
     EnvironmentCredential,
-    ManagedIdentityCredentialWithClientId,
 }

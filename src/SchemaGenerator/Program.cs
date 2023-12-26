@@ -1,12 +1,13 @@
 ﻿using System.Reflection;
 using bielu.SchemaGenerator.Build.Configuration;
 using bielu.SchemaGenerator.Build.Services;
-using bielu.Umbraco.Cdn.Aws.Models;
-using bielu.Umbraco.Cdn.Azure.Models;
+using bielu.Umbraco.Cdn.Aws.Configuration;
+using bielu.Umbraco.Cdn.Azure.Configuration;
 using bielu.Umbraco.Cdn.Cloudflare.Configuration;
 using bielu.Umbraco.Cdn.Core.Configuration;
 using CommandLine;
 
+namespace SchemageGerator;
 
 internal class Program
 {
@@ -37,8 +38,8 @@ internal class Program
         Console.WriteLine("Schema generator v {0}", typeof(SchemaGeneratorService).Assembly.GetName().Version.ToString());
       
             
-            var schemaGenerator = new SchemaGeneratorService(new SchemaGenerator(), options);
-            schemaGenerator.GenerateSchema(Assemblies);
+        var schemaGenerator = new SchemaGeneratorService(new SchemaGenerator(), options);
+        schemaGenerator.GenerateSchema(Assemblies);
    
         Console.WriteLine("Schema generator v {0}", typeof(SchemaGeneratorService).Assembly.GetName().Version.ToString());
 

@@ -1,9 +1,10 @@
 ﻿using System.Text.Json.Serialization;
 using bielu.SchemaGenerator.Core.Attributes;
+using bielu.Umbraco.Cdn.Azure.Models;
 using bielu.Umbraco.Cdn.Core.Configuration;
 using bielu.Umbraco.Cdn.Core.Constants;
 
-namespace bielu.Umbraco.Cdn.Azure.Models;
+namespace bielu.Umbraco.Cdn.Azure.Configuration;
 [SchemaGeneration]
 public class FrontDoorOptions : ConfigurationBaseOptions
 {
@@ -14,4 +15,5 @@ public class FrontDoorOptions : ConfigurationBaseOptions
     public string FrontDoorName { get; set; }
     public string ResourceGroupName { get; set; }
     public string SubscriptionId { get; set; }
+    public string UserAssignedClientId { get; set; }
 }

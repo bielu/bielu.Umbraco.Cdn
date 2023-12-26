@@ -1,4 +1,5 @@
 ﻿using Amazon.CloudFront;
+using bielu.Umbraco.Cdn.Aws.Configuration;
 using bielu.Umbraco.Cdn.Aws.Models;
 using Microsoft.Extensions.Options;
 

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Amazon.CloudFront;
 using Amazon.CloudFront.Model;
+using bielu.Umbraco.Cdn.Aws.Configuration;
 using bielu.Umbraco.Cdn.Aws.Models;
 using bielu.Umbraco.Cdn.Models;
 using bielu.Umbraco.Cdn.Services;

@@ -12,4 +12,11 @@ public class CloudflareOptions : ConfigurationBaseOptions
     [SchemaPrefix]
     [JsonIgnore]
     public static string SectionName = $"{CdnConstants.CdnConfigSectionName}:Cloudflare";
+
+    public bool Enterprise { get; set; } = false;
+    public string Token { get; set; }
+    public string ApiKey { get; set; }
+    public string Email { get; set; }
+    public AuthenticationType AuthenticationType { get; set; } = AuthenticationType.GlobalApiKey;
+    
 }

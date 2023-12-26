@@ -5,13 +5,13 @@ Start typing here...
 ### Json Options Schema
 ```json
 ```
-{src="../../src/bielu.Umbraco.Cdn.Aws.CloudFront/schema/appsettings-schema.CloudFrontOptions.json" }
+{src="../../src/bielu.Umbraco.Cdn.Azure.FrontDoor/schema/appsettings-schema.FrontDoorOptions.json" }
 
-
-#### SecretKey
-This is a secret key for AWS account. It is required to be able to use AWS Cloud Front.
-#### AccessKey
-This is an access key for AWS account. It is required to be able to use AWS Cloud Front.
-
-#### Region
-This is a region where AWS Cloud Front is hosted. Default value is eu-west-1.
+#### AuthenticationType
+This is an authentication type for Azure Front Door account. It is required to be able to use Azure Front Door.
+#### ResourceGroupName
+This is a resource group name for Azure Front Door account. It is required to be able to use Azure Front Door.
+#### SubscriptionId
+This is a subscription id for Azure Front Door account. It is required to be able to use Azure Front Door.
+#### UserAssignedClientId
+This is a user assigned client id for Azure Front Door account. It is required to be able to use Azure Front Door.

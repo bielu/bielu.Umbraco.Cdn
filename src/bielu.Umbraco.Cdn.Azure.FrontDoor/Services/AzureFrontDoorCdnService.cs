@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Azure;
 using Azure.ResourceManager.FrontDoor;
 using Azure.ResourceManager.FrontDoor.Models;
+using bielu.Umbraco.Cdn.Azure.Configuration;
 using bielu.Umbraco.Cdn.Azure.Models;
 using bielu.Umbraco.Cdn.Models;
 using bielu.Umbraco.Cdn.Services;
