@@ -13,13 +13,17 @@ on:
 jobs:
       # Runs a single command using the runners shell
   build:
+    if: github.event_name == 'release'
+    uses: bielu/bielu.GithubActions.Templates/.github/workflows/ci.yml@main
+  build:
+    if: github.event_name == 'pull_request'
     uses: bielu/bielu.GithubActions.Templates/.github/workflows/ci.yml@main
     with:
-    if: github.event_name == 'release'
-      suffix: ""
-    elseif: github.event_name == 'pull_request'
       suffix: "pr"
-    else: 
+  build:
+    if: github.event_name != 'pull_request' && github.event_name != 'release'
+    uses: bielu/bielu.GithubActions.Templates/.github/workflows/ci.yml@main
+    with:
       suffix: "beta"
 
   deploy:
