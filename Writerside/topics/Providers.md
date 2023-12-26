@@ -7,12 +7,19 @@ Their goal is to explain a concept, not to teach or give instructions.
 
 Provide some background and context, explain choices and alternatives.
 
-## Glossary
+## Shared Configuration
 
-A definition list or a glossary:
+This is a configuration that is shared between all providers. It is required to be able to use any of providers.
 
-First Term
-: This is the definition of the first term.
+## Configuration
 
-Second Term
-: This is the definition of the second term.
+### Json Options Schema
+
+```json
+```
+
+{src="../../src/bielu.Umbraco.Cdn.Core/schema/appsettings-schema.ConfigurationBaseOptions.json" }
+
+#### Disabled
+
+This flag is responsible by enabling / disabling provider. Default value is false.
