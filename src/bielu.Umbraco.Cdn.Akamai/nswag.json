@@ -1,0 +1,24 @@
+{
+  "runtime": "Net60",
+  "defaultVariables": "Configuration=Debug",
+  "documentGenerator": {
+    "fromDocument": {
+      "json": "$(InputDocument)"
+    }
+  },
+  "codeGenerators": {
+    "openApiToCSharpClient": {
+      "generateClientInterfaces": true,
+      "exceptionClass": "$(SdkName)ApiException",
+      "useBaseUrl": true,
+      "generateBaseUrlProperty": true,
+      "generateContractsOutput": true,
+      "contractsNamespace": "$(SdkNamespace).Interface",
+      "contractsOutputFilePath": "OpenApi\\$(GeneratedContractFile)",
+      "className": "$(SdkName)Client",
+      "operationGenerationMode": "SingleClientFromOperationId",
+      "namespace": "$(SdkNamespace).Service",
+      "output": "OpenApi\\$(GeneratedClientFile)",
+    }
+  }
+}

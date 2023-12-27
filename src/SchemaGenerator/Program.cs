@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using bielu.SchemaGenerator.Build.Configuration;
 using bielu.SchemaGenerator.Build.Services;
+using bielu.Umbraco.Cdn.Akamai.Configuration;
 using bielu.Umbraco.Cdn.Aws.Configuration;
 using bielu.Umbraco.Cdn.Azure.Configuration;
 using bielu.Umbraco.Cdn.Cloudflare.Configuration;
@@ -16,7 +17,8 @@ internal class Program
         typeof(CloudFrontOptions).Assembly,
         typeof(CloudflareOptions).Assembly,
         typeof(FrontDoorOptions).Assembly,
-        typeof(BieluCdnOptions).Assembly
+        typeof(BieluCdnOptions).Assembly,
+        typeof(AkamaiOptions).Assembly,
     };
 
     public static async Task Main(string[] args)

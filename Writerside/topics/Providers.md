@@ -23,3 +23,13 @@ This is a configuration that is shared between all providers. It is required to 
 #### Disabled
 
 This flag is responsible by enabling / disabling provider. Default value is false.
+
+## Providers
+
+| CDN Provider        | Version | Written | Packaged |
+|---------------------|---------|---------|----------|
+| Cloudflare          | 2.0.0   | yes     | yes      |
+| Azure Front Door    | 2.0.0   | yes      | yes      |
+| AWS Front Cloud     | 2.0.0   | yes      | yes      |
+| Nginx Reverse proxy | 2.0.0   | yes     | yes      |
+| Akamai              | 2.0.0   | no      | yes      |
