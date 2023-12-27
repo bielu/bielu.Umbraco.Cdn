@@ -24,20 +24,8 @@ namespace bielu.Umbraco.Cdn.Akamai.Extensions
                     .AddClasses(c => c.AssignableTo(typeof(ICdnService)))
                     .AsImplementedInterfaces()
                     .WithTransientLifetime());
-            builder.Services.AddSingleton(typeof(ICloudflareClient), typeof(CloudflareClient));
-            switch (positionOptions.AuthenticationType)
-            {
-                case AuthenticationType.GlobalApiKey:
-                    builder.Services.AddTransient(typeof(IClouflareAuthentication), typeof(GlobalApiKeyClouflareAuthentication));
-                    break;
-                case AuthenticationType.BearerToken:
-                    builder.Services.AddTransient(typeof(IClouflareAuthentication), typeof(TokenApiClouflareAuthentication));
-                    break;
-                case AuthenticationType.Custom:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            builder.Services.AddSingleton(typeof(IAkamaiClientFactory), typeof(AkamaiClientFactory));
+        
             return builder;
         }
     }
