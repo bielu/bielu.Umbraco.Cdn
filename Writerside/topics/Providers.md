@@ -24,12 +24,14 @@ This is a configuration that is shared between all providers. It is required to 
 
 This flag is responsible by enabling / disabling provider. Default value is false.
 
-## Providers
+## Feature Matrix Providers
 
-| CDN Provider        | Version | Written | Packaged |
-|---------------------|---------|---------|----------|
-| Cloudflare          | 2.0.0   | yes     | yes      |
-| Azure Front Door    | 2.0.0   | yes      | yes      |
-| AWS Front Cloud     | 2.0.0   | yes      | yes      |
-| Nginx Reverse proxy | 2.0.0   | yes     | yes      |
-| Akamai              | 2.0.0   | no      | yes      |
+| Provider | Purge By Hostname | Purge By Url | Purge All | Purge By Path  |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Akamai | ![heavy_check_mark.svg](../img/heavy_check_mark.svg) |  ![heavy_check_mark.svg](../img/heavy_check_mark.svg) |  ![heavy_check_mark.svg](../img/heavy_check_mark.svg) |  ![heavy_check_mark.svg](../img/heavy_check_mark.svg) |
+| Azure Front Door | ![heavy_check_mark.svg](../img/heavy_check_mark.svg) |  ![heavy_check_mark.svg](../img/heavy_check_mark.svg) |  ![heavy_check_mark.svg](../img/heavy_check_mark.svg) |  ![heavy_check_mark.svg](../img/heavy_check_mark.svg) |
+| AWS CloudFront | ![heavy_check_mark.svg](../img/heavy_check_mark.svg) |  ![heavy_check_mark.svg](../img/heavy_check_mark.svg) |  ![heavy_check_mark.svg](../img/heavy_check_mark.svg) |  ![heavy_check_mark.svg](../img/heavy_check_mark.svg) |
+| Cloudflare | ![heavy_check_mark.svg](../img/heavy_check_mark.svg) |  ![heavy_check_mark.svg](../img/heavy_check_mark.svg) |  ![heavy_check_mark.svg](../img/heavy_check_mark.svg) |  ![heavy_check_mark.svg](../img/heavy_check_mark.svg)* |
+\* - Purge by path is support by cloudflare in Enterprise plan only. So we work around it by getting all possible descandants of given path and purge them. It is not ideal, but it works.
+
+
