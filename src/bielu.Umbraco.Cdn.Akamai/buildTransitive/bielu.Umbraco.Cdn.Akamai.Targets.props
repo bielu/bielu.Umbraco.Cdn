@@ -1,5 +1,5 @@
 <Project>
 	<ItemGroup>
-		<UmbracoJsonSchemaFiles Include="$(MSBuildThisFileDirectory)..\Schema\appsettings-schema.CloudflareOptions.json"  />
+		<UmbracoJsonSchemaFiles Include="$(MSBuildThisFileDirectory)..\Schema\appsettings-schema.AkamaiOptions.json"  />
 	</ItemGroup>
 </Project>
