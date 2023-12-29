@@ -34,4 +34,10 @@ This flag is responsible by enabling / disabling provider. Default value is fals
 | Cloudflare | ![heavy_check_mark.svg](../img/heavy_check_mark.svg) |  ![heavy_check_mark.svg](../img/heavy_check_mark.svg) |  ![heavy_check_mark.svg](../img/heavy_check_mark.svg) |  ![heavy_check_mark.svg](../img/heavy_check_mark.svg)* |
 \* - Purge by path is support by cloudflare in Enterprise plan only. So we work around it by getting all possible descandants of given path and purge them. It is not ideal, but it works.
 
+## Installing Provider
+Each of providers has its own NuGet package. To install it, you need to run following command in Package Manager Console:
 
+```
+Install-Package bielu.Umbraco.Cdn.ProviderName
+```
+After that you need to add configuration to appsettings.json file and register it in your application. You can find more information about configuration in each provider article.

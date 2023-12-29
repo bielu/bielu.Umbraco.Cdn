@@ -9,10 +9,11 @@
     <toc-element topic="api-docs.md"/>
     <toc-element topic="Ui.md"/>
     <toc-element topic="Providers.md">
-        <toc-element topic="Nginx-Reverse-Proxy.md"/>
+        <toc-element topic="Akamai.md"/>
         <toc-element topic="AWS-Cloud-Front.md"/>
         <toc-element topic="Azure-Front-Door.md"/>
         <toc-element topic="Cloudflare.md"/>
+        <toc-element topic="Nginx-Reverse-Proxy.md"/>
     </toc-element>
     <toc-element topic="Configuration.md"/>
 </instance-profile>
