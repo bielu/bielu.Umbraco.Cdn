@@ -30,4 +30,8 @@ jobs:
 
   deploy:
     needs: [build,buildBeta]
+    if: |
+      always()
+      && contains(needs.*.result, 'success')
+      && !contains(needs.*.result, 'failure')
     uses: bielu/bielu.GithubActions.Templates/.github/workflows/releaseNuget.yml@main
