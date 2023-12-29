@@ -14,11 +14,11 @@
       "generateBaseUrlProperty": true,
       "generateContractsOutput": true,
       "contractsNamespace": "$(SdkNamespace).Interface",
-      "contractsOutputFilePath": "OpenApi\\$(GeneratedContractFile)",
+      "contractsOutputFilePath": "OpenApi/$(GeneratedContractFile)",
       "className": "$(SdkName)Client",
       "operationGenerationMode": "SingleClientFromOperationId",
       "namespace": "$(SdkNamespace).Service",
-      "output": "OpenApi\\$(GeneratedClientFile)"
+      "output": "OpenApi/$(GeneratedClientFile)"
     }
   }
 }
