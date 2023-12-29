@@ -1,4 +1,7 @@
 using System;
+using bielu.Umbraco.Cdn.Akamai.Extensions;
+using bielu.Umbraco.Cdn.Aws.Extensions;
+using bielu.Umbraco.Cdn.Azure.Extensions;
 using bielu.Umbraco.Cdn.Cloudflare.Extensions;
 using bielu.Umbraco.Cdn.Cloudflare.Services;
 using Microsoft.AspNetCore.Builder;
@@ -40,11 +43,16 @@ namespace bielu.Umbraco.TestProject
         /// </remarks>
         public void ConfigureServices(IServiceCollection services)
         {
+            
+            services.AddOpenApiDocument();
             services.AddUmbraco(_env, _config)
                 .AddBackOffice()
                 .AddWebsite()
                 .AddComposers()
-                .AddBieluUmbracoCdnForCloudflare()
+                .AddCloudflareCdnProvider()
+                .AddAzureFrontDoorCdnProvider()
+                .AddAwsCloudFrontCdnProvider()
+                .AddAkamaiCdnProvider()
                 .Build();
             
             services.AddTransient(typeof(IClouflareAuthentication), typeof(TokenApiClouflareAuthentication));
@@ -60,6 +68,13 @@ namespace bielu.Umbraco.TestProject
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                // Add OpenAPI 3.0 document serving middleware
+                // Available at: http://localhost:<port>/swagger/v1/swagger.json
+                app.UseOpenApi();
+
+                // Add web UIs to interact with the document
+                // Available at: http://localhost:<port>/swagger
+                app.UseSwaggerUi3();
             }
 
             app.UseUmbraco()

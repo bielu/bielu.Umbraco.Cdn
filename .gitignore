@@ -453,3 +453,7 @@ $RECYCLE.BIN/
 !.vscode/launch.json
 !.vscode/extensions.json
 src/bielu.Umbraco.TestProject/wwwroot/media
+src/bielu.cdn.ui/vite.config.ts.timestamp-1703524079180-90704d784115b.mjs
+src/bielu.Umbraco.TestProject/umbraco/Data
+src/bielu.cdn.ui/vite.config.ts.timestamp-1700604296431-aaa56c34b45a.mjs
+src/bielu.cdn.ui/vite.config.ts.timestamp-*.mjs

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace bielu.Umbraco.Cdn.Cloudflare.Models
+namespace bielu.Umbraco.Cdn.NginxProxy.Models
 {
     public class Zone
     {

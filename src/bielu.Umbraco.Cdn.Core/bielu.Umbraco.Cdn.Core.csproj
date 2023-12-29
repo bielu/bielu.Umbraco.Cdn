@@ -1,26 +1,29 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
+    <PropertyGroup><TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RazorCompileOnPublish>true</RazorCompileOnPublish>
+        <StaticWebAssetBasePath>/</StaticWebAssetBasePath>
+        <ContentTargetFolders>.</ContentTargetFolders>
+        <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+        <EmbedRazorGenerateSources>true</EmbedRazorGenerateSources>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Umbraco.Cms.Core" Version="9.1.2" />
-      <PackageReference Include="Umbraco.Cms.Infrastructure" Version="9.1.2" />
-      <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="9.1.2" />
+      <PackageReference Include="bielu.SchemaGenerator.Core" Version="1.0.0-alpha.50" />
+      <PackageReference Include="Umbraco.Cms.Core" Version="10.7.0" />
+      <PackageReference Include="Umbraco.Cms.Infrastructure" Version="10.7.0" />
+      <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="10.7.0" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\bielu.cdn.ui\bielu.cdn.ui.csproj" />
       <ProjectReference Include="..\bielu.Umbraco.Cdn.Abstraction\bielu.Umbraco.Cdn.Abstraction.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="NotitificationHandlers\Tree" />
-      <Folder Include="__Content\App_Plugins\bielu.Umbraco.Cdn.Core" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Remove="NotitificationHandlers\Tree\TreeRenderingNotification.cs" />
+      <Folder Include="Schema\" />
     </ItemGroup>
 
 </Project>

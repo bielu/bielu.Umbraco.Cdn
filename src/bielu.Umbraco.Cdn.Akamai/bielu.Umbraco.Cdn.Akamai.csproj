@@ -1,7 +1,56 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
+        <IsPackable>true</IsPackable>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RazorCompileOnPublish>true</RazorCompileOnPublish>
+        <StaticWebAssetBasePath>/</StaticWebAssetBasePath>
+        <ContentTargetFolders>.</ContentTargetFolders>
+        <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+        <EmbedRazorGenerateSources>true</EmbedRazorGenerateSources>
     </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="bielu.SchemaGenerator.Core" Version="1.0.0-alpha.50" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+        <PackageReference Include="NSwag.MSBuild" Version="13.20.0">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="Scrutor" Version="4.2.2" />
+        <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\bielu.Umbraco.Cdn.Core\bielu.Umbraco.Cdn.Core.csproj" />
+    </ItemGroup>
 
+    <Target Name="GenerateSdk" BeforeTargets="Build">
+        <PropertyGroup>
+            <OpenAPIDocument>AkamaiFastPurge.json</OpenAPIDocument>
+            <NSwagConfiguration>nswag.json</NSwagConfiguration>
+            <SdkNamespace>$(RootNamespace).FastPurge</SdkNamespace>       
+            <SdkName>AkamaiFastPurge</SdkName>
+            <GeneratedInterfaceFile>$(SdkName).Interface.g.cs</GeneratedInterfaceFile>
+            <GeneratedServiceFile>$(SdkName).Service.g.cs</GeneratedServiceFile>
+
+        </PropertyGroup>
+        <Error Text="The OpenAPI document '$(OpenAPIDocument)' does not exists!" Condition="!Exists('$(OpenAPIDocument)')" />
+        <Error Text="The NSwag configuration '$(NSwagConfiguration)' does not exists!" Condition="!Exists('$(NSwagConfiguration)')" />
+        <Exec Command="$(NSwagExe_Net60) run $(NSwagConfiguration) /variables:Configuration=$(Configuration),InputDocument=$(OpenAPIDocument),SdkName=$(SdkName),SdkNamespace=$(SdkNamespace),GeneratedClientFile=$(GeneratedServiceFile),GeneratedContractFile=$(GeneratedInterfaceFile)" />
+    </Target>
+    <Target Name="GenerateCCUSdk" BeforeTargets="Build">
+        <PropertyGroup>
+            <OpenAPIDocument>AkamaieCcu.json</OpenAPIDocument>
+            <NSwagConfiguration>nswag.json</NSwagConfiguration>
+            <SdkNamespace>$(RootNamespace).CCU</SdkNamespace>
+            <SdkName>AkamaiCcu</SdkName>
+            <GeneratedInterfaceFile>$(SdkName).Interface.g.cs</GeneratedInterfaceFile>
+            <GeneratedServiceFile>$(SdkName).Service.g.cs</GeneratedServiceFile>
+
+        </PropertyGroup>
+        <Error Text="The OpenAPI document '$(OpenAPIDocument)' does not exists!" Condition="!Exists('$(OpenAPIDocument)')" />
+        <Error Text="The NSwag configuration '$(NSwagConfiguration)' does not exists!" Condition="!Exists('$(NSwagConfiguration)')" />
+        <Exec Command="$(NSwagExe_Net60) run $(NSwagConfiguration) /variables:Configuration=$(Configuration),InputDocument=$(OpenAPIDocument),SdkName=$(SdkName),SdkNamespace=$(SdkNamespace),GeneratedClientFile=$(GeneratedServiceFile),GeneratedContractFile=$(GeneratedInterfaceFile)" />
+    </Target>
 </Project>

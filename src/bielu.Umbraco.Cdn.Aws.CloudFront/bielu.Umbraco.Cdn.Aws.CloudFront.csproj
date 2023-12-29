@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <RootNamespace>bielu.Umbraco.Cdn.Aws</RootNamespace>
+       <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RazorCompileOnPublish>true</RazorCompileOnPublish>
+        <StaticWebAssetBasePath>/</StaticWebAssetBasePath>
+        <ContentTargetFolders>.</ContentTargetFolders>
+        <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+        <EmbedRazorGenerateSources>true</EmbedRazorGenerateSources>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="AWSSDK.CloudFront" Version="3.7.301.18" />
+        <PackageReference Include="bielu.SchemaGenerator.Core" Version="1.0.0-alpha.50" />
+        <PackageReference Include="Scrutor" Version="3.3.0"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0"/>
+        <PackageReference Include="Umbraco.Cms.Core" Version="10.7.0" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\bielu.Umbraco.Cdn.Abstraction\bielu.Umbraco.Cdn.Abstraction.csproj"/>
+        <ProjectReference Include="..\bielu.Umbraco.Cdn.Core\bielu.Umbraco.Cdn.Core.csproj" />
+    </ItemGroup>
+   
+</Project>

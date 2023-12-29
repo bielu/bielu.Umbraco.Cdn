@@ -15,7 +15,7 @@ namespace bielu.Umbraco.Cdn.Cloudflare.Models
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("hosts")]
-        public List<string> Hosts { get; set; } = null;
+        public List<string?> Hosts { get; set; } = null;
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("tags")]

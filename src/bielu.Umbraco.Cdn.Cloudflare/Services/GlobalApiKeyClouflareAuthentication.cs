@@ -1,15 +1,21 @@
 using System.Collections.Generic;
+using bielu.Umbraco.Cdn.Cloudflare.Configuration;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace bielu.Umbraco.Cdn.Cloudflare.Services
 {
     public class GlobalApiKeyClouflareAuthentication: IClouflareAuthentication
     {
-        private readonly IConfiguration _configuration;
+        private  CloudflareOptions _configuration;
 
-        public GlobalApiKeyClouflareAuthentication(IConfiguration configuration)
+        public GlobalApiKeyClouflareAuthentication(IOptionsMonitor<CloudflareOptions> optionsMonitor)
         {
-            _configuration = configuration;
+            _configuration = optionsMonitor.CurrentValue;
+            optionsMonitor.OnChange((options, s) =>
+            {
+                _configuration = options;
+            });
         }
 
         public Dictionary<string, string> GetAuthenticationHeaders()
@@ -18,10 +24,10 @@ namespace bielu.Umbraco.Cdn.Cloudflare.Services
             {
                 {
                     "X-Auth-Key",
-                    $"{_configuration.GetSection("bielu")?.GetSection("cdn")?.GetSection("cloudflare")?.GetSection("apiKey")?.Value}"
+                    $"{_configuration.ApiKey}"
                 }, {
                     "X-Auth-Email",
-                    $"{_configuration.GetSection("bielu")?.GetSection("cdn")?.GetSection("cloudflare")?.GetSection("email")?.Value}"
+                    $"{_configuration.Email}"
                 }
             };
         }

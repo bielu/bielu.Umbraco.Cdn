@@ -7,10 +7,12 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
+using bielu.Umbraco.Cdn.Cloudflare.Configuration;
 using bielu.Umbraco.Cdn.Cloudflare.Models;
 using bielu.Umbraco.Cdn.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace bielu.Umbraco.Cdn.Cloudflare.Services
 {
@@ -18,16 +20,19 @@ namespace bielu.Umbraco.Cdn.Cloudflare.Services
     {
         public const string CLOUDFLARE_API_BASE_URL = "https://api.cloudflare.com/client/v4/";
         private readonly IClouflareAuthentication _authentication;
-        private readonly IConfiguration _configuration;
+        private  CloudflareOptions _configuration;
         private readonly ILogger<CloudflareClient> _logger;
-        private readonly bool _isEnterprise;
 
-        public CloudflareClient(IClouflareAuthentication authentication, IConfiguration configuration, ILogger<CloudflareClient> logger)
+        public CloudflareClient(IClouflareAuthentication authentication,IOptionsMonitor<CloudflareOptions> optionsMonitor, ILogger<CloudflareClient> logger)
         {
             _authentication = authentication;
-            _configuration = configuration;
             _logger = logger;
-            _isEnterprise = Convert.ToBoolean(_configuration.GetSection("bielu")?.GetSection("cdn")?.GetSection("cloudflare")?.GetSection("enterprise")?.Value);
+            _configuration = optionsMonitor.CurrentValue;
+            optionsMonitor.OnChange((options, s) =>
+            {
+                _configuration = options;
+            });
+           
         }
 
         private async Task<HttpResponseMessage> SendRequest(HttpMethod method, string url, object data)
@@ -55,7 +60,7 @@ namespace bielu.Umbraco.Cdn.Cloudflare.Services
             }
         }
 
-        public async Task<IEnumerable<Zone>> GetZones(string domainName = null)
+        public async Task<IEnumerable<Zone>> GetZones(string? domainName = null)
         {
             string url = CLOUDFLARE_API_BASE_URL + "zones";
             var uri = new Uri(url);
@@ -96,7 +101,7 @@ namespace bielu.Umbraco.Cdn.Cloudflare.Services
             };
         }
 
-        public async Task<Status> PurgeCache(Zone zone,string domains)
+        public async Task<Status> PurgeCache(Zone zone,string? domains)
         {
             if (zone == null || domains == null || string.IsNullOrWhiteSpace(domains))
             {
@@ -111,8 +116,8 @@ namespace bielu.Umbraco.Cdn.Cloudflare.Services
             
             var result = await SendRequest(HttpMethod.Post, url, new PurgeRequest()
             {
-                Hosts = _isEnterprise ? new List<string>()  {domains  } : null,
-                PurgeEverything = !_isEnterprise
+                Hosts = _configuration.Enterprise ? new List<string?>()  {domains  } : null,
+                PurgeEverything = !_configuration.Enterprise
             });
             //todo: add more details
             return new Status()

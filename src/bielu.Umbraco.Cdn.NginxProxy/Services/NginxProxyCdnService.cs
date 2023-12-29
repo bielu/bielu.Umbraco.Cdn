@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using bielu.Umbraco.Cdn.Models;
+using bielu.Umbraco.Cdn.Services;
 
-namespace bielu.Umbraco.Cdn.Cloudflare.Services
+namespace bielu.Umbraco.Cdn.NginxProxy.Services
 {
     public class NginxProxyCdnService : ICdnService
     {
@@ -13,6 +14,11 @@ namespace bielu.Umbraco.Cdn.Cloudflare.Services
         public NginxProxyCdnService(INginxProxyClient nginxProxy)
         {
             _nginxProxy = nginxProxy;
+        }
+
+        public bool IsEnabled()
+        {
+            return true;
         }
 
         public async Task<IEnumerable<Status>> PurgePages(IEnumerable<string> urls)
@@ -37,7 +43,7 @@ namespace bielu.Umbraco.Cdn.Cloudflare.Services
             return statuses;
         }
 
-        public async Task<IEnumerable<Status>> PurgeByAssignedHostnames(IEnumerable<string> domains)
+        public async Task<IEnumerable<Status>> PurgeByAssignedHostnames(IEnumerable<string?> domains)
         {
             var statuses = new List<Status>();
             foreach (var domain in domains)
@@ -47,6 +53,11 @@ namespace bielu.Umbraco.Cdn.Cloudflare.Services
             }
 
             return statuses;
+        }
+
+        public Task<IList<string>> GetSupportedHostnames()
+        {
+            return Task.FromResult<IList<string>>(new List<string>());
         }
     }
 }

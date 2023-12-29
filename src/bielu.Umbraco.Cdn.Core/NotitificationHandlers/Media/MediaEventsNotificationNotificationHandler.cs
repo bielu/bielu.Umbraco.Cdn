@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using bielu.Umbraco.Cdn.Core.Helpers;
+using bielu.Umbraco.Cdn.Services;
 using Microsoft.Extensions.Logging;
 using Umbraco.Cms.Core.Events;
 using Umbraco.Cms.Core.Media;
@@ -74,7 +75,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Media
                     }).Result;
                     foreach (var resultStatus in result)
                     {
-                        var message = new EventMessage("CDN", resultStatus.Message, resultStatus.MessageType);
+                        var message = new EventMessage("CDN", resultStatus.Message, resultStatus.MessageType ?? EventMessageType.Warning);
                         notification.Messages.Add(message);
                         if (resultStatus.MessageType == EventMessageType.Error)
                         {

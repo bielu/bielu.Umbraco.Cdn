@@ -24,7 +24,7 @@ namespace bielu.Umbraco.Cdn.Core.Helpers
                 var propertyValue = property.GetValue().ToString();
                 switch (image.ContentType.Alias)
                 {
-                    case Constants.Conventions.MediaTypes.Image:
+                    case global::Umbraco.Cms.Core.Constants.Conventions.MediaTypes.Image:
                         var imageCropper = JsonConvert.DeserializeObject<ImageCropperValue>(propertyValue);
                         cropUrls.Add("none", imageCropper.Src);
                         if (imageCropper.Crops != null)
@@ -38,11 +38,6 @@ namespace bielu.Umbraco.Cdn.Core.Helpers
                         }
 
                         break;
-                    case Constants.Conventions.MediaTypes.VectorGraphicsAlias:
-                    case Constants.Conventions.MediaTypes.ArticleAlias:
-                    case Constants.Conventions.MediaTypes.File:
-                    case Constants.Conventions.MediaTypes.VideoAlias:
-                    case Constants.Conventions.MediaTypes.AudioAlias:
                     default:
                         cropUrls.Add("none", propertyValue);
                         break;

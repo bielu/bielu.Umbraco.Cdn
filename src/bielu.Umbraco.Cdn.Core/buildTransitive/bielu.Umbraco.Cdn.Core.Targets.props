@@ -1,0 +1,6 @@
+<Project>
+	<ItemGroup>
+		<UmbracoJsonSchemaFiles Include="$(MSBuildThisFileDirectory)..\Schema\appsettings-schema.BieluCdnOptions.json"  />
+<UmbracoJsonSchemaFiles Include="$(MSBuildThisFileDirectory)..\Schema\appsettings-schema.ConfigurationBaseOptions.json"  />
+	</ItemGroup>
+</Project>

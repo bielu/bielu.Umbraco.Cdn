@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace bielu.Umbraco.Cdn.Cloudflare.Models
+namespace bielu.Umbraco.Cdn.NginxProxy.Models
 {
     public class PurgeRequest
     {
@@ -11,18 +11,18 @@ namespace bielu.Umbraco.Cdn.Cloudflare.Models
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("files")]
-        public List<string> Files { get; set; } = null;
+        public List<string>? Files { get; set; } = null;
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("hosts")]
-        public List<string> Hosts { get; set; } = null;
+        public List<string?>? Hosts { get; set; } = null;
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("tags")]
-        public List<string> Tags { get; set; } = null;
+        public List<string>? Tags { get; set; } = null;
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("prefixes")]
-        public List<string> Prefixes { get; set; } = null;
+        public List<string>? Prefixes { get; set; } = null;
     }
 }
