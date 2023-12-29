@@ -15,7 +15,7 @@
 #pragma warning disable 8603 // Disable "CS8603 Possible null reference return"
 #pragma warning disable 8604 // Disable "CS8604 Possible null reference argument for parameter"
 
-namespace bielu.Umbraco.Cdn.Akamai.Interface
+namespace bielu.Umbraco.Cdn.Akamai.FastPurge.Interface
 {
     using System = global::System;
 

@@ -10,7 +10,7 @@ public class FrontDoorOptions : ConfigurationBaseOptions
 {
     [SchemaPrefix]
     [JsonIgnore]
-    public static string SectionName = $"{CdnConstants.CdnConfigSectionName}::Azure:FrontDoor";
+    public static string SectionName = $"{CdnConstants.CdnConfigSectionName}:Azure:FrontDoor";
     public AuthenticationType AuthenticationType { get; set; }
     public string FrontDoorName { get; set; }
     public string ResourceGroupName { get; set; }

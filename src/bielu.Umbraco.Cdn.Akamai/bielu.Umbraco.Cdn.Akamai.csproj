@@ -32,8 +32,22 @@
         <PropertyGroup>
             <OpenAPIDocument>AkamaiFastPurge.json</OpenAPIDocument>
             <NSwagConfiguration>nswag.json</NSwagConfiguration>
-            <SdkNamespace>$(RootNamespace)</SdkNamespace>       
+            <SdkNamespace>$(RootNamespace).FastPurge</SdkNamespace>       
             <SdkName>AkamaiFastPurge</SdkName>
+            <GeneratedInterfaceFile>$(SdkName).Interface.g.cs</GeneratedInterfaceFile>
+            <GeneratedServiceFile>$(SdkName).Service.g.cs</GeneratedServiceFile>
+
+        </PropertyGroup>
+        <Error Text="The OpenAPI document '$(OpenAPIDocument)' does not exists!" Condition="!Exists('$(OpenAPIDocument)')" />
+        <Error Text="The NSwag configuration '$(NSwagConfiguration)' does not exists!" Condition="!Exists('$(NSwagConfiguration)')" />
+        <Exec Command="$(NSwagExe_Net60) run $(NSwagConfiguration) /variables:Configuration=$(Configuration),InputDocument=$(OpenAPIDocument),SdkName=$(SdkName),SdkNamespace=$(SdkNamespace),GeneratedClientFile=$(GeneratedServiceFile),GeneratedContractFile=$(GeneratedInterfaceFile)" />
+    </Target>
+    <Target Name="GenerateCCUSdk" BeforeTargets="Build">
+        <PropertyGroup>
+            <OpenAPIDocument>AkamaieCcu.json</OpenAPIDocument>
+            <NSwagConfiguration>nswag.json</NSwagConfiguration>
+            <SdkNamespace>$(RootNamespace).CCU</SdkNamespace>
+            <SdkName>AkamaiCcu</SdkName>
             <GeneratedInterfaceFile>$(SdkName).Interface.g.cs</GeneratedInterfaceFile>
             <GeneratedServiceFile>$(SdkName).Service.g.cs</GeneratedServiceFile>
 

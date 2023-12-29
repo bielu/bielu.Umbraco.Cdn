@@ -4,7 +4,7 @@
 // </auto-generated>
 //----------------------
 
-using bielu.Umbraco.Cdn.Akamai.Interface;
+using bielu.Umbraco.Cdn.Akamai.FastPurge.Interface;
 
 #pragma warning disable 108 // Disable "CS0108 '{derivedDto}.ToJson()' hides inherited member '{dtoBase}.ToJson()'. Use the new keyword if hiding was intended."
 #pragma warning disable 114 // Disable "CS0114 '{derivedDto}.RaisePropertyChanged(String)' hides inherited member 'dtoBase.RaisePropertyChanged(String)'. To make the current member override that implementation, add the override keyword. Otherwise add the new keyword."
@@ -17,7 +17,7 @@ using bielu.Umbraco.Cdn.Akamai.Interface;
 #pragma warning disable 8603 // Disable "CS8603 Possible null reference return"
 #pragma warning disable 8604 // Disable "CS8604 Possible null reference argument for parameter"
 
-namespace bielu.Umbraco.Cdn.Akamai.Service
+namespace bielu.Umbraco.Cdn.Akamai.FastPurge.Service
 {
     using System = global::System;
 
