@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <VersionPrefix>2.0.0</VersionPrefix>
-        <VersionSuffix>beta.38</VersionSuffix>
+        <VersionSuffix></VersionSuffix>
     </PropertyGroup>
 
 </Project>
