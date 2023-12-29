@@ -37,13 +37,13 @@ internal class Program
 
     private static async Task Execute(Options options)
     {
-        Console.WriteLine("Schema generator v {0}", typeof(SchemaGeneratorService).Assembly.GetName().Version.ToString());
+        Console.WriteLine("Schema generator v {0}", typeof(SchemaGeneratorService).Assembly.GetName().Version?.ToString());
       
             
         var schemaGenerator = new SchemaGeneratorService(new SchemaGenerator(), options);
         schemaGenerator.GenerateSchema(Assemblies);
    
-        Console.WriteLine("Schema generator v {0}", typeof(SchemaGeneratorService).Assembly.GetName().Version.ToString());
+        Console.WriteLine("Schema generator v {0}", typeof(SchemaGeneratorService).Assembly.GetName().Version?.ToString());
 
     }
 }

@@ -9,7 +9,7 @@ namespace bielu.Umbraco.Cdn.Services
         bool IsEnabled();
         Task<IEnumerable<Status>> PurgePages(IEnumerable<string> urls);
         Task<IEnumerable<Status>> PurgeAll();
-        Task<IEnumerable<Status>> PurgeByAssignedHostnames(IEnumerable<string> domains);
+        Task<IEnumerable<Status>> PurgeByAssignedHostnames(IEnumerable<string?> domains);
 
         Task<IList<string>> GetSupportedHostnames();
     }

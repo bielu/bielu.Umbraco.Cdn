@@ -67,7 +67,7 @@ namespace bielu.Umbraco.Cdn.Akamai.Services
             }
         }
 
-        public async Task<IEnumerable<Status>> PurgeByAssignedHostnames(IEnumerable<string> domains)
+        public async Task<IEnumerable<Status>> PurgeByAssignedHostnames(IEnumerable<string?> domains)
         {
             var statuses = new List<Status>();
 

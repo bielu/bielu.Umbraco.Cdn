@@ -143,7 +143,7 @@ public class CloudFrontCdnService : ICdnService
         return statuses;
     }
 
-    public async Task<IEnumerable<Status>> PurgeByAssignedHostnames(IEnumerable<string> domains)
+    public async Task<IEnumerable<Status>> PurgeByAssignedHostnames(IEnumerable<string?> domains)
     {
         return await PurgeAll();
     }

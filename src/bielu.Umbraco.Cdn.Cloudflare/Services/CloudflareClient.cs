@@ -60,7 +60,7 @@ namespace bielu.Umbraco.Cdn.Cloudflare.Services
             }
         }
 
-        public async Task<IEnumerable<Zone>> GetZones(string domainName = null)
+        public async Task<IEnumerable<Zone>> GetZones(string? domainName = null)
         {
             string url = CLOUDFLARE_API_BASE_URL + "zones";
             var uri = new Uri(url);
@@ -101,7 +101,7 @@ namespace bielu.Umbraco.Cdn.Cloudflare.Services
             };
         }
 
-        public async Task<Status> PurgeCache(Zone zone,string domains)
+        public async Task<Status> PurgeCache(Zone zone,string? domains)
         {
             if (zone == null || domains == null || string.IsNullOrWhiteSpace(domains))
             {
@@ -116,7 +116,7 @@ namespace bielu.Umbraco.Cdn.Cloudflare.Services
             
             var result = await SendRequest(HttpMethod.Post, url, new PurgeRequest()
             {
-                Hosts = _configuration.Enterprise ? new List<string>()  {domains  } : null,
+                Hosts = _configuration.Enterprise ? new List<string?>()  {domains  } : null,
                 PurgeEverything = !_configuration.Enterprise
             });
             //todo: add more details

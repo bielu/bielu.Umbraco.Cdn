@@ -43,7 +43,7 @@ namespace bielu.Umbraco.Cdn.NginxProxy.Services
             return statuses;
         }
 
-        public async Task<IEnumerable<Status>> PurgeByAssignedHostnames(IEnumerable<string> domains)
+        public async Task<IEnumerable<Status>> PurgeByAssignedHostnames(IEnumerable<string?> domains)
         {
             var statuses = new List<Status>();
             foreach (var domain in domains)
