@@ -18,7 +18,7 @@
       "className": "$(SdkName)Client",
       "operationGenerationMode": "SingleClientFromOperationId",
       "namespace": "$(SdkNamespace).Service",
-      "output": "OpenApi\\$(GeneratedClientFile)",
+      "output": "OpenApi\\$(GeneratedClientFile)"
     }
   }
 }

@@ -24,9 +24,6 @@
     <ItemGroup>
       <ProjectReference Include="..\bielu.Umbraco.Cdn.Core\bielu.Umbraco.Cdn.Core.csproj" />
     </ItemGroup>
-    <ItemGroup>
-      <ProjectReference Include="..\bielu.Umbraco.Cdn.Core\bielu.Umbraco.Cdn.Core.csproj" />
-    </ItemGroup>
 
     <Target Name="GenerateSdk" BeforeTargets="Build">
         <PropertyGroup>
