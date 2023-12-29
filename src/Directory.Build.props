@@ -1,7 +1,5 @@
 <Project>
-
     <Import Project="../version.props"/>
-
     <PropertyGroup>
         <Title>$(MSBuildProjectName)</Title>
         <AssemblyName>$(MSBuildProjectName)</AssemblyName>
