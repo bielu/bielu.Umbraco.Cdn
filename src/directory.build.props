@@ -3,7 +3,7 @@
     <Import Project="../version.props"/>
 
     <PropertyGroup>
-        <Title>bielu.Umbraco.Cdn</Title>
+        <Title>$(MSBuildProjectName)</Title>
         <AssemblyName>$(MSBuildProjectName)</AssemblyName>
         <AssemblyVersion>$(Version)</AssemblyVersion>
         <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
@@ -14,8 +14,8 @@
         <Authors>Arkadiusz Biel</Authors>
         <PackageOutputPath>$(MSBuildProjectDirectory)/../../dist</PackageOutputPath>
     </PropertyGroup>
-<ItemGroup>
-    <Content Include="buildTransitive\**" PackagePath="buildTransitive" />
-    <Content Include="Schema\appsettings-schema.*.json" PackagePath="Schema" />
-</ItemGroup>
+    <ItemGroup>
+        <Content Include="buildTransitive\**" PackagePath="buildTransitive" />
+        <Content Include="Schema\appsettings-schema.*.json" PackagePath="Schema" />
+    </ItemGroup>
 </Project>
