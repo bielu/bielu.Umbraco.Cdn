@@ -25,8 +25,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
       - name: Unzip artifact
         run: unzip -O UTF-8 -qq ./docs/webHelpADOC2-all.zip -d dir
 
