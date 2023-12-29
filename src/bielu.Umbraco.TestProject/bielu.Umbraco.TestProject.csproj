@@ -28,6 +28,7 @@
       <ProjectReference Include="..\bielu.cdn.ui\bielu.cdn.ui.csproj" />
       <ProjectReference Include="..\bielu.Umbraco.Cdn.Abstraction\bielu.Umbraco.Cdn.Abstraction.csproj" />
       <ProjectReference Include="..\bielu.Umbraco.Cdn.Akamai\bielu.Umbraco.Cdn.Akamai.csproj" />
+      <ProjectReference Include="..\bielu.Umbraco.Cdn.Aws.CloudFront\bielu.Umbraco.Cdn.Aws.CloudFront.csproj" />
       <ProjectReference Include="..\bielu.Umbraco.Cdn.Azure.FrontDoor\bielu.Umbraco.Cdn.Azure.FrontDoor.csproj" />
       <ProjectReference Include="..\bielu.Umbraco.Cdn.Cloudflare\bielu.Umbraco.Cdn.Cloudflare.csproj" />
       <ProjectReference Include="..\bielu.Umbraco.Cdn.Core\bielu.Umbraco.Cdn.Core.csproj" />

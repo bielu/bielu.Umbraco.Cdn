@@ -9,7 +9,7 @@ namespace bielu.Umbraco.Cdn.Aws.Extensions
 {
     public static class BieluUmbracoCdnCloudflareExtensions
     {
-        public static IUmbracoBuilder AddBieluUmbracoCdnForFrontDoor(
+        public static IUmbracoBuilder AddAwsCloudFrontCdnProvider(
             this IUmbracoBuilder builder)
         {
             if (builder == null)

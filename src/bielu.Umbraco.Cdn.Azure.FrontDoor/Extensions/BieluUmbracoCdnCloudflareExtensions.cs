@@ -8,15 +8,15 @@ using Umbraco.Cms.Core.DependencyInjection;
 
 namespace bielu.Umbraco.Cdn.Azure.Extensions
 {
-    public static class BieluUmbracoCdnCloudflareExtensions
+    public static class BieluUmbracoCdnAzureFrontDoorExtensions
     {
-        public static IUmbracoBuilder AddBieluUmbracoCdnForFrontDoor(
+        public static IUmbracoBuilder AddAzureFrontDoorCdnProvider(
             this IUmbracoBuilder builder)
         {
             if (builder == null)
                 throw new ArgumentNullException(nameof(builder));
             builder.Services.Scan(s =>
-                s.FromAssemblies(new List<Assembly>() { typeof(BieluUmbracoCdnCloudflareExtensions).Assembly })
+                s.FromAssemblies(new List<Assembly>() { typeof(BieluUmbracoCdnAzureFrontDoorExtensions).Assembly })
                     .AddClasses(c => c.AssignableTo(typeof(ICdnService)))
                     .AsImplementedInterfaces()
                     .WithTransientLifetime());

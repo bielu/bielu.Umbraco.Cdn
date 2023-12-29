@@ -1,4 +1,6 @@
 using System;
+using bielu.Umbraco.Cdn.Akamai.Extensions;
+using bielu.Umbraco.Cdn.Aws.Extensions;
 using bielu.Umbraco.Cdn.Azure.Extensions;
 using bielu.Umbraco.Cdn.Cloudflare.Extensions;
 using bielu.Umbraco.Cdn.Cloudflare.Services;
@@ -48,7 +50,9 @@ namespace bielu.Umbraco.TestProject
                 .AddWebsite()
                 .AddComposers()
                 .AddCloudflareCdnProvider()
-                .AddBieluUmbracoCdnForFrontDoor()
+                .AddAzureFrontDoorCdnProvider()
+                .AddAwsCloudFrontCdnProvider()
+                .AddAkamaiCdnProvider()
                 .Build();
             
             services.AddTransient(typeof(IClouflareAuthentication), typeof(TokenApiClouflareAuthentication));

@@ -10,7 +10,7 @@ namespace bielu.Umbraco.Cdn.Akamai.Extensions
 {
     public static class AkamaiDependencyInjectionExtensions
     {
-        public static IUmbracoBuilder AddCloudflareCdnProvider(
+        public static IUmbracoBuilder AddAkamaiCdnProvider(
             this IUmbracoBuilder builder)
         {
             if (builder == null)
