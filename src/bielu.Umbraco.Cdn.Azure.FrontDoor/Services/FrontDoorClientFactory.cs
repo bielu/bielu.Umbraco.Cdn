@@ -2,7 +2,6 @@
 using Azure.ResourceManager.FrontDoor;
 using Azure.ResourceManager.Resources;
 using bielu.Umbraco.Cdn.Azure.Configuration;
-using bielu.Umbraco.Cdn.Azure.Models;
 using Microsoft.Extensions.Options;
 
 namespace bielu.Umbraco.Cdn.Azure.Services;
@@ -18,7 +17,7 @@ public class FrontDoorClientFactory : IFrontDoorClientFactory
         _frontDoorOptions = frontDoorOptions;
     }
 
-    public  FrontDoorResource GetFrontDoorClient()
+    public FrontDoorResource GetFrontDoorClient()
     {
         if (_frontDoorOptions.CurrentValue.Disabled)
         {

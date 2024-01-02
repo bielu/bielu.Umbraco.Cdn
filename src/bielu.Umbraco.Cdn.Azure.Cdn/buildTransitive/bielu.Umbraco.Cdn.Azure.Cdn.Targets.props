@@ -1,0 +1,5 @@
+<Project>
+	<ItemGroup>
+		<UmbracoJsonSchemaFiles Include="$(MSBuildThisFileDirectory)..\Schema\appsettings-schema.AzureCdnOptions.json"  />
+	</ItemGroup>
+</Project>

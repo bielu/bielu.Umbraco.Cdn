@@ -28,6 +28,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bielu.cdn.ui", "..\src\biel
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchemaGenerator", "SchemaGenerator\SchemaGenerator.csproj", "{DD83D77E-6A3D-4401-821B-ECE63695CCBC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bielu.Umbraco.Cdn.Azure.Cdn", "bielu.Umbraco.Cdn.Azure.Cdn\bielu.Umbraco.Cdn.Azure.Cdn.csproj", "{0C0A3CAB-1E97-4A3C-A48F-917C9798957B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bielu.Umbraco.Cdn.Azure.Common", "bielu.Umbraco.Cdn.Azure.Common\bielu.Umbraco.Cdn.Azure.Common.csproj", "{78DBCEF6-11A0-4751-B656-EA8389214E0D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -78,6 +82,14 @@ Global
 		{DD83D77E-6A3D-4401-821B-ECE63695CCBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD83D77E-6A3D-4401-821B-ECE63695CCBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD83D77E-6A3D-4401-821B-ECE63695CCBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C0A3CAB-1E97-4A3C-A48F-917C9798957B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C0A3CAB-1E97-4A3C-A48F-917C9798957B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C0A3CAB-1E97-4A3C-A48F-917C9798957B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C0A3CAB-1E97-4A3C-A48F-917C9798957B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78DBCEF6-11A0-4751-B656-EA8389214E0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78DBCEF6-11A0-4751-B656-EA8389214E0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78DBCEF6-11A0-4751-B656-EA8389214E0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78DBCEF6-11A0-4751-B656-EA8389214E0D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection
