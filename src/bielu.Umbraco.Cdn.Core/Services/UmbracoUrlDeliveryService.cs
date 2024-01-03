@@ -35,7 +35,7 @@ namespace bielu.Umbraco.Cdn.Core.Services
             return urls;
         }
 
-        private IEnumerable<string> BuildDomainUrls(List<string> urls, List<string> assignedDomains)
+        private IEnumerable<string> BuildDomainUrls(List<string> urls, List<IDomain> assignedDomains)
         {
             var list = new List<string>();
             if (urls == null || urls.All(x=>string.IsNullOrWhiteSpace(x))) return list;
@@ -44,16 +44,16 @@ namespace bielu.Umbraco.Cdn.Core.Services
             {
                 foreach (var domain in assignedDomains)
                 {
-                    list.Add(CombinePaths(domain,url));
+                    list.Add(CombinePaths(domain.DomainName,url.Replace(domain.RootContentId.ToString(),"")));
                 }
             }
 
             return list;
         }
 
-        private List<string> GetDomains(IContent content)
+        private List<IDomain> GetDomains(IContent content)
         {
-            var list = new List<string>();
+            var list = new List<IDomain>();
             //Termination case
             if (content == null )
             {
@@ -70,7 +70,7 @@ namespace bielu.Umbraco.Cdn.Core.Services
 
                 var validDomain = _domainService.GetAssignedDomains(numericId, false);
 
-                list.AddRange(validDomain.Select(x => x.DomainName));
+                list.AddRange(validDomain);
             }
 
 
