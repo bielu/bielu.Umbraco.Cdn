@@ -61,7 +61,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
             }
 
             //todo: optimize as now we dont valide which domains is valid for either of cdns
-            foreach (var cdnServices in _cdnServices)
+            foreach (var cdnServices in _cdnServices.Where(x=>x.IsEnabled()))
             {
                 var result = Task.Run(async () => { return await cdnServices.PurgePages(pages); }).Result;
                 var errors = false;
@@ -109,7 +109,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
             }
 
             //todo: optimize as now we dont valide which domains is valid for either of cdns
-            foreach (var cdnServices in _cdnServices)
+            foreach (var cdnServices in _cdnServices.Where(x=>x.IsEnabled()))
             {
                 try
                 {
@@ -220,7 +220,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
             try
             {
                 //todo: optimize as now we dont valide which domains is valid for either of cdns
-                foreach (var cdnServices in _cdnServices)
+                foreach (var cdnServices in _cdnServices.Where(x=>x.IsEnabled()))
                 {
                     var result = Task.Run(async () => { return await cdnServices.PurgePages(pages); }).Result;
                     EventMessage message;
@@ -330,7 +330,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
                     }
                 }
 
-                foreach (var cdnServices in _cdnServices)
+                foreach (var cdnServices in _cdnServices.Where(x=>x.IsEnabled()))
                 {
                     var result = Task.Run(async () => { return await cdnServices.PurgePages(pages); }).Result;
                     EventMessage message;

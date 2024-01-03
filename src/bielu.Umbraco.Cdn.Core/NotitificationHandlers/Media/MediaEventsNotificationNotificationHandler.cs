@@ -67,7 +67,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Media
                    
                 }
                 //todo: optimize as now we dont valide which domains is valid for either of cdns
-                foreach (var cdnServices in _cdnServices)
+                foreach (var cdnServices in _cdnServices.Where(x=>x.IsEnabled()))
                 {
                     var result = Task.Run(async () =>
                     {

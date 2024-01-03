@@ -40,7 +40,7 @@
     </ItemGroup>
 
 
-   <!-- <Target Name="NSwag" BeforeTargets="AfterBuild" Condition="'$(TF_BUILD)'!='True'">
+    <Target Name="NSwag" BeforeTargets="AfterBuild" Condition="'$(TF_BUILD)'!='True'">
         <Exec ConsoleToMSBuild="true" ContinueOnError="true" Command="$(NSwagExe_Net60) run nswag.json /variables:Configuration=$(Configuration),TypescriptOutputPath=$(MSBuildThisFileDirectory)..\bielu.cdn.ui\src\services\umbraco\generated">
             <Output TaskParameter="ExitCode" PropertyName="NSwagExitCode"/>
             <Output TaskParameter="ConsoleOutput" PropertyName="NSwagOutput" />
@@ -48,7 +48,7 @@
 
         <Message Text="$(NSwagOutput)" Condition="'$(NSwagExitCode)' == '0'" Importance="low"/>
         <Error Text="$(NSwagOutput)" Condition="'$(NSwagExitCode)' != '0'"/>
-    </Target>-->
+    </Target>
     <PropertyGroup>
         <CopyRazorGenerateFilesToPublishDirectory>true</CopyRazorGenerateFilesToPublishDirectory>
     </PropertyGroup>

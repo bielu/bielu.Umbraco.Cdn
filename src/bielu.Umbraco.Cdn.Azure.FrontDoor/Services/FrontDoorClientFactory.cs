@@ -20,6 +20,10 @@ public class FrontDoorClientFactory : IFrontDoorClientFactory
 
     public  FrontDoorResource GetFrontDoorClient()
     {
+        if (_frontDoorOptions.CurrentValue.Disabled)
+        {
+            return null;
+        }
         var armClient = _armClientFactory.GetFrontDoorClient();
         string resourceGroupName =_frontDoorOptions.CurrentValue.ResourceGroupName;
         SubscriptionResource subscription =  armClient.GetSubscriptionResource(new ResourceIdentifier(_frontDoorOptions.CurrentValue.SubscriptionId));

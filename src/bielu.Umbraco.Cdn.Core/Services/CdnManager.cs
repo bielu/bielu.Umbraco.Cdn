@@ -12,36 +12,48 @@ public class CdnManager : ICdnManager
 {
     private readonly IEnumerable<ICdnService> _services;
     private readonly IUmbracoContextFactory _contextFactory;
-    private readonly IEnumerable<Provider> _providers;
+
+    private  IEnumerable<Provider> _providers
+    {
+        get
+        {
+            using (var contextReference = _contextFactory.EnsureUmbracoContext())
+            {
+                var umbracoDomains = contextReference.UmbracoContext.Domains.GetAll(false);
+
+         
+                    return _services.Select(x => new Provider()
+                    {
+                        Name = x.GetType().Name,
+                        Id = x.GetType().Name,
+                        Version = x.GetType().Assembly.GetName().Version.ToString(),
+                        Enabled = x.IsEnabled(),
+                        SupportedHostnames = Task.Run(async () =>
+                        {
+                            if (!x.IsEnabled())
+                            {
+                                return null;
+                            }
+                            var supportedHostNames = await x.GetSupportedHostnames();
+                            return umbracoDomains.Where(domain =>  supportedHostNames.Any(zone=>domain.Name.Contains(zone)))
+                                .Select(domain => domain.Name).ToList();
+                        }).Result
+                    });
+            }
+        }
+    }
 
     public CdnManager(IEnumerable<ICdnService> services, IUmbracoContextFactory contextFactory)
     {
         _services = services;
         _contextFactory = contextFactory;
-        using (var contextReference = _contextFactory.EnsureUmbracoContext())
-        {
-            var umbracoDomains = contextReference.UmbracoContext.Domains.GetAll(false);
-
-            _providers = umbracoDomains.SelectMany(domain =>
-            {
-                return services.Select(x => new Provider()
-                {
-                    Name = x.GetType().Name,
-                    Id = x.GetType().Name,
-                    NodeId = domain.ContentId,
-                    SupportedHostnames = Task.Run(async () =>
-                    {
-                        var supportedHostNames = await x.GetSupportedHostnames();
-                        return umbracoDomains.Where(domain => supportedHostNames.Contains(domain.Name))
-                            .Select(domain => domain.Name).ToList();
-                    }).Result
-                });
-            });
-        }
+      
     }
-
+    
+    
     public async Task<IEnumerable<Provider>> GetProviders(int guid)
     {
+        
         return _providers;
     }
 

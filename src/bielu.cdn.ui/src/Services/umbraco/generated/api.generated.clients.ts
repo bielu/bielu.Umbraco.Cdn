@@ -16,7 +16,7 @@ export interface IManagementClient {
 
     getProviders(id?: number | undefined): Promise<Provider[] | null>;
 
-    refreshForNode(id: number, providerId?: string | null | undefined, domain?: string | null | undefined): Promise<Status | null>;
+    refreshForNode(id: number, providerId?: string | undefined, domain?: string | undefined): Promise<Status | null>;
 }
 
 export class ManagementClient implements IManagementClient {
@@ -117,15 +117,19 @@ export class ManagementClient implements IManagementClient {
         return Promise.resolve<Provider[] | null>(null as any);
     }
 
-    refreshForNode(id: number, providerId?: string | null | undefined, domain?: string | null | undefined): Promise<Status | null> {
+    refreshForNode(id: number, providerId?: string | undefined, domain?: string | undefined): Promise<Status | null> {
         let url_ = this.baseUrl + "/cdn/api/management/RefreshForNode?";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined and cannot be null.");
         else
             url_ += "id=" + encodeURIComponent("" + id) + "&";
-        if (providerId !== undefined && providerId !== null)
+        if (providerId === null)
+            throw new Error("The parameter 'providerId' cannot be null.");
+        else if (providerId !== undefined)
             url_ += "providerId=" + encodeURIComponent("" + providerId) + "&";
-        if (domain !== undefined && domain !== null)
+        if (domain === null)
+            throw new Error("The parameter 'domain' cannot be null.");
+        else if (domain !== undefined)
             url_ += "domain=" + encodeURIComponent("" + domain) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -212,10 +216,11 @@ export interface IAuditRecord {
 }
 
 export class Provider implements IProvider {
+    enabled!: boolean;
     id!: string | null;
     name!: string | null;
     supportedHostnames!: string[] | null;
-    nodeId!: number;
+    version!: string;
 
     constructor(data?: IProvider) {
         if (data) {
@@ -228,6 +233,7 @@ export class Provider implements IProvider {
 
     init(_data?: any, _mappings?: any) {
         if (_data) {
+            this.enabled = _data["enabled"] !== undefined ? _data["enabled"] : <any>null;
             this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
             this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
             if (Array.isArray(_data["supportedHostnames"])) {
@@ -238,7 +244,7 @@ export class Provider implements IProvider {
             else {
                 this.supportedHostnames = <any>null;
             }
-            this.nodeId = _data["nodeId"] !== undefined ? _data["nodeId"] : <any>null;
+            this.version = _data["version"] !== undefined ? _data["version"] : <any>null;
         }
     }
 
@@ -249,6 +255,7 @@ export class Provider implements IProvider {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["enabled"] = this.enabled !== undefined ? this.enabled : <any>null;
         data["id"] = this.id !== undefined ? this.id : <any>null;
         data["name"] = this.name !== undefined ? this.name : <any>null;
         if (Array.isArray(this.supportedHostnames)) {
@@ -256,23 +263,24 @@ export class Provider implements IProvider {
             for (let item of this.supportedHostnames)
                 data["supportedHostnames"].push(item);
         }
-        data["nodeId"] = this.nodeId !== undefined ? this.nodeId : <any>null;
+        data["version"] = this.version !== undefined ? this.version : <any>null;
         return data;
     }
 }
 
 export interface IProvider {
+    enabled: boolean;
     id: string | null;
     name: string | null;
     supportedHostnames: string[] | null;
-    nodeId: number;
+    version: string;
 }
 
 export class Status implements IStatus {
     success!: boolean;
     message!: string | null;
     details!: string | null;
-    errors!: (Errors | null)[] | null;
+    errors!: Errors[] | null;
     exception!: Exception | null;
     messageType!: EventMessageType | null;
 
@@ -328,7 +336,7 @@ export interface IStatus {
     success: boolean;
     message: string | null;
     details: string | null;
-    errors: (Errors | null)[] | null;
+    errors: Errors[] | null;
     exception: Exception | null;
     messageType: EventMessageType | null;
 }

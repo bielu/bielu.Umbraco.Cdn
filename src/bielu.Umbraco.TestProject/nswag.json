@@ -6,7 +6,7 @@
       "msBuildProjectExtensionsPath": null,
       "configuration": null,
       "runtime": "",
-      "targetFramework": "net60",
+      "targetFramework": "net6.0",
       "noBuild": true,
       "verbose": true,
       "workingDirectory": null,

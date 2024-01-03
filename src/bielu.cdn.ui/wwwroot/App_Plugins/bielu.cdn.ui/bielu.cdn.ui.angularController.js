@@ -1,5 +1,4 @@
-﻿import RefreshNode from "../../../src/components/RefreshNode.vue";
-
+﻿
 angular.module('umbraco')
     .controller('bielu.cdn.ui.controller',
         function (

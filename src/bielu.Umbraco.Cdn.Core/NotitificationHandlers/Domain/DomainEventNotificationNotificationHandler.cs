@@ -28,7 +28,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Domain
         public async Task HandleAsync(DomainSavedNotification notification, CancellationToken cancellationToken)
         {
             //todo: optimize as now we dont valide which domains is valid for either of cdns
-            foreach (var cdnServices in _cdnServices)
+            foreach (var cdnServices in _cdnServices.Where(x=>x.IsEnabled()))
             {
                 //todo: split on / as umbraco is dump to count / as part of domain
                 var result = Task.Run(async () =>
@@ -52,7 +52,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Domain
         public async Task HandleAsync(DomainDeletedNotification notification, CancellationToken cancellationToken)
         {
             //todo: optimize as now we dont valide which domains is valid for either of cdns
-            foreach (var cdnServices in _cdnServices)
+            foreach (var cdnServices in _cdnServices.Where(x=>x.IsEnabled()))
             {
                 //todo: split on / as umbraco is dump to count / as part of domain
                 var result = Task.Run(async () =>

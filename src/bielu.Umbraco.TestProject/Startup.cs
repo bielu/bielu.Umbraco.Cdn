@@ -51,8 +51,8 @@ namespace bielu.Umbraco.TestProject
                 .AddComposers()
                 .AddCloudflareCdnProvider()
                 .AddAzureFrontDoorCdnProvider()
-                .AddAwsCloudFrontCdnProvider()
-                .AddAkamaiCdnProvider()
+               // .AddAwsCloudFrontCdnProvider()
+                //.AddAkamaiCdnProvider()
                 .Build();
             
             services.AddTransient(typeof(IClouflareAuthentication), typeof(TokenApiClouflareAuthentication));

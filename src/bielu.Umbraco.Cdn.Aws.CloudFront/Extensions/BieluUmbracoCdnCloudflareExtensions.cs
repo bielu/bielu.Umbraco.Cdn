@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using bielu.Umbraco.Cdn.Aws.Services;
 using bielu.Umbraco.Cdn.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Umbraco.Cms.Core.DependencyInjection;
@@ -19,7 +20,7 @@ namespace bielu.Umbraco.Cdn.Aws.Extensions
                     .AddClasses(c => c.AssignableTo(typeof(ICdnService)))
                     .AsImplementedInterfaces()
                     .WithTransientLifetime());
-
+            builder.Services.AddSingleton<IAmazonCloudFrontClientFactory, AmazonCloudFrontClientFactory>();
 
             return builder;
         }
