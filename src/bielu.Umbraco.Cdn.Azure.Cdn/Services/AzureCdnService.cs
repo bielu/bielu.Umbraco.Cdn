@@ -33,8 +33,11 @@ namespace bielu.Umbraco.Cdn.Azure.Cdn.Services
             var statuses = new List<Status>();
             foreach (var endpoint in endpoints)
             {
-                var requestUrls = urls.Where(x =>
-                    Uri.TryCreate(x, UriKind.Absolute, out var targetUri) && x.Contains(endpoint.Data.HostName));
+                var requestUrls = urls
+                    .Where(x => Uri.TryCreate(x, UriKind.Absolute, out var targetUri) && 
+                                targetUri.Host.Equals(endpoint.Data.HostName, StringComparison.OrdinalIgnoreCase))
+                    .Select(x => new Uri(x, UriKind.Absolute).AbsolutePath)
+                    .Distinct();
                 if(!requestUrls.Any()) continue;
                 var request =
                     await endpoint.PurgeContentAsync(WaitUntil.Started, new FrontDoorPurgeContent(requestUrls));
