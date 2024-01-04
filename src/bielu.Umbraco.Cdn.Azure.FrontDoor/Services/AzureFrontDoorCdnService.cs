@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Azure;
+﻿using Azure;
 using Azure.ResourceManager.FrontDoor;
 using Azure.ResourceManager.FrontDoor.Models;
+using bielu.Umbraco.Cdn.Azure.Common.Models;
 using bielu.Umbraco.Cdn.Azure.Configuration;
 using bielu.Umbraco.Cdn.Azure.Models;
 using bielu.Umbraco.Cdn.Models;
@@ -21,9 +18,9 @@ namespace bielu.Umbraco.Cdn.Azure.Services
         private readonly ILogger<AzureFrontDoorCdnService> _logger;
         private FrontDoorOptions _options;
 
-        public AzureFrontDoorCdnService(IFrontDoorClientFactory cloudflare, ILogger<AzureFrontDoorCdnService> logger, IOptionsMonitor<FrontDoorOptions> optionsMonitor)
+        public AzureFrontDoorCdnService(IFrontDoorClientFactory frontDoorClientFactory, ILogger<AzureFrontDoorCdnService> logger, IOptionsMonitor<FrontDoorOptions> optionsMonitor)
         {
-            _client = cloudflare.GetFrontDoorClient();
+            _client = frontDoorClientFactory.GetFrontDoorClient();
             _logger = logger;
             _options = optionsMonitor.CurrentValue;
             optionsMonitor.OnChange((options, s) =>

@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <RootNamespace>bielu.Umbraco.Cdn.Azure</RootNamespace>
+        <RootNamespace>bielu.Umbraco.Cdn.Azure.Cdn</RootNamespace>
        <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
@@ -12,7 +12,7 @@
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Azure.Identity" Version="1.10.4" />
-        <PackageReference Include="Azure.ResourceManager.FrontDoor" Version="1.2.0" />
+        <PackageReference Include="Azure.ResourceManager.Cdn" Version="1.2.0" />
         <PackageReference Include="bielu.SchemaGenerator.Core" Version="1.0.0-alpha.50" />
         <PackageReference Include="Scrutor" Version="3.3.0"/>
         <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0"/>

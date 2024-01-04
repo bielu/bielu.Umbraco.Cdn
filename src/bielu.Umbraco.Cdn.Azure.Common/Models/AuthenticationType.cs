@@ -1,4 +1,4 @@
-﻿namespace bielu.Umbraco.Cdn.Azure.Models;
+﻿namespace bielu.Umbraco.Cdn.Azure.Common.Models;
 
 public enum AuthenticationType
 {

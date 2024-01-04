@@ -3,12 +3,12 @@ using bielu.SchemaGenerator.Core.Attributes;
 using bielu.Umbraco.Cdn.Azure.Common.Configuration;
 using bielu.Umbraco.Cdn.Core.Constants;
 
-namespace bielu.Umbraco.Cdn.Azure.Configuration;
+namespace bielu.Umbraco.Cdn.Azure.Cdn.Configuration;
 [SchemaGeneration]
-public class FrontDoorOptions : AzureBaseOptions
+public class AzureCdnOptions : AzureBaseOptions
 {
     [SchemaPrefix]
     [JsonIgnore]
-    public static string SectionName = $"{CdnConstants.CdnConfigSectionName}:Azure:FrontDoor";
+    public static string SectionName = $"{CdnConstants.CdnConfigSectionName}:Azure:Cdn";
     public string FrontDoorName { get; set; }
 }

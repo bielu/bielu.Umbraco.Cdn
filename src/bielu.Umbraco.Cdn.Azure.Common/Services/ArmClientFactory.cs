@@ -1,18 +1,18 @@
-﻿using System;
-using Azure.Core;
+﻿using Azure.Core;
 using Azure.Identity;
 using Azure.ResourceManager;
-using bielu.Umbraco.Cdn.Azure.Configuration;
-using bielu.Umbraco.Cdn.Azure.Models;
+using bielu.Umbraco.Cdn.Azure.Common.Configuration;
+using bielu.Umbraco.Cdn.Azure.Common.Models;
+using bielu.Umbraco.Cdn.Azure.Services;
 using Microsoft.Extensions.Options;
 
-namespace bielu.Umbraco.Cdn.Azure.Services;
+namespace bielu.Umbraco.Cdn.Azure.Common.Services;
 
 public class ArmClientFactory : IArmClientFactory
 {
-    private  FrontDoorOptions _options;
+    private  AzureBaseOptions _options;
 
-    public ArmClientFactory(IOptionsMonitor<FrontDoorOptions> options)
+    public ArmClientFactory(IOptionsMonitor<AzureBaseOptions> options)
     {
         _options = options.CurrentValue;
         options.OnChange((options, s) =>
