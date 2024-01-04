@@ -37,7 +37,7 @@ namespace bielu.Umbraco.Cdn.Azure.Cdn.Services
                     Uri.TryCreate(x, UriKind.Absolute, out var targetUri) && x.Contains(endpoint.Data.HostName));
                 if(!requestUrls.Any()) continue;
                 var request =
-                    await endpoint.PurgeContentAsync(WaitUntil.Started, new PurgeContent(requestUrls));
+                    await endpoint.PurgeContentAsync(WaitUntil.Started, new FrontDoorPurgeContent(requestUrls));
                 _logger.LogInformation("Cache refreshed, domains: {urls} for endpoint(id: {id}): {name}",
                     string.Join(",", requestUrls), endpoint.Id, endpoint.Data.Name);
                 var status = await request.UpdateStatusAsync();
@@ -67,7 +67,7 @@ namespace bielu.Umbraco.Cdn.Azure.Cdn.Services
             foreach (var endpoint in endpoints)
             {
                 var request = await endpoint.PurgeContentAsync(WaitUntil.Started,
-                    new PurgeContent(new List<string>() { "/*" }));
+                    new FrontDoorPurgeContent(new List<string>() { "/*" }));
                 _logger.LogInformation("Cache refreshed, domains for zone(id: {id}): {name}", endpoint.Id, endpoint.Data.Name);
                 var status = await request.UpdateStatusAsync();
                 statuses.Add(new Status()
@@ -97,10 +97,10 @@ namespace bielu.Umbraco.Cdn.Azure.Cdn.Services
             return endpoints.Select(x => x.Data.HostName).ToList();
         }
 
-        private async Task<List<CdnEndpointResource>> GetEndpoints()
+        private async Task<List<FrontDoorEndpointResource>> GetEndpoints()
         {
             return await _client
-                .GetCdnEndpoints()
+                .GetFrontDoorEndpoints()
                 .GetAllAsync()
                 .ToListAsync();
         }
