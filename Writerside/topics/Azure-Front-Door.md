@@ -1,4 +1,4 @@
-# Azure Front Door
+# Azure Frondoor Standard / Premium
 
 Start typing here...
 ## Configuration

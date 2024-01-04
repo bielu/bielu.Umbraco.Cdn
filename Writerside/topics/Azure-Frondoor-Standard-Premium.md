@@ -1,12 +1,11 @@
-# Akamai
+# Azure Classic Front Door
 
 Start typing here...
-
 ## Configuration
 ### Json Options Schema
 ```json
 ```
-{src="../../src/bielu.Umbraco.Cdn.Akamai/schema/appsettings-schema.AkamaiOptions.json" }
+{src="../../src/bielu.Umbraco.Cdn.Azure.Cdn/schema/appsettings-schema.AzureCdnOptions.json" }
 
 ## Installing Provider
 In order to activate provider post installation, you need to add following code to your Startup.cs or Program.cs (for minimal hosting model) file.
@@ -20,5 +19,6 @@ services.AddUmbraco(_env, _config)
 ```
 You need to add following line:
 ```C#
-                .AddAkamaiCdnProvider()
+        .
+                .AddAzureFrontDoorCdnProvider()
 ```

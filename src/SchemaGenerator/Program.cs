@@ -3,6 +3,8 @@ using bielu.SchemaGenerator.Build.Configuration;
 using bielu.SchemaGenerator.Build.Services;
 using bielu.Umbraco.Cdn.Akamai.Configuration;
 using bielu.Umbraco.Cdn.Aws.Configuration;
+using bielu.Umbraco.Cdn.Azure.Cdn.Configuration;
+using bielu.Umbraco.Cdn.Azure.Common.Configuration;
 using bielu.Umbraco.Cdn.Azure.Configuration;
 using bielu.Umbraco.Cdn.Cloudflare.Configuration;
 using bielu.Umbraco.Cdn.Core.Configuration;
@@ -17,6 +19,8 @@ internal class Program
         typeof(CloudFrontOptions).Assembly,
         typeof(CloudflareOptions).Assembly,
         typeof(FrontDoorOptions).Assembly,
+        typeof(AzureBaseOptions).Assembly,
+        typeof(AzureCdnOptions).Assembly,
         typeof(BieluCdnOptions).Assembly,
         typeof(AkamaiOptions).Assembly,
     };

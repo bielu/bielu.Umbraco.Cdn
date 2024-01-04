@@ -6,11 +6,13 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <RootNamespace>SchemageGerator</RootNamespace>
+        <IsPackable>false</IsPackable>
     </PropertyGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\bielu.Umbraco.Cdn.Akamai\bielu.Umbraco.Cdn.Akamai.csproj" />
       <ProjectReference Include="..\bielu.Umbraco.Cdn.Aws.CloudFront\bielu.Umbraco.Cdn.Aws.CloudFront.csproj" />
+      <ProjectReference Include="..\bielu.Umbraco.Cdn.Azure.Cdn\bielu.Umbraco.Cdn.Azure.Cdn.csproj" />
       <ProjectReference Include="..\bielu.Umbraco.Cdn.Azure.FrontDoor\bielu.Umbraco.Cdn.Azure.FrontDoor.csproj" />
       <ProjectReference Include="..\bielu.Umbraco.Cdn.Cloudflare\bielu.Umbraco.Cdn.Cloudflare.csproj" />
       <ProjectReference Include="..\bielu.Umbraco.Cdn.Core\bielu.Umbraco.Cdn.Core.csproj" />
