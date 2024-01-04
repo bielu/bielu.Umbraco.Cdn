@@ -10,6 +10,8 @@
         <ContentTargetFolders>.</ContentTargetFolders>
         <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
         <EmbedRazorGenerateSources>true</EmbedRazorGenerateSources>
+
+        <PackageTags>umbraco-marketplace;umbraco;akamai;</PackageTags>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="bielu.SchemaGenerator.Core" Version="1.0.0-alpha.50" />

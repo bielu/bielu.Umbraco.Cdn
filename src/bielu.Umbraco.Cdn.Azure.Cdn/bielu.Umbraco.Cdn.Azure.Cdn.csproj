@@ -9,6 +9,8 @@
         <ContentTargetFolders>.</ContentTargetFolders>
         <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
         <EmbedRazorGenerateSources>true</EmbedRazorGenerateSources>
+        <PackageTags>umbraco-marketplace;umbraco;azure frontdoor;</PackageTags>
+        
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Azure.Identity" Version="1.10.4" />

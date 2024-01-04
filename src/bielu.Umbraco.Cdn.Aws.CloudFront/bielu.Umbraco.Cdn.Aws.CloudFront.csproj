@@ -9,6 +9,8 @@
         <ContentTargetFolders>.</ContentTargetFolders>
         <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
         <EmbedRazorGenerateSources>true</EmbedRazorGenerateSources>
+        <PackageTags>umbraco-marketplace;umbraco;aws cloudfront;</PackageTags>
+        
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="AWSSDK.CloudFront" Version="3.7.301.21" />
