@@ -26,7 +26,7 @@ public class BieluCdnUIManifestFilter: IManifestFilter
             },
             Scripts = new[]
             {
-                $"/App_Plugins/bielu.cdn.ui/{(_options.DevMode ? "dev-bootstrapper" : "bielu.cdn.ui")}.js",
+                $"/App_Plugins/bielu.cdn.ui/{(_options.DevMode ? "dev-bootstrapper" : "bootstrapper")}.js",
                 "/App_Plugins/bielu.cdn.ui/bielu.cdn.ui.angularController.js",
                 
             }, 

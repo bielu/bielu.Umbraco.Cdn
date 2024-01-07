@@ -18,8 +18,14 @@
     <ItemGroup>
       <Folder Include="generated\" />
       <Folder Include="src\umbraco\" />
+      <Folder Include="wwwroot\App_Plugins\bielu.cdn.ui\" />
     </ItemGroup>
 
-
-
+    <Target Name="BieluCdnBeforeBuild"  BeforeTargets="Build">
+        <ItemGroup>
+            <CrossFiles Include="$(MSBuildProjectDirectory)\App_Plugins\**\*.*" />
+        </ItemGroup>
+        <Message Text="Adding base files for backoffice"  Importance="high" />
+        <Copy SourceFiles="@(CrossFiles)" DestinationFolder="$(MSBuildProjectDirectory)\wwwroot\App_Plugins\bielu.cdn.ui" SkipUnchangedFiles="false" />
+    </Target>
 </Project>

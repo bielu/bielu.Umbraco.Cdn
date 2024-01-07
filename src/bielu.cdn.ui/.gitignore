@@ -22,3 +22,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+/wwwroot/App_Plugins/bielu.cdn.ui/*
+!/wwwroot/App_Plugins/bielu.cdn.ui/.gitkeep

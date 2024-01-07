@@ -11,6 +11,7 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
+    "strictNullChecks": false,
     "moduleResolution": "Node",
     "isolatedModules": true,
     "allowSyntheticDefaultImports": true,

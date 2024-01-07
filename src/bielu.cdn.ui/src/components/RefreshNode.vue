@@ -3,8 +3,8 @@ import '@umbraco-ui/uui-button';
 import '@umbraco-ui/uui-select';
 import '@umbraco-ui/uui-loader-bar';
 import {defineComponent, PropType, ref, watch} from 'vue'
-import {serviceContainer} from "../Services/service-container.ts";
-import {Provider, Status} from "../Services/umbraco/generated/api.generated.clients.ts";
+import {serviceContainer} from "../Services/service-container";
+import {Provider, Status} from "../Services/umbraco/generated/api.generated.clients";
 export default defineComponent({
   name: 'RefreshNode',
   created: function () {
@@ -97,15 +97,15 @@ export default defineComponent({
     message: String,
     providers: {
       type: Array as PropType<Option[]>,
-      default: () => []
+      default: () => [] as Option[]
     },
     currentDomains: {
       type: Array as PropType<Option[]>,
-      default: () => []
+      default: () => [] as Option[]
     },
     domains: {
       type: Array as PropType<Option[]>,
-      default: () => []
+      default: () => [] as Option[]
     }
   },
   setup: function (props) {

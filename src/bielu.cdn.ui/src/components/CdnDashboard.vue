@@ -2,10 +2,10 @@
 import '@umbraco-ui/uui-button';
 import '@umbraco-ui/uui-select';
 import '@umbraco-ui/uui-loader-bar';
-import {serviceContainer} from "../Services/service-container.ts";
-import {Provider} from "../Services/umbraco/generated/api.generated.clients.ts";
+import {serviceContainer} from "../Services/service-container";
+import {Provider} from "../Services/umbraco/generated/api.generated.clients";
 
-import {defineComponent, PropType, ref, watch} from 'vue'
+import {defineComponent, PropType} from 'vue'
 
 export default defineComponent({
   name: 'CdnDashboard',
@@ -17,7 +17,7 @@ export default defineComponent({
     return {
       loading: true,
       message: "test",
-      providers: [],
+      providers: [] as Provider[],
       currentDomain: "",
       currentProvider: ""
     }
@@ -27,22 +27,31 @@ export default defineComponent({
     message: String,
     providers: {
       type: Array as PropType<Provider[]>,
-      default: () => []
-    },
+      required: true
+    }
   },
   setup(props) {
     props.message // type: string | undefined
   },
   methods: {
-    async fetchData() {
-      var service = serviceContainer.managmentApiClient;
-      service.getProviders().then((result: any) => {
-        console.log(result);
-        this.providers = result;
-        this.loading = false;
-      });
+    async refreshAllProviders() {
+
     },
-  }
+    async refreshProvider(provider: Provider) {
+      console.log(provider)
+    },
+    async refreshDomain(domain: string) {
+      console.log(domain)
+    },
+  async fetchData() {
+    var service = serviceContainer.managmentApiClient;
+    service.getProviders().then((result: any) => {
+      console.log(result);
+      this.providers = result;
+      this.loading = false;
+    });
+  },
+}
 })
 </script>
 
@@ -59,9 +68,10 @@ export default defineComponent({
           label="Refresh all pages for all providers"
           @click="refreshAllProviders"
       />
-<br />
-<div class="cdn-provider-list">      
-  <uui-card-content-node v-bind:name="provider.name +' '+ provider.version" selectable="false" v-for="provider in providers">
+      <br/>
+      <div class="cdn-provider-list">
+        <uui-card-content-node v-bind:name="provider.name +' '+ provider.version" selectable="false"
+                               v-for="provider in providers" >
           <uui-tag size="s" slot="tag" color="positive" v-if="provider.enabled">Enabled</uui-tag>
           <uui-tag size="s" slot="tag" color="danger" v-if="!provider.enabled">Disabled</uui-tag>
           <uui-button
@@ -70,23 +80,24 @@ export default defineComponent({
               @click="refreshProvider(provider)"
           />
           <div v-if="provider.supportedHostnames">
-                <h2>Domains</h2>
-                <ul style="list-style: none; padding-inline-start: 0px; margin: 0;">
-                  
-                  <li v-for="domain in provider.supportedHostnames">
-                    <div class="cdn-provider-domain">
-                    <span>{{ domain }}</span>
-                    <uui-button
-                        look="primary"
-                        label="Refresh all pages for this domain"
-                        @click="refreshDomain(domain)"
-                    /></div>
-                  </li>
-                </ul>
+            <h2>Domains</h2>
+            <ul style="list-style: none; padding-inline-start: 0px; margin: 0;">
+
+              <li v-for="domain in provider.supportedHostnames">
+                <div class="cdn-provider-domain">
+                  <span>{{ domain }}</span>
+                  <uui-button
+                      look="primary"
+                      label="Refresh all pages for this domain"
+                      @click="refreshDomain(domain)"
+                  />
+                </div>
+              </li>
+            </ul>
           </div>
         </uui-card-content-node>
 
-</div>
+      </div>
 
     </div>
   </div>
@@ -99,14 +110,17 @@ export default defineComponent({
   flex-direction: row;
   gap: 20px;
 }
-.cdn-provider-list>*{
+
+.cdn-provider-list > * {
   width: 32%;
 }
+
 .cdn-provider-domain {
   display: flex;
   flex-direction: row;
   gap: 20px;
 }
+
 .cdn-provider-domain span {
   font-size: 1.2em;
   /* Use a flexbox layout */
