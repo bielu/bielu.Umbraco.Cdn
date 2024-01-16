@@ -13,4 +13,6 @@ public class BieluCdnOptions
     [SchemaPrefix]
     [JsonIgnore]
     public static string SectionName { get; set; } = $"{CdnConstants.CdnConfigSectionName}";
+
+    public bool ReferencePurge { get; set; } = false;
 }

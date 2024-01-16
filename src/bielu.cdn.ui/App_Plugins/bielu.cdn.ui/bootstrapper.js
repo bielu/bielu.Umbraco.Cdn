@@ -1,4 +1,4 @@
-loadModuleMap();  
+//loadModuleMap();  
 loadModule("/App_Plugins/bielu.cdn.ui/bielu.cdn.ui.js");
 
 function loadModule(url) {

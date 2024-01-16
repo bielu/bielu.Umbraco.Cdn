@@ -31,6 +31,8 @@ export default defineComponent({
     }
   },
   setup(props) {
+// named, returns classes for <style module="classes">
+  
     props.message // type: string | undefined
   },
   methods: {
@@ -69,7 +71,7 @@ export default defineComponent({
           @click="refreshAllProviders"
       />
       <br/>
-      <div class="cdn-provider-list">
+      <div  class="cdn-provider-list">
         <uui-card-content-node v-bind:name="provider.name +' '+ provider.version" selectable="false"
                                v-for="provider in providers" >
           <uui-tag size="s" slot="tag" color="positive" v-if="provider.enabled">Enabled</uui-tag>
@@ -105,6 +107,7 @@ export default defineComponent({
 
 <style scoped>
 .cdn-provider-list {
+  
   display: flex;
   margin: 20px;
   flex-direction: row;

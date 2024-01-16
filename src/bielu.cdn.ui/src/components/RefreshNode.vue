@@ -5,6 +5,7 @@ import '@umbraco-ui/uui-loader-bar';
 import {defineComponent, PropType, ref, watch} from 'vue'
 import {serviceContainer} from "../Services/service-container";
 import {Provider, Status} from "../Services/umbraco/generated/api.generated.clients";
+
 export default defineComponent({
   name: 'RefreshNode',
   created: function () {
@@ -122,7 +123,6 @@ export default defineComponent({
       // Both props are undefined so its just a bare callback func to be run
     }, {deep: true, immediate: true,});
 
-
   }
 })
 </script>
@@ -131,8 +131,7 @@ export default defineComponent({
   <div v-if="loading">
     <uui-loader-bar animationDuration="1.5" style="color: black"></uui-loader-bar>
   </div>
-  <div class="umb-dialog-body " v-else>
-    hello
+  <div class="umb-dialog-body umb-cdn-action " v-else>
     <div class="umb-pane">
       <uui-select placeholder="Select an CND provider or an endpoint" :options="providers" id="providers"
                   @change="selectProvider"></uui-select>
@@ -151,14 +150,14 @@ export default defineComponent({
   </div>
 </template>
 
-<style scoped>
-.umb-pane {
+<style >
+.umb-cdn-action :deep(.umb-pane) {
   margin: 20px;
   margin-top: 15px;
 
 }
 
-.spacer {
+.umb-cdn-action :deep(.spacer) {
   margin-top: 20px;
 }
 </style>
