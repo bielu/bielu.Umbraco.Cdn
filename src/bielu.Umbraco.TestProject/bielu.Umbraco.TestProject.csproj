@@ -41,7 +41,9 @@
 
 
     <Target Name="NSwag" BeforeTargets="AfterBuild" Condition="'$(TF_BUILD)'!='True'">
-        <Exec ConsoleToMSBuild="true" ContinueOnError="true" Command="$(NSwagExe_Net60) run nswag.json /variables:Configuration=$(Configuration),TypescriptOutputPath=$(MSBuildThisFileDirectory)..\bielu.cdn.ui\src\services\umbraco\generated">
+        <RemoveDir
+                Directories="$(MSBuildProjectDirectory)\src/Services/umbraco/generated" />
+        <Exec ConsoleToMSBuild="true" ContinueOnError="true" Command="$(NSwagExe_Net60) run nswag.json /variables:Configuration=$(Configuration),TypescriptOutputPath=$(MSBuildThisFileDirectory)..\bielu.cdn.ui\src\Services\umbraco\generated">
             <Output TaskParameter="ExitCode" PropertyName="NSwagExitCode"/>
             <Output TaskParameter="ConsoleOutput" PropertyName="NSwagOutput" />
         </Exec>

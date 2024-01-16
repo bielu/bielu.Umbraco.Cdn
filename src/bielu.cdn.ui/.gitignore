@@ -24,3 +24,4 @@ dist-ssr
 *.sw?
 /wwwroot/App_Plugins/bielu.cdn.ui/*
 !/wwwroot/App_Plugins/bielu.cdn.ui/.gitkeep
+/types/

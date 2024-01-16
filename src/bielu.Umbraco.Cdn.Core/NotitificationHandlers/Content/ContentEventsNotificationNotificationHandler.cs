@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using bielu.Umbraco.Cdn.Core.Configuration;
 using bielu.Umbraco.Cdn.Core.Services;
 using bielu.Umbraco.Cdn.Services;
+using Lucene.Net.Util;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -51,13 +52,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
             var currentUser = _accessor.BackOfficeSecurity.CurrentUser;
             foreach (var content in notification.MoveInfoCollection)
             {
-                if (_configuration.Auditing)
-                {
-                    _auditService.Add(AuditType.Custom, currentUser.Id, content.Entity.Id, "CDN Refresh",
-                        $"CDN cache was purged", $"CDN cache purged");
-                }
-
-                pages.AddRange(_umbracoUrlDeliveryService.GetUrlsById(content.Entity));
+                pages.AddRange(GetPages(content.Entity));
             }
 
             //todo: optimize as now we dont valide which domains is valid for either of cdns
@@ -91,21 +86,31 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
             }
         }
 
+        private List<string> GetPages(IContent content)
+        {
+            var currentUser = _accessor.BackOfficeSecurity.CurrentUser;
+            var pages = new List<string>();
+            if (_configuration.Auditing)
+            {
+                _auditService.Add(AuditType.Custom, currentUser.Id, content.Id, "CDN Refresh",
+                    $"CDN cache was purged", $"CDN cache purged");
+            }
 
+            pages.AddRange(_umbracoUrlDeliveryService.GetUrlsByIContent(content));
+            if (_configuration.ReferencePurge)
+            {
+                pages.AddRange(_umbracoUrlDeliveryService.GetUrlsByReferences(content));
+            }
+
+            return pages;
+        }
         public async Task HandleAsync(ContentDeletingNotification notification, CancellationToken cancellationToken)
         {
             var pages = new List<string>();
-            var currentUser = _accessor.BackOfficeSecurity.CurrentUser;
 
             foreach (var content in notification.DeletedEntities)
             {
-                if (_configuration.Auditing)
-                {
-                    _auditService.Add(AuditType.Custom, currentUser.Id, content.Id, "CDN Refresh",
-                        $"CDN cache was purged", $"CDN cache purged");
-                }
-
-                pages.AddRange(_umbracoUrlDeliveryService.GetUrlsById(content));
+                pages.AddRange(GetPages(content));
             }
 
             //todo: optimize as now we dont valide which domains is valid for either of cdns
@@ -208,13 +213,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
             var pages = new List<string>();
             foreach (var content in notification.PublishedEntities)
             {
-                if (_configuration.Auditing)
-                {
-                    _auditService.Add(AuditType.Custom, currentUser.Id, content.Id, "CDN Refresh",
-                        $"CDN cache was purged", $"CDN cache purged");
-                }
-
-                pages.AddRange(_umbracoUrlDeliveryService.GetUrlsById(content));
+                pages.AddRange(GetPages(content));
             }
 
             try
@@ -259,19 +258,10 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
 
         public async Task HandleAsync(ContentUnpublishingNotification notification, CancellationToken cancellationToken)
         {
-            var currentUser = _accessor.BackOfficeSecurity.CurrentUser;
             var pages = new List<string>();
-
-
             foreach (var content in notification.UnpublishedEntities)
             {
-                if (_configuration.Auditing)
-                {
-                    _auditService.Add(AuditType.Custom, currentUser.Id, content.Id, "CDN Refresh",
-                        $"CDN cache was purged", $"CDN cache purged");
-                }
-
-                pages.AddRange(_umbracoUrlDeliveryService.GetUrlsById(content));
+                pages.AddRange(GetPages(content));
             }
 
             notification.State["purgedUrls"] = pages;
@@ -289,10 +279,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
                 {
                     if (content.Published)
                     {
-                        _auditService.Add(AuditType.Custom, currentUser.Id, content.Id, "CDN Refresh",
-                            $"Cloudflare cache was purged", $"Clouflare cache purged");
-
-                        pages.AddRange(_umbracoUrlDeliveryService.GetUrlsById(content));
+                        pages.AddRange(GetPages(content));
                     }
                 }
 
@@ -320,13 +307,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
                 {
                     if (content.Published)
                     {
-                        if (_configuration.Auditing)
-                        {
-                            _auditService.Add(AuditType.Custom, currentUser.Id, content.Id, "CDN Refresh",
-                                $"CDN cache was purged", $"CDN cache purged");
-                        }
-
-                        pages.AddRange(_umbracoUrlDeliveryService.GetUrlsById(content));
+                        pages.AddRange(GetPages(content));
                     }
                 }
 

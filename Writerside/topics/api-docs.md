@@ -4,7 +4,7 @@
 
 ## Introduction
 
-This is document in progress
+This project was started as there was lack of good CDN integration providers for umbraco. Previous providers were not working as expected or were not maintained anymore.
 
 ## What you can do using CDN integration provider for umbraco
 
