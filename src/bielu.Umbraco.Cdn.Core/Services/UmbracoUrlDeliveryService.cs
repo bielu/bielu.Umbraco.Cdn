@@ -5,6 +5,7 @@ using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Web;
+using Umbraco.Cms.Web.Common.AspNetCore;
 using Umbraco.Extensions;
 
 namespace bielu.Umbraco.Cdn.Core.Services
@@ -14,13 +15,15 @@ namespace bielu.Umbraco.Cdn.Core.Services
         private readonly IDomainService _domainService;
         private readonly IUmbracoContextFactory _contextFactory;
         private readonly ITrackedReferencesService _trackedReferencesService;
+        private readonly IRequestAccessor _requestAccessor;
 
         public UmbracoUrlDeliveryService(IDomainService domainService, IUmbracoContextFactory contextFactory,
-            ITrackedReferencesService trackedReferencesService)
+            ITrackedReferencesService trackedReferencesService,IRequestAccessor requestAccessor)
         {
             _domainService = domainService;
             _contextFactory = contextFactory;
             _trackedReferencesService = trackedReferencesService;
+            _requestAccessor = requestAccessor;
         }
 
         public List<string> GetUrlsByIContent(IContent content, bool includeDescendants = false)
@@ -86,7 +89,15 @@ namespace bielu.Umbraco.Cdn.Core.Services
         {
             var list = new List<string>();
             if (urls == null || urls.All(x => string.IsNullOrWhiteSpace(x))) return list;
-            if (assignedDomains == null || !assignedDomains.Any()) return list;
+            if (assignedDomains == null || !assignedDomains.Any())
+            {
+                var domain = (_requestAccessor as AspNetCoreRequestAccessor).GetApplicationUrl().GetLeftPart(UriPartial.Authority);
+                foreach (var url in urls.Where(x => !string.IsNullOrWhiteSpace(x)))
+                {
+                  
+                        list.Add(CombinePaths(domain, url));
+                }
+            }
             foreach (var url in urls.Where(x => !string.IsNullOrWhiteSpace(x)))
             {
                 foreach (var domain in assignedDomains)
@@ -130,6 +141,7 @@ namespace bielu.Umbraco.Cdn.Core.Services
                 list.AddRange(validDomain);
             }
 
+          
             return list;
         }
 
