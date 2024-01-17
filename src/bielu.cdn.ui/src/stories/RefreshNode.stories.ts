@@ -1,6 +1,6 @@
 
 import type { Meta, StoryObj } from '@storybook/vue3';
-import RefreshNode from "../components/RefreshNode.vue";
+import RefreshNode from "../components/RefreshNode.ce.vue";
 
 // More on how to set up stories at: https://storybook.js.org/docs/vue/writing-stories/introduction
 const meta = {

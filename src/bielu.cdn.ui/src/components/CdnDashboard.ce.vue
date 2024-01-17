@@ -31,8 +31,8 @@ export default defineComponent({
     }
   },
   setup(props) {
-// named, returns classes for <style module="classes">
-  
+    // named, returns classes for <style module="classes">
+    
     props.message // type: string | undefined
   },
   methods: {
@@ -59,6 +59,7 @@ export default defineComponent({
 
 <template>
   <div>
+
     <h1>CDN Dashboard</h1>
     <div v-if="loading">
       <uui-loader-bar></uui-loader-bar>
@@ -76,12 +77,12 @@ export default defineComponent({
                                v-for="provider in providers" >
           <uui-tag size="s" slot="tag" color="positive" v-if="provider.enabled">Enabled</uui-tag>
           <uui-tag size="s" slot="tag" color="danger" v-if="!provider.enabled">Disabled</uui-tag>
-          <uui-button
+          <uui-button v-if="provider.enabled"
               look="primary"
               label="Refresh all pages for this provider"
               @click="refreshProvider(provider)"
           />
-          <div v-if="provider.supportedHostnames">
+          <div v-if="provider.supportedHostnames && provider.enabled">
             <h2>Domains</h2>
             <ul style="list-style: none; padding-inline-start: 0px; margin: 0;">
 
@@ -97,6 +98,9 @@ export default defineComponent({
               </li>
             </ul>
           </div>
+          <div v-if="!provider.enabled">
+            <strong>This provider is disabled, which means that all operation will be ignored.</strong>
+          </div>
         </uui-card-content-node>
 
       </div>
@@ -105,7 +109,7 @@ export default defineComponent({
   </div>
 </template>
 
-<style scoped>
+<style>
 .cdn-provider-list {
   
   display: flex;

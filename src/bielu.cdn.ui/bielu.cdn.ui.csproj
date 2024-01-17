@@ -18,17 +18,28 @@
     <ItemGroup>
       <Folder Include="generated\" />
       <Folder Include="src\umbraco\" />
-      <Folder Include="wwwroot\App_Plugins\bielu.cdn.ui\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\App_Plugins\bielu.cdn.ui\bielu.cdn.ui\bielu.cdn.ui.angularController.js\bielu.cdn.ui.angularController.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\App_Plugins\bielu.cdn.ui\bielu.cdn.ui\bootstrapper.js\bootstrapper.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\App_Plugins\bielu.cdn.ui\bielu.cdn.ui\cdnDashboard.html\cdnDashboard.html" />
+      <_ContentIncludedByDefault Remove="wwwroot\App_Plugins\bielu.cdn.ui\bielu.cdn.ui\dev-bootstrapper.js\dev-bootstrapper.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\App_Plugins\bielu.cdn.ui\bielu.cdn.ui\lang\en-US.xml\en-US.xml" />
+      <_ContentIncludedByDefault Remove="wwwroot\App_Plugins\bielu.cdn.ui\bielu.cdn.ui\RefreshNodeEditor.html\RefreshNodeEditor.html" />
     </ItemGroup>
     <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
         <Exec Command="npm run bundle" />
     </Target>
 
-    <Target Name="BieluCdnBeforeBuild"  BeforeTargets="Build">
-        <ItemGroup>
-            <CrossFiles Include="$(MSBuildProjectDirectory)\App_Plugins\**\*.*" />
-        </ItemGroup>
-        <Message Text="Adding base files for backoffice"  Importance="high" />
-        <Copy SourceFiles="@(CrossFiles)" DestinationFolder="$(MSBuildProjectDirectory)\wwwroot\App_Plugins\bielu.cdn.ui" SkipUnchangedFiles="false" />
+    <Target Name="BieluCdnBeforeBuild"  BeforeTargets="PreBuildEvent">
+        <CreateItem Include="$(MSBuildProjectDirectory)\App_Plugins\**\*.*">
+            <Output TaskParameter="Include" ItemName="YourFilesToCopy" />
+        </CreateItem>
+  
+        <Message Text="Adding base files for backoffice - @(YourFilesToCopy->Count()) files"  Importance="high" />
+        <Copy SourceFiles="@(YourFilesToCopy)"
+              DestinationFiles="@(YourFilesToCopy->'$(MSBuildProjectDirectory)\wwwroot\App_Plugins\%(RecursiveDir)%(Filename)%(Extension)')" />
+      
     </Target>
 </Project>

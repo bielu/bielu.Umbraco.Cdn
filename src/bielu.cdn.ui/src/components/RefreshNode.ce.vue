@@ -5,7 +5,6 @@ import '@umbraco-ui/uui-loader-bar';
 import {defineComponent, PropType, ref, watch} from 'vue'
 import {serviceContainer} from "../Services/service-container";
 import {Provider, Status} from "../Services/umbraco/generated/api.generated.clients";
-
 export default defineComponent({
   name: 'RefreshNode',
   created: function () {
@@ -150,14 +149,14 @@ export default defineComponent({
   </div>
 </template>
 
-<style >
-.umb-cdn-action :deep(.umb-pane) {
+<style>
+.umb-cdn-action .umb-pane {
   margin: 20px;
   margin-top: 15px;
 
 }
 
-.umb-cdn-action :deep(.spacer) {
+.umb-cdn-action .spacer {
   margin-top: 20px;
 }
 </style>

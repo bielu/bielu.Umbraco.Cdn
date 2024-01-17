@@ -20,6 +20,7 @@ public class CdnDashboard: IDashboard
     }
 
     public string Alias => "cdnDashboard";
+    
 
     public string View => "/App_Plugins/bielu.cdn.ui/cdnDashboard.html";
 }

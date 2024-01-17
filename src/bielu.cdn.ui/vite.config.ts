@@ -1,13 +1,18 @@
 import {resolve} from "path";
 import {defineConfig} from 'vite';
 import vue from '@vitejs/plugin-vue';
-import dts from "vite-plugin-dts";
-import type { PluginOption } from 'vite'
+import dts from 'vite-plugin-dts'
 // https://vitejs.dev/config/
 import { cert, key } from "./build/certs"
-import { viteVueCE } from 'unplugin-vue-ce'
 export default defineConfig({
-    plugins: [vue(), dts(), viteVueCE() as PluginOption,],
+    plugins: [   dts(),vue({
+        template: {
+            compilerOptions: {
+                // treat all tags with a dash as custom elements
+                isCustomElement: (tag) => true
+            }
+        }
+    })],
     build: {
         lib: {
             entry: resolve(__dirname, 'src/main.ts'),
@@ -16,6 +21,7 @@ export default defineConfig({
         },
         outDir: './wwwroot/App_Plugins/bielu.Cdn.UI/',
         emptyOutDir: false,
+        target: 'esnext',
      
     },
     define: {
