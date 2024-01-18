@@ -9,7 +9,7 @@ import {defineComponent, PropType} from 'vue'
 import CdnProviderCard from "./CdnProviderCard.vue";
 
 export default defineComponent({
-  name: 'umbraco-CdnDashboard',
+  name: 'umbraco-CdnContentApp',
   components: {CdnProviderCard},
   mounted: function () {
     console.log("mounted");
@@ -20,6 +20,7 @@ export default defineComponent({
       loading: true,
       message: "test",
       providers: [] as Provider[],
+      nodeId: -1,
       currentDomain: "",
       currentProvider: ""
     }
@@ -30,11 +31,15 @@ export default defineComponent({
     providers: {
       type: Array as PropType<Provider[]>,
       required: true
-    }
+    },
+    nodeId: {
+      type: Number,
+      default: -1,
+    },
   },
   setup(props) {
     // named, returns classes for <style module="classes">
-    
+
     props.message // type: string | undefined
   },
   methods: {
@@ -47,15 +52,15 @@ export default defineComponent({
     async refreshDomain(domain: string) {
       console.log(domain)
     },
-  async fetchData() {
-    var service = serviceContainer.managmentApiClient;
-    service.getProviders().then((result: any) => {
-      console.log(result);
-      this.providers = result;
-      this.loading = false;
-    });
-  },
-}
+    async fetchData() {
+      var service = serviceContainer.managmentApiClient;
+      service.getProviders().then((result: any) => {
+        console.log(result);
+        this.providers = result;
+        this.loading = false;
+      });
+    },
+  }
 })
 </script>
 
@@ -70,12 +75,12 @@ export default defineComponent({
       <h2>Available Providers with domains setup</h2>
       <uui-button
           look="primary"
-          label="Refresh all pages for all providers"
+          label="Refresh content for all providers"
           @click="refreshAllProviders"
       />
       <br/>
       <div  class="cdn-provider-list">
-        <CdnProviderCard v-for="provider in providers" :provider="provider"></CdnProviderCard>
+        <CdnProviderCard v-for="provider in providers" :provider="provider" :node="nodeId"></CdnProviderCard>
 
       </div>
 
@@ -85,7 +90,7 @@ export default defineComponent({
 
 <style>
 .cdn-provider-list {
-  
+
   display: flex;
   margin: 20px;
   flex-direction: row;

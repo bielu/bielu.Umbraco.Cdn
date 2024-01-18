@@ -9,7 +9,9 @@ export default defineConfig({
         template: {
             compilerOptions: {
                 // treat all tags with a dash as custom elements
-                isCustomElement: (tag) => true
+                isCustomElement: (tag) => {
+                    return tag.startsWith('umbraco-') // (return true)
+                }
             }
         }
     })],

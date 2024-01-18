@@ -6,7 +6,7 @@ import {defineComponent, PropType, ref, watch} from 'vue'
 import {serviceContainer} from "../Services/service-container";
 import {Provider, Status} from "../Services/umbraco/generated/api.generated.clients";
 export default defineComponent({
-  name: 'RefreshNode',
+  name: 'umbraco-RefreshNode',
   created: function () {
 
   },
