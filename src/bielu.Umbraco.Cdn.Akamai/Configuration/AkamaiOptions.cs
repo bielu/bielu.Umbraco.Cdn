@@ -14,5 +14,6 @@ public class AkamaiOptions : ConfigurationBaseOptions
     public static string SectionName = $"{CdnConstants.CdnConfigSectionName}:Akamai";
     public string BaseUrl { get; set; } ="https://api.ccu.akamai.com/ccu/v3";
     public Network6 Network { get; set; } = Network6.Production;
+    public List<string> SupportedHosts { get; set; } = new List<string>();
     public string SwitchKey { get; set; }
 }

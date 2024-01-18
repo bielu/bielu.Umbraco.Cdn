@@ -109,7 +109,7 @@ namespace bielu.Umbraco.Cdn.Akamai.Services
 
         public async Task<IList<string>> GetSupportedHostnames()
         {
-            return new List<string>();
+            return _options.SupportedHosts; // Akamai does not return a list of supported hosts, so we use configuration instead
         }
     }
 }
