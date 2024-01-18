@@ -9,6 +9,6 @@ This document is in progress. It might change overtime, so please check it from 
 </warning>
 ## Node Context Menu
 ### Action in Node menu
-![image_1.png](image_1.png)
+![image_3.png](image_3.png)
 ### Action menu
 ![image_2.png](image_2.png)
