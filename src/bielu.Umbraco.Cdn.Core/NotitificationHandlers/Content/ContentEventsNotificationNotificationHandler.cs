@@ -96,7 +96,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
                     $"CDN cache was purged", $"CDN cache purged");
             }
 
-            pages.AddRange(_umbracoUrlDeliveryService.GetUrlsByIContent(content));
+            pages.AddRange(_umbracoUrlDeliveryService.GetUrlsByContent(content));
             if (_configuration.ReferencePurge)
             {
                 pages.AddRange(_umbracoUrlDeliveryService.GetUrlsByReferences(content));

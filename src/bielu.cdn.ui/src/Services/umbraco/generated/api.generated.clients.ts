@@ -16,7 +16,7 @@ export interface IManagementClient {
 
     getProviders(id?: number | undefined): Promise<Provider[] | null>;
 
-    refreshForNode(id: number, providerId?: string | undefined, domain?: string | undefined): Promise<Status | null>;
+    refreshForNode(id: number, descandants: boolean, references: boolean, providerId?: string | undefined, domain?: string | undefined): Promise<Status | null>;
 }
 
 export class ManagementClient implements IManagementClient {
@@ -117,12 +117,20 @@ export class ManagementClient implements IManagementClient {
         return Promise.resolve<Provider[] | null>(null as any);
     }
 
-    refreshForNode(id: number, providerId?: string | undefined, domain?: string | undefined): Promise<Status | null> {
+    refreshForNode(id: number, descandants: boolean, references: boolean, providerId?: string | undefined, domain?: string | undefined): Promise<Status | null> {
         let url_ = this.baseUrl + "/cdn/api/management/RefreshForNode?";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined and cannot be null.");
         else
             url_ += "id=" + encodeURIComponent("" + id) + "&";
+        if (descandants === undefined || descandants === null)
+            throw new Error("The parameter 'descandants' must be defined and cannot be null.");
+        else
+            url_ += "descandants=" + encodeURIComponent("" + descandants) + "&";
+        if (references === undefined || references === null)
+            throw new Error("The parameter 'references' must be defined and cannot be null.");
+        else
+            url_ += "references=" + encodeURIComponent("" + references) + "&";
         if (providerId === null)
             throw new Error("The parameter 'providerId' cannot be null.");
         else if (providerId !== undefined)
@@ -280,7 +288,7 @@ export class Status implements IStatus {
     success!: boolean;
     message!: string | null;
     details!: string | null;
-    errors!: Errors[] | null;
+    errors!: (Errors | null)[] | null;
     exception!: Exception | null;
     messageType!: EventMessageType | null;
 
@@ -336,7 +344,7 @@ export interface IStatus {
     success: boolean;
     message: string | null;
     details: string | null;
-    errors: Errors[] | null;
+    errors: (Errors | null)[] | null;
     exception: Exception | null;
     messageType: EventMessageType | null;
 }

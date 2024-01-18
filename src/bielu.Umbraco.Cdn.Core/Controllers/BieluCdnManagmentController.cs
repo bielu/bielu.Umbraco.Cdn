@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using bielu.Umbraco.Cdn.Core.Configuration;
 using bielu.Umbraco.Cdn.Core.Extensions;
 using bielu.Umbraco.Cdn.Core.Services;
 using bielu.Umbraco.Cdn.Models;
 using bielu.Umbraco.Cdn.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Routing;
 using Umbraco.Cms.Core.Web;
@@ -22,13 +24,21 @@ public class BieluCdnManagmentController : UmbracoApiController
     private readonly ICdnManager _manager;
     private readonly IUmbracoContextFactory _contextFactory;
     private readonly ICdnAuditService _auditService;
+    private readonly IUmbracoUrlDeliveryService _urlDeliveryService;
+    private BieluCdnOptions _optionsMonitor;
 
     public BieluCdnManagmentController(ICdnManager manager, IUmbracoContextFactory contextFactory,
-        Services.ICdnAuditService auditService)
+        Services.ICdnAuditService auditService, IUmbracoUrlDeliveryService urlDeliveryService, IOptionsMonitor<BieluCdnOptions> optionsMonitor) 
     {
         _manager = manager;
         _contextFactory = contextFactory;
         _auditService = auditService;
+        _urlDeliveryService = urlDeliveryService;
+        _optionsMonitor = optionsMonitor.CurrentValue;
+        optionsMonitor.OnChange((options, name) =>
+        {
+            _optionsMonitor = options;
+        });
     }
 
     public async Task<IEnumerable<AuditRecord>> GetAuditHistory()
@@ -41,19 +51,18 @@ public class BieluCdnManagmentController : UmbracoApiController
         return await _manager.GetProviders(id);
     }
 
-    public async Task<Status> RefreshForNode(int id, string providerId = null, string domain = null)
+    public async Task<Status> RefreshForNode(int id,bool descandants,bool references, string providerId = null, string domain = null)
     {
         List<Status> statuses = new List<Status>();
         using (var contextReference = _contextFactory.EnsureUmbracoContext())
         {
             var content = contextReference.UmbracoContext.Content.GetById(id);
-            var domains = contextReference.UmbracoContext.Domains.GetAssigned(content.Id);
-            if (!string.IsNullOrWhiteSpace(domain))
-            {
-                domains = domains.Where(x => x.Name.Contains(domain));
-            }
 
-            var urls = GenerateUrls(content, domains);
+            var urls = _urlDeliveryService.GetUrlsByContent(content, descandants, references);
+            if (_optionsMonitor.ReferencePurge && references)
+            {
+                urls.AddRange(_urlDeliveryService.GetUrlsByReferences(content));
+            }
             if (!string.IsNullOrEmpty(providerId))
             {
                 var service = await _manager.GetService(providerId);
@@ -61,7 +70,8 @@ public class BieluCdnManagmentController : UmbracoApiController
                 return statuses.Merge();
             }
 
-            foreach (var service in await _manager.GetServices())
+          
+            foreach (var service in (await _manager.GetServices()).Where(x=>x.IsEnabled()))
             {
                 statuses.AddRange(await service.PurgePages(urls));
             }
@@ -70,14 +80,4 @@ public class BieluCdnManagmentController : UmbracoApiController
         return statuses.Merge();
     }
 
-    private IEnumerable<string> GenerateUrls(IPublishedContent content, IEnumerable<Domain> domains)
-    {
-        var urls = new List<string>();
-        foreach (var domain in domains)
-        {
-            urls.Add($"https://{domain.Name}{content.Url(mode: UrlMode.Relative)}");
-        }
-
-        return urls;
-    }
 }

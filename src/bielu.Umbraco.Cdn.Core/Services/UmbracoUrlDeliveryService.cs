@@ -18,7 +18,7 @@ namespace bielu.Umbraco.Cdn.Core.Services
         private readonly IRequestAccessor _requestAccessor;
 
         public UmbracoUrlDeliveryService(IDomainService domainService, IUmbracoContextFactory contextFactory,
-            ITrackedReferencesService trackedReferencesService,IRequestAccessor requestAccessor)
+            ITrackedReferencesService trackedReferencesService, IRequestAccessor requestAccessor)
         {
             _domainService = domainService;
             _contextFactory = contextFactory;
@@ -26,7 +26,7 @@ namespace bielu.Umbraco.Cdn.Core.Services
             _requestAccessor = requestAccessor;
         }
 
-        public List<string> GetUrlsByIContent(IContent content, bool includeDescendants = false)
+        public List<string> GetUrlsByContent(IContent content, bool includeDescendants = false, bool includeReferences = true)
         {
             List<string> urls = new List<string>();
             if (content == null)
@@ -42,18 +42,44 @@ namespace bielu.Umbraco.Cdn.Core.Services
             return urls;
         }
 
-        public List<string> GetUrlsByReferences(IContent content, bool includeDescendants = false)
+        public List<string> GetUrlsByReferences(IContent content)
+        {
+            return GetUrlFromReferencePage(content.Id);
+        }
+
+        public List<string> GetUrlsByContent(IPublishedContent content, bool includeDescendants = false, bool includeReferences = true)
+        {
+            List<string> urls = new List<string>();
+            if (content == null)
+            {
+                return urls;
+            }
+
+            foreach (var url in GetUrl(content))
+            {
+                urls.AddRange(BuildDomainUrls(new List<string>() { url }, GetDomains(content)));
+            }
+
+            return urls;
+        }
+
+        private List<string> GetUrlFromReferencePage(int id)
         {
             var urls = new List<string>();
-            var references = _trackedReferencesService.GetPagedItemsWithRelations(new[] { content.Id }, 0, 1000, false);
+            var references = _trackedReferencesService.GetPagedItemsWithRelations(new[] { id }, 0, 1000, false);
             urls.AddRange(GetUrlFromReferencePage(references.Items));
             for (int i = 1; i < references.TotalPages; i++)
             {
-                references = _trackedReferencesService.GetPagedItemsWithRelations(new[] { content.Id }, i, 1000, false);
+                references = _trackedReferencesService.GetPagedItemsWithRelations(new[] { id }, i, 1000, false);
                 urls.AddRange(GetUrlFromReferencePage(references.Items));
             }
 
             return urls;
+        }
+
+        public List<string> GetUrlsByReferences(IPublishedContent content)
+        {
+            return GetUrlFromReferencePage(content.Id);
         }
 
         private List<string> GetUrlFromReferencePage(IEnumerable<RelationItem>? referencesItems)
@@ -91,13 +117,14 @@ namespace bielu.Umbraco.Cdn.Core.Services
             if (urls == null || urls.All(x => string.IsNullOrWhiteSpace(x))) return list;
             if (assignedDomains == null || !assignedDomains.Any())
             {
-                var domain = (_requestAccessor as AspNetCoreRequestAccessor).GetApplicationUrl().GetLeftPart(UriPartial.Authority);
+                var domain = (_requestAccessor as AspNetCoreRequestAccessor).GetApplicationUrl()
+                    .GetLeftPart(UriPartial.Authority);
                 foreach (var url in urls.Where(x => !string.IsNullOrWhiteSpace(x)))
                 {
-                  
-                        list.Add(CombinePaths(domain, url));
+                    list.Add(CombinePaths(domain, url));
                 }
             }
+
             foreach (var url in urls.Where(x => !string.IsNullOrWhiteSpace(x)))
             {
                 foreach (var domain in assignedDomains)
@@ -124,6 +151,24 @@ namespace bielu.Umbraco.Cdn.Core.Services
             return list;
         }
 
+        private List<string> GetDomains(string path)
+        {
+            var list = new List<string>();
+            //Termination case
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                var domain = (_requestAccessor as AspNetCoreRequestAccessor).GetApplicationUrl()
+                    .GetLeftPart(UriPartial.Authority);
+                list.Add(domain);
+                return list;
+            }
+
+            list.AddRange(GetDomainByPath(path).Select(x => x.DomainName));
+
+
+            return list;
+        }
+
         private List<IDomain> GetDomainByPath(string path)
         {
             var list = new List<IDomain>();
@@ -141,7 +186,7 @@ namespace bielu.Umbraco.Cdn.Core.Services
                 list.AddRange(validDomain);
             }
 
-          
+
             return list;
         }
 
@@ -171,9 +216,7 @@ namespace bielu.Umbraco.Cdn.Core.Services
                 {
                     urls.Add(route);
                 }
-
                 urls.Add(content.Id.ToString());
-                IPublishedContent publishedContent = contextReference.UmbracoContext.Content.GetById(content.Id);
                 foreach (var culture in content.EditedCultures)
                 {
                     urls.Add(contextReference.UmbracoContext.Content.GetRouteById(false, content.Id, culture));
@@ -181,6 +224,18 @@ namespace bielu.Umbraco.Cdn.Core.Services
 
                 return urls;
             }
+        }
+
+        private List<string> GetUrl(IPublishedContent content)
+        {
+            var urls = new List<string>();
+            urls.Add(content.Id.ToString());
+            foreach (var culture in content.Cultures)
+            {
+                urls.Add(content.Url(mode: UrlMode.Absolute, culture: culture.Key));
+            }
+
+            return urls;
         }
 
         public string CombinePaths(string domain, string url)

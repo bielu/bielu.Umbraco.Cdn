@@ -21,7 +21,9 @@ export default defineComponent({
       message: "test",
       providers: [],
       currentDomain: "",
-      currentProvider: ""
+      currentProvider: "",
+      descandants: false,
+      references: false,
     }
   },
   methods: {
@@ -45,12 +47,19 @@ export default defineComponent({
         return;
       }
       this.currentDomain = object.target.value;
-      console.log(this.currentDomain);
+    },
+    async toggledDescandants(object: any) {
+      console.log(object.target.id);
+      this.descandants = object.target.value;
+    },
+    async toggledReferences(object: any) {
+      console.log(object.target.id);
+      this.references = object.target.value;
     },
     async sendData() {
       var service = serviceContainer.managmentApiClient;
       this.loading=true;
-        service.refreshForNode(this.nodeId, this.currentProvider, this.currentDomain).then((result: any) => {
+        service.refreshForNode(this.nodeId, this.descandants,this.references, this.currentProvider, this.currentDomain).then((result: any) => {
         console.log(result);
           console.log(this.currentDomain, this.currentProvider);
 
@@ -139,6 +148,11 @@ export default defineComponent({
       <uui-select placeholder="Select an domain for provider" :options="currentDomains"  id="domains"
                   @change="selectDomain"></uui-select>
       <div class="spacer"></div>
+      <uui-toggle label="Include descandants" @change="toggledDescandants"></uui-toggle>
+      <div class="spacer"></div>
+      <uui-toggle label="Include references" @change="toggledReferences"></uui-toggle>
+      <div class="spacer"></div>
+
       <uui-button
           look="primary"
           label="Refresh All CDNs"

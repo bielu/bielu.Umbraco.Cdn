@@ -51,7 +51,6 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Media
 
             foreach (var nodeEventInfo in notification.SavedEntities)
             {
-                var type = _contentTypeService.Get(nodeEventInfo.ContentType.Alias);
                 var node = context.Media.GetById(nodeEventInfo.Id);
                 if(node == null){
                 continue;
@@ -60,9 +59,9 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Media
 
                 foreach (var domain in domains)
                 {
-                    foreach (var VARIABLE in nodeEventInfo.GetCropUrls(_generator))
+                    foreach (var host in nodeEventInfo.GetCropUrls(_generator))
                     {
-                        nodesToRefresh.Add($"https://{domain}{VARIABLE.Value}");
+                        nodesToRefresh.Add($"{(domain.Contains("http")? "": "https://")}{host.Value}");
                     }
                    
                 }
