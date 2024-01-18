@@ -35,13 +35,14 @@ export default defineComponent({
       console.log(provider)
     },
     async refreshDomain(domain: string, provider: Provider) {
-     if(this.nodeId == -1) {
-       service.refreshDomain(provider.id,domain).then((result: any) => {
-         console.log(result);
-       });
-    return;}
       var service = serviceContainer.managmentApiClient;
-      service.refreshForNode(this.nodeId, false,false, provider.id,domain).then((result: any) => {
+      if (this.nodeId == -1) {
+        service.refreshDomain(provider.id, domain).then((result: any) => {
+          console.log(result);
+        });
+        return;
+      }
+      service.refreshForNode(this.nodeId, false, false, provider.id, domain).then((result: any) => {
         console.log(result);
       });
     },
@@ -51,7 +52,7 @@ export default defineComponent({
 
 <template>
   <uui-card-content-node v-bind:name="provider.name +' '+ provider.version" selectable="false"
-                         >
+  >
     <uui-tag size="s" slot="tag" color="positive" v-if="provider.enabled">Enabled</uui-tag>
     <uui-tag size="s" slot="tag" color="danger" v-if="!provider.enabled">Disabled</uui-tag>
     <uui-button v-if="provider.enabled"

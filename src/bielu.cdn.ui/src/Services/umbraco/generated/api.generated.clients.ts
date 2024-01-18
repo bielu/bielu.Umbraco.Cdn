@@ -19,6 +19,8 @@ export interface IManagementClient {
     refreshDomain(providerId?: string | undefined, domain?: string | undefined): Promise<Status | null>;
 
     refreshForNode(id: number, descandants: boolean, references: boolean, providerId?: string | undefined, domain?: string | undefined): Promise<Status | null>;
+
+    refreshAll(): Promise<Status | null>;
 }
 
 export class ManagementClient implements IManagementClient {
@@ -199,6 +201,41 @@ export class ManagementClient implements IManagementClient {
     }
 
     protected processRefreshForNode(response: Response): Promise<Status | null> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        let _mappings: { source: any, target: any }[] = [];
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? Status.fromJS(resultData200, _mappings) : <any>null;
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<Status | null>(null as any);
+    }
+
+    refreshAll(): Promise<Status | null> {
+        let url_ = this.baseUrl + "/cdn/api/management/RefreshAll";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processRefreshAll(_response);
+        });
+    }
+
+    protected processRefreshAll(response: Response): Promise<Status | null> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         let _mappings: { source: any, target: any }[] = [];

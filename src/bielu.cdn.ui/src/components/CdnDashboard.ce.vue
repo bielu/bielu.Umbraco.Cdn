@@ -39,14 +39,12 @@ export default defineComponent({
   },
   methods: {
     async refreshAllProviders() {
+      var service = serviceContainer.managmentApiClient;
+      service.refreshAll().then((result: any) => {
+        console.log(result);
+      });
+    },
 
-    },
-    async refreshProvider(provider: Provider) {
-      console.log(provider)
-    },
-    async refreshDomain(domain: string) {
-      console.log(domain)
-    },
   async fetchData() {
     var service = serviceContainer.managmentApiClient;
     service.getProviders().then((result: any) => {
