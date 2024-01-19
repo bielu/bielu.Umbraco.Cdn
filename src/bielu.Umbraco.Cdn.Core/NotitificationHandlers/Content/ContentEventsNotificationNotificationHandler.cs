@@ -29,30 +29,28 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
         private readonly IUmbracoUrlDeliveryService _umbracoUrlDeliveryService;
         private readonly IEnumerable<ICdnService> _cdnServices;
         private readonly ILogger<ContentEventsNotificationNotificationHandler> _logger;
-        private readonly IAuditService _auditService;
-        private readonly IBackOfficeSecurityAccessor _accessor;
-        private readonly BieluCdnOptions _configuration;
+        private readonly ICdnAuditService _auditService;
+        private  BieluCdnOptions _configuration;
 
         public ContentEventsNotificationNotificationHandler(IUmbracoUrlDeliveryService umbracoUrlDeliveryService,
             IEnumerable<ICdnService> cdnServices, ILogger<ContentEventsNotificationNotificationHandler> logger,
-            IAuditService auditService, IBackOfficeSecurityAccessor accessor, IOptionsMonitor<BieluCdnOptions> configuration)
+            ICdnAuditService auditService, IOptionsMonitor<BieluCdnOptions> configuration)
         {
             _umbracoUrlDeliveryService = umbracoUrlDeliveryService;
             _cdnServices = cdnServices;
             _logger = logger;
             _auditService = auditService;
-            _accessor = accessor;
             _configuration = configuration.CurrentValue;
+            configuration.OnChange((options, name) => { _configuration = options; });
 
         }
 
         public async Task HandleAsync(ContentMovingNotification notification, CancellationToken cancellationToken)
         {
             var pages = new List<string>();
-            var currentUser = _accessor.BackOfficeSecurity.CurrentUser;
             foreach (var content in notification.MoveInfoCollection)
             {
-                pages.AddRange(GetPages(content.Entity));
+                pages.AddRange(await GetPages(content.Entity));
             }
 
             //todo: optimize as now we dont valide which domains is valid for either of cdns
@@ -86,14 +84,12 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
             }
         }
 
-        private List<string> GetPages(IContent content)
+        private async Task<List<string>> GetPages(IContent content)
         {
-            var currentUser = _accessor.BackOfficeSecurity.CurrentUser;
             var pages = new List<string>();
             if (_configuration.Auditing)
             {
-                _auditService.Add(AuditType.Custom, currentUser.Id, content.Id, "CDN Refresh",
-                    $"CDN cache was purged", $"CDN cache purged");
+             await _auditService.LogRefresh( content.Id);
             }
 
             pages.AddRange(_umbracoUrlDeliveryService.GetUrlsByContent(content));
@@ -110,7 +106,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
 
             foreach (var content in notification.DeletedEntities)
             {
-                pages.AddRange(GetPages(content));
+                pages.AddRange(await GetPages(content));
             }
 
             //todo: optimize as now we dont valide which domains is valid for either of cdns
@@ -157,7 +153,6 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
 
         public async Task HandleAsync(ContentUnpublishedNotification notification, CancellationToken cancellationToken)
         {
-            var currentUser = _accessor.BackOfficeSecurity.CurrentUser;
             if (!notification.State.ContainsKey("purgedUrls"))
             {
                 return;
@@ -208,12 +203,10 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
 
         public async Task HandleAsync(ContentPublishedNotification notification, CancellationToken cancellationToken)
         {
-            var currentUser = _accessor.BackOfficeSecurity.CurrentUser;
-
             var pages = new List<string>();
             foreach (var content in notification.PublishedEntities)
             {
-                pages.AddRange(GetPages(content));
+                pages.AddRange(await GetPages(content));
             }
 
             try
@@ -261,7 +254,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
             var pages = new List<string>();
             foreach (var content in notification.UnpublishedEntities)
             {
-                pages.AddRange(GetPages(content));
+                pages.AddRange(await GetPages(content));
             }
 
             notification.State["purgedUrls"] = pages;
@@ -271,15 +264,14 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
         {
             try
             {
-                var currentUser = _accessor.BackOfficeSecurity.CurrentUser;
-                var pages = new List<string>();
+              var pages = new List<string>();
 
 
                 foreach (var content in notification.PublishedEntities)
                 {
                     if (content.Published)
                     {
-                        pages.AddRange(GetPages(content));
+                        pages.AddRange(await GetPages(content));
                     }
                 }
 
@@ -299,15 +291,12 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
 
             try
             {
-                var currentUser = _accessor.BackOfficeSecurity.CurrentUser;
                 var pages = new List<string>();
-
-
-                foreach (var content in notification.SavedEntities)
+                   foreach (var content in notification.SavedEntities)
                 {
                     if (content.Published)
                     {
-                        pages.AddRange(GetPages(content));
+                        pages.AddRange(await GetPages(content));
                     }
                 }
 

@@ -20,7 +20,8 @@ angular.module('umbraco')
 
             var wrapper = document.querySelector("#refreshNodeModalWrapper");
             var todo = document.createElement("content-app-cdn-node");
-            todo.setAttribute("node-id", $scope.nodeId);
+            todo.setAttribute("nodeId", vm.nodeId);
+            todo.setAttribute("node-id", vm.nodeId);
             wrapper.appendChild(todo);
 
         });

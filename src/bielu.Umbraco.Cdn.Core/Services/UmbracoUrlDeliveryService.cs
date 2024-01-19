@@ -60,6 +60,15 @@ namespace bielu.Umbraco.Cdn.Core.Services
                 urls.AddRange(BuildDomainUrls(new List<string>() { url }, GetDomains(content)));
             }
 
+            if (includeDescendants)
+            {
+                foreach (var contentChild in content.Children)
+                {
+                    urls.AddRange(GetUrlsByContent(contentChild, includeDescendants, includeReferences));
+
+                }
+            }
+
             return urls;
         }
 

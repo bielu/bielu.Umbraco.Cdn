@@ -39,11 +39,18 @@ public class BieluCdnManagmentController : UmbracoApiController
         optionsMonitor.OnChange((options, name) => { _optionsMonitor = options; });
     }
 
-    public async Task<IEnumerable<AuditRecord>> GetAuditHistory()
+    public async Task<IEnumerable<AuditRecord>?> GetAuditHistory()
     {
         return await _auditService.GetAllRecords();
     }
-
+    public async Task<IEnumerable<AuditRecord>?> GetAllRecords(int id)
+    {
+        return await _auditService.GetAllRecords(id);
+    }
+    public async Task<AuditRecord?> GetLastLog(int id)
+    {
+        return await _auditService.GetLastRecord(id);
+    }
     public async Task<IEnumerable<Provider>> GetProviders(int id = -1)
     {
         return await _manager.GetProviders(id);
@@ -82,11 +89,15 @@ public class BieluCdnManagmentController : UmbracoApiController
             var content = contextReference.UmbracoContext.Content.GetById(id);
 
             var urls = _urlDeliveryService.GetUrlsByContent(content, descandants, references);
+        
             if (_optionsMonitor.ReferencePurge && references)
             {
                 urls.AddRange(_urlDeliveryService.GetUrlsByReferences(content));
             }
-
+            if (_optionsMonitor.Auditing)
+            {
+                await _auditService.LogRefresh( content.Id,descandants, references);
+            }
             if (!string.IsNullOrEmpty(providerId))
             {
                 var service = await _manager.GetService(providerId);
