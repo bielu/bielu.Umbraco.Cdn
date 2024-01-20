@@ -12,3 +12,5 @@ This document is in progress. It might change overtime, so please check it from 
 ![image_1.png](image_1.png)
 ### Action menu
 ![image_3.png](image_3.png)
+### Content App
+![image_4.png](image_4.png)
