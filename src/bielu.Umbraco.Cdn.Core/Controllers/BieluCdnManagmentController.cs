@@ -101,7 +101,7 @@ public class BieluCdnManagmentController : UmbracoApiController
             if (!string.IsNullOrEmpty(providerId))
             {
                 var service = await _manager.GetService(providerId);
-                statuses.AddRange(await service.PurgePages(urls));
+                statuses.AddRange(await service.PurgePages(urls.Where(x=>x.Contains(domain))));
                 return statuses.Merge();
             }
 
@@ -114,7 +114,15 @@ public class BieluCdnManagmentController : UmbracoApiController
 
         return statuses.Merge();
     }
+    public async Task<Status> RefreshForProvider(string providerId)
+    {
+        List<Status> statuses = new List<Status>();
+        var service = await _manager.GetService(providerId);
+        
+            statuses.AddRange(await service.PurgeAll());
 
+        return statuses.Merge();
+    }
     public async Task<Status> RefreshAll()
     {
         List<Status> statuses = new List<Status>();

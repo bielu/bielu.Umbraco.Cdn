@@ -110,7 +110,7 @@ export default defineComponent({
           </uui-tag>
           Last refreshed: {{ lastAuditRecord.date }}
           <div class="spacer"></div>
-          <uui-button type="" look="primary" style="" v-bind:label=" this.ShowOperationList ? 'Hide history' : 'Show History'"  @click="LoadAllLogs"></uui-button>
+          <uui-button type="" look="primary" style="" v-bind:label="ShowOperationList ? 'Hide history' : 'Show History'"  @click="LoadAllLogs"></uui-button>
 
 
         </uui-card-content-node>

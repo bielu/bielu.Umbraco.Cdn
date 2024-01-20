@@ -58,7 +58,7 @@ public class CdnAuditService : ICdnAuditService
             records.Add(new AuditRecord()
             {
                 IsFromProvider = true,
-                Date = auditItem.UpdateDate.ToString("f"),
+                Date = auditItem.UpdateDate,
                 Message = auditItem.Comment,
                 Username = _userDataService.GetUserById(auditItem.UserId).Username
             });
@@ -83,7 +83,7 @@ public class CdnAuditService : ICdnAuditService
             records.Add(new AuditRecord()
             {
                 IsFromProvider = true,
-                Date = auditItem.UpdateDate.ToString("f"),
+                Date = auditItem.UpdateDate,
                 Message = auditItem.Comment,
                 Username = _userDataService.GetUserById(auditItem.UserId).Username
             });
@@ -108,7 +108,7 @@ public class CdnAuditService : ICdnAuditService
                 return new AuditRecord()
                 {
                     IsFromProvider = false,
-                    Date = item.UpdateDate.ToString("f"),
+                    Date = item.UpdateDate,
                     Username = _userDataService.GetUserById(item.CreatorId).Username,
                     Message = $"No purges from provider for node with id={id}",
                 };
@@ -118,7 +118,7 @@ public class CdnAuditService : ICdnAuditService
         return new AuditRecord()
         {
          IsFromProvider   = true,
-            Date = log.CreateDate.ToString("f"),
+            Date = log.CreateDate,
             Message = log.Comment,
             Username = _userDataService.GetUserById(log.UserId).Username
         };

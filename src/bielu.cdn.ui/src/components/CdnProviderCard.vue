@@ -3,7 +3,7 @@ import '@umbraco-ui/uui-button';
 import '@umbraco-ui/uui-select';
 import '@umbraco-ui/uui-loader-bar';
 import {serviceContainer} from "../Services/service-container";
-import {Provider} from "../Services/umbraco/generated/api.generated.clients";
+import {Provider, Status} from "../Services/umbraco/generated/api.generated.clients";
 import {defineComponent} from 'vue'
 
 export default defineComponent({
@@ -25,6 +25,12 @@ export default defineComponent({
       default: -1,
     },
   },
+  emits: {
+    refrehsnodesubmit: (result:Status) => {
+      console.log(result);
+      return true;
+    },
+  },
   setup(props) {
     // named, returns classes for <style module="classes">
 
@@ -32,18 +38,21 @@ export default defineComponent({
   },
   methods: {
     async refreshProvider(provider: Provider) {
-      console.log(provider)
+      var service = serviceContainer.managmentApiClient;
+      service.refreshForNode(this.nodeId, false, false, provider.id).then((result: any) => {
+        this.$emit("refrehsnodesubmit", (result as Status))
+      });
     },
     async refreshDomain(domain: string, provider: Provider) {
       var service = serviceContainer.managmentApiClient;
       if (this.nodeId == -1) {
         service.refreshDomain(provider.id, domain).then((result: any) => {
-          console.log(result);
+          this.$emit("refrehsnodesubmit", (result as Status))
         });
         return;
       }
       service.refreshForNode(this.nodeId, false, false, provider.id, domain).then((result: any) => {
-        console.log(result);
+        this.$emit("refrehsnodesubmit", (result as Status))
       });
     },
   }
