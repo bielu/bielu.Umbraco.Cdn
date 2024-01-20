@@ -12,11 +12,21 @@ import * as moment from 'moment';
 
 export interface IManagementClient {
 
-    getAuditHistory(): Promise<AuditRecord[] | null>;
+    getAuditHistory(): Promise<(AuditRecord | null)[]>;
+
+    getAllRecords(id: number): Promise<(AuditRecord | null)[]>;
+
+    getLastLog(id: number): Promise<AuditRecord>;
 
     getProviders(id?: number | undefined): Promise<Provider[] | null>;
 
+    refreshDomain(providerId?: string | undefined, domain?: string | undefined): Promise<Status | null>;
+
     refreshForNode(id: number, descandants: boolean, references: boolean, providerId?: string | undefined, domain?: string | undefined): Promise<Status | null>;
+
+    refreshForProvider(providerId: string): Promise<Status | null>;
+
+    refreshAll(): Promise<Status | null>;
 }
 
 export class ManagementClient implements IManagementClient {
@@ -29,7 +39,7 @@ export class ManagementClient implements IManagementClient {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    getAuditHistory(): Promise<AuditRecord[] | null> {
+    getAuditHistory(): Promise<(AuditRecord | null)[]> {
         let url_ = this.baseUrl + "/cdn/api/management/GetAuditHistory";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -45,7 +55,7 @@ export class ManagementClient implements IManagementClient {
         });
     }
 
-    protected processGetAuditHistory(response: Response): Promise<AuditRecord[] | null> {
+    protected processGetAuditHistory(response: Response): Promise<(AuditRecord | null)[]> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         let _mappings: { source: any, target: any }[] = [];
@@ -68,7 +78,92 @@ export class ManagementClient implements IManagementClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<AuditRecord[] | null>(null as any);
+        return Promise.resolve<(AuditRecord | null)[]>(null as any);
+    }
+
+    getAllRecords(id: number): Promise<(AuditRecord | null)[]> {
+        let url_ = this.baseUrl + "/cdn/api/management/GetAllRecords?";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined and cannot be null.");
+        else
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processGetAllRecords(_response);
+        });
+    }
+
+    protected processGetAllRecords(response: Response): Promise<(AuditRecord | null)[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        let _mappings: { source: any, target: any }[] = [];
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(AuditRecord.fromJS(item, _mappings));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<(AuditRecord | null)[]>(null as any);
+    }
+
+    getLastLog(id: number): Promise<AuditRecord> {
+        let url_ = this.baseUrl + "/cdn/api/management/GetLastLog?";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined and cannot be null.");
+        else
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processGetLastLog(_response);
+        });
+    }
+
+    protected processGetLastLog(response: Response): Promise<AuditRecord> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        let _mappings: { source: any, target: any }[] = [];
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver);
+            result200 = AuditRecord.fromJS(resultData200, _mappings);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<AuditRecord>(null as any);
     }
 
     getProviders(id?: number | undefined): Promise<Provider[] | null> {
@@ -115,6 +210,49 @@ export class ManagementClient implements IManagementClient {
             });
         }
         return Promise.resolve<Provider[] | null>(null as any);
+    }
+
+    refreshDomain(providerId?: string | undefined, domain?: string | undefined): Promise<Status | null> {
+        let url_ = this.baseUrl + "/cdn/api/management/RefreshDomain?";
+        if (providerId === null)
+            throw new Error("The parameter 'providerId' cannot be null.");
+        else if (providerId !== undefined)
+            url_ += "providerId=" + encodeURIComponent("" + providerId) + "&";
+        if (domain === null)
+            throw new Error("The parameter 'domain' cannot be null.");
+        else if (domain !== undefined)
+            url_ += "domain=" + encodeURIComponent("" + domain) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processRefreshDomain(_response);
+        });
+    }
+
+    protected processRefreshDomain(response: Response): Promise<Status | null> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        let _mappings: { source: any, target: any }[] = [];
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? Status.fromJS(resultData200, _mappings) : <any>null;
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<Status | null>(null as any);
     }
 
     refreshForNode(id: number, descandants: boolean, references: boolean, providerId?: string | undefined, domain?: string | undefined): Promise<Status | null> {
@@ -171,9 +309,84 @@ export class ManagementClient implements IManagementClient {
         }
         return Promise.resolve<Status | null>(null as any);
     }
+
+    refreshForProvider(providerId: string): Promise<Status | null> {
+        let url_ = this.baseUrl + "/cdn/api/management/RefreshForProvider?";
+        if (providerId === undefined || providerId === null)
+            throw new Error("The parameter 'providerId' must be defined and cannot be null.");
+        else
+            url_ += "providerId=" + encodeURIComponent("" + providerId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processRefreshForProvider(_response);
+        });
+    }
+
+    protected processRefreshForProvider(response: Response): Promise<Status | null> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        let _mappings: { source: any, target: any }[] = [];
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? Status.fromJS(resultData200, _mappings) : <any>null;
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<Status | null>(null as any);
+    }
+
+    refreshAll(): Promise<Status | null> {
+        let url_ = this.baseUrl + "/cdn/api/management/RefreshAll";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processRefreshAll(_response);
+        });
+    }
+
+    protected processRefreshAll(response: Response): Promise<Status | null> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        let _mappings: { source: any, target: any }[] = [];
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? Status.fromJS(resultData200, _mappings) : <any>null;
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<Status | null>(null as any);
+    }
 }
 
 export class AuditRecord implements IAuditRecord {
+    isFromProvider!: boolean;
     name!: string | null;
     date!: moment.Moment;
     message!: string | null;
@@ -191,6 +404,7 @@ export class AuditRecord implements IAuditRecord {
 
     init(_data?: any, _mappings?: any) {
         if (_data) {
+            this.isFromProvider = _data["isFromProvider"] !== undefined ? _data["isFromProvider"] : <any>null;
             this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
             this.date = _data["date"] ? moment.parseZone(_data["date"].toString()) : <any>null;
             this.message = _data["message"] !== undefined ? _data["message"] : <any>null;
@@ -206,6 +420,7 @@ export class AuditRecord implements IAuditRecord {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["isFromProvider"] = this.isFromProvider !== undefined ? this.isFromProvider : <any>null;
         data["name"] = this.name !== undefined ? this.name : <any>null;
         data["date"] = this.date ? this.date.toISOString(true) : <any>null;
         data["message"] = this.message !== undefined ? this.message : <any>null;
@@ -216,6 +431,7 @@ export class AuditRecord implements IAuditRecord {
 }
 
 export interface IAuditRecord {
+    isFromProvider: boolean;
     name: string | null;
     date: moment.Moment;
     message: string | null;

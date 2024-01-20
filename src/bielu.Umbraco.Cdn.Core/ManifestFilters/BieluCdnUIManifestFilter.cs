@@ -28,6 +28,7 @@ public class BieluCdnUIManifestFilter: IManifestFilter
             {
                 $"/App_Plugins/bielu.cdn.ui/{(_options.DevMode ? "dev-bootstrapper" : "bootstrapper")}.js",
                 "/App_Plugins/bielu.cdn.ui/bielu.cdn.ui.angularController.js",
+                "/App_Plugins/bielu.cdn.ui/bielu.cdn.ui.angularController.contentApp.js",
                 
             }, 
             Version = assembly.GetName()?.Version?.ToString(3) ?? "0.1.0",

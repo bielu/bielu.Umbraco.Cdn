@@ -28,30 +28,60 @@ public class BieluCdnManagmentController : UmbracoApiController
     private BieluCdnOptions _optionsMonitor;
 
     public BieluCdnManagmentController(ICdnManager manager, IUmbracoContextFactory contextFactory,
-        Services.ICdnAuditService auditService, IUmbracoUrlDeliveryService urlDeliveryService, IOptionsMonitor<BieluCdnOptions> optionsMonitor) 
+        Services.ICdnAuditService auditService, IUmbracoUrlDeliveryService urlDeliveryService,
+        IOptionsMonitor<BieluCdnOptions> optionsMonitor)
     {
         _manager = manager;
         _contextFactory = contextFactory;
         _auditService = auditService;
         _urlDeliveryService = urlDeliveryService;
         _optionsMonitor = optionsMonitor.CurrentValue;
-        optionsMonitor.OnChange((options, name) =>
-        {
-            _optionsMonitor = options;
-        });
+        optionsMonitor.OnChange((options, name) => { _optionsMonitor = options; });
     }
 
-    public async Task<IEnumerable<AuditRecord>> GetAuditHistory()
+    public async Task<IEnumerable<AuditRecord>?> GetAuditHistory()
     {
         return await _auditService.GetAllRecords();
     }
-
+    public async Task<IEnumerable<AuditRecord>?> GetAllRecords(int id)
+    {
+        return await _auditService.GetAllRecords(id);
+    }
+    public async Task<AuditRecord?> GetLastLog(int id)
+    {
+        return await _auditService.GetLastRecord(id);
+    }
     public async Task<IEnumerable<Provider>> GetProviders(int id = -1)
     {
         return await _manager.GetProviders(id);
     }
 
-    public async Task<Status> RefreshForNode(int id,bool descandants,bool references, string providerId = null, string domain = null)
+    public async Task<Status> RefreshDomain(string providerId = null, string domain = null)
+    {
+        List<Status> statuses = new List<Status>();
+        using (var contextReference = _contextFactory.EnsureUmbracoContext())
+        {
+            var hostnames = new List<string> { domain };
+
+            if (!string.IsNullOrEmpty(providerId))
+            {
+                var service = await _manager.GetService(providerId);
+                statuses.AddRange(await service.PurgeByAssignedHostnames(hostnames));
+                return statuses.Merge();
+            }
+
+
+            foreach (var service in (await _manager.GetServices()).Where(x => x.IsEnabled()))
+            {
+                statuses.AddRange(await service.PurgeByAssignedHostnames(hostnames));
+            }
+        }
+
+        return statuses.Merge();
+    }
+
+    public async Task<Status> RefreshForNode(int id, bool descandants, bool references, string providerId = null,
+        string domain = null)
     {
         List<Status> statuses = new List<Status>();
         using (var contextReference = _contextFactory.EnsureUmbracoContext())
@@ -59,19 +89,24 @@ public class BieluCdnManagmentController : UmbracoApiController
             var content = contextReference.UmbracoContext.Content.GetById(id);
 
             var urls = _urlDeliveryService.GetUrlsByContent(content, descandants, references);
+        
             if (_optionsMonitor.ReferencePurge && references)
             {
                 urls.AddRange(_urlDeliveryService.GetUrlsByReferences(content));
             }
+            if (_optionsMonitor.Auditing)
+            {
+                await _auditService.LogRefresh( content.Id,descandants, references);
+            }
             if (!string.IsNullOrEmpty(providerId))
             {
                 var service = await _manager.GetService(providerId);
-                statuses.AddRange(await service.PurgePages(urls));
+                statuses.AddRange(await service.PurgePages(urls.Where(x=>x.Contains(domain))));
                 return statuses.Merge();
             }
 
-          
-            foreach (var service in (await _manager.GetServices()).Where(x=>x.IsEnabled()))
+
+            foreach (var service in (await _manager.GetServices()).Where(x => x.IsEnabled()))
             {
                 statuses.AddRange(await service.PurgePages(urls));
             }
@@ -79,5 +114,24 @@ public class BieluCdnManagmentController : UmbracoApiController
 
         return statuses.Merge();
     }
+    public async Task<Status> RefreshForProvider(string providerId)
+    {
+        List<Status> statuses = new List<Status>();
+        var service = await _manager.GetService(providerId);
+        
+            statuses.AddRange(await service.PurgeAll());
 
+        return statuses.Merge();
+    }
+    public async Task<Status> RefreshAll()
+    {
+        List<Status> statuses = new List<Status>();
+
+        foreach (var service in (await _manager.GetServices()).Where(x => x.IsEnabled()))
+        {
+            statuses.AddRange(await service.PurgeAll());
+        }
+
+        return statuses.Merge();
+    }
 }

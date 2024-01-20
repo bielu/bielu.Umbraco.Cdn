@@ -6,9 +6,11 @@ import {serviceContainer} from "../Services/service-container";
 import {Provider} from "../Services/umbraco/generated/api.generated.clients";
 
 import {defineComponent, PropType} from 'vue'
+import CdnProviderCard from "./CdnProviderCard.vue";
 
 export default defineComponent({
-  name: 'CdnDashboard',
+  name: 'umbraco-CdnDashboard',
+  components: {CdnProviderCard},
   mounted: function () {
     console.log("mounted");
     this.fetchData()
@@ -37,14 +39,12 @@ export default defineComponent({
   },
   methods: {
     async refreshAllProviders() {
+      var service = serviceContainer.managmentApiClient;
+      service.refreshAll().then((result: any) => {
+        console.log(result);
+      });
+    },
 
-    },
-    async refreshProvider(provider: Provider) {
-      console.log(provider)
-    },
-    async refreshDomain(domain: string) {
-      console.log(domain)
-    },
   async fetchData() {
     var service = serviceContainer.managmentApiClient;
     service.getProviders().then((result: any) => {
@@ -73,35 +73,7 @@ export default defineComponent({
       />
       <br/>
       <div  class="cdn-provider-list">
-        <uui-card-content-node v-bind:name="provider.name +' '+ provider.version" selectable="false"
-                               v-for="provider in providers" >
-          <uui-tag size="s" slot="tag" color="positive" v-if="provider.enabled">Enabled</uui-tag>
-          <uui-tag size="s" slot="tag" color="danger" v-if="!provider.enabled">Disabled</uui-tag>
-          <uui-button v-if="provider.enabled"
-              look="primary"
-              label="Refresh all pages for this provider"
-              @click="refreshProvider(provider)"
-          />
-          <div v-if="provider.supportedHostnames && provider.enabled">
-            <h2>Domains</h2>
-            <ul style="list-style: none; padding-inline-start: 0px; margin: 0;">
-
-              <li v-for="domain in provider.supportedHostnames">
-                <div class="cdn-provider-domain">
-                  <span>{{ domain }}</span>
-                  <uui-button
-                      look="primary"
-                      label="Refresh all pages for this domain"
-                      @click="refreshDomain(domain)"
-                  />
-                </div>
-              </li>
-            </ul>
-          </div>
-          <div v-if="!provider.enabled">
-            <strong>This provider is disabled, which means that all operation will be ignored.</strong>
-          </div>
-        </uui-card-content-node>
+        <CdnProviderCard v-for="provider in providers" :provider="provider"></CdnProviderCard>
 
       </div>
 
