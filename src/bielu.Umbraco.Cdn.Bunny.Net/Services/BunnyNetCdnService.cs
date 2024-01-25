@@ -1,0 +1,106 @@
+﻿using bielu.Umbraco.Cdn.Akamai.Configuration;
+using bielu.Umbraco.Cdn.Bunny.Net.Api.Interface;
+using bielu.Umbraco.Cdn.Models;
+using bielu.Umbraco.Cdn.Services;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Umbraco.Cms.Core.Models.PublishedContent;
+using Umbraco.Cms.Core.Web;
+using Umbraco.Extensions;
+
+namespace bielu.Umbraco.Cdn.Akamai.Services
+{
+    public class BunnyNetCdnService : ICdnService
+    {
+        private readonly IBunnyNetApiClient _bunnyNetApiClient;
+        private readonly ILogger<BunnyNetCdnService> _logger;
+        private readonly IUmbracoContextFactory _factory;
+        private BunnyNetOptions _options;
+
+        public BunnyNetCdnService(IBunnyNetClientFactory bunnyNetClientFactory, ILogger<BunnyNetCdnService> logger,
+            IOptionsMonitor<BunnyNetOptions> optionsMonitor, IUmbracoContextFactory factory)
+        {
+            _bunnyNetApiClient = bunnyNetClientFactory.CreateBunnyNetApiClient();
+            _logger = logger;
+            _factory = factory;
+            _options = optionsMonitor.CurrentValue;
+            optionsMonitor.OnChange((options, s) => { _options = options; });
+        }
+
+        public bool IsEnabled()
+        {
+            return !_options.Disabled;
+        }
+
+        public async Task<IEnumerable<Status>> PurgePages(IEnumerable<string> urls)
+        {
+            var responses = urls.Select(x=> _bunnyNetApiClient.PurgePublic_IndexAsync(x, _options.AccessKey)).ToList();
+            await Task.WhenAll(responses);
+            return await ParseStatus(responses.Select(x=>x.));
+        }
+
+        private async Task<IEnumerable<Status>> ParseStatus(Response6 response)
+        {
+            var finalResponse = new Status();
+            finalResponse.Success = response.HttpStatus == 201 || response.HttpStatus == 200;
+            finalResponse.Errors = finalResponse.Success
+                ? null
+                : new List<Errors>() { new Errors() { Message = response.Detail } };
+            return new[] { finalResponse };
+        }
+
+        public async Task<IEnumerable<Status>> PurgeAll()
+        {
+            using (var contextReference = _factory.EnsureUmbracoContext())
+            {
+                var domains = contextReference.UmbracoContext.Domains.GetAll(false);
+                return await PurgeByAssignedHostnames(domains.Select(x => x.Name));
+            }
+        }
+
+        public async Task<IEnumerable<Status>> PurgeByAssignedHostnames(IEnumerable<string?> domains)
+        {
+            var statuses = new List<Status>();
+
+            using (var contextReference = _factory.EnsureUmbracoContext())
+            {
+                var umbracoDomains = contextReference.UmbracoContext.Domains.GetAll(false)
+                    .Where(x => domains.Contains(x.Name));
+
+                foreach (var domain in domains)
+                {
+                    var response = await _akamaiCcuClient.PostRequestAsync(new Body()
+                    {
+                        Metadata =
+                            "<?xml version=\\\"1.0\\\"?>\\n <eccu>\\n  " +
+                            "<match:recursive-dirs value=\\\"/\\\">\\n    " +
+                            "     <revalidate>now</revalidate>\\n  " +
+                            " </match:recursive-dirs>\\n</eccu>",
+                        PropertyName = domain,
+                        RequestName = "Invalidate " + domain,
+                    }, _options.SwitchKey);
+                    statuses.Add(await ParseStatus(response));
+                    ;
+                }
+
+
+                return statuses;
+            }
+        }
+
+        private async Task<Status> ParseStatus(Response3 response)
+        {
+            var finalResponse = new Status();
+            finalResponse.Success = response.Status == Response3Status.SUCCEEDED ;
+            finalResponse.Errors = finalResponse.Success
+                ? null
+                : new List<Errors>() { new Errors() { Message = response.ExtendedStatusMessage } };
+            return finalResponse;
+        }
+
+        public async Task<IList<string>> GetSupportedHostnames()
+        {
+            return _options.SupportedHosts; // Akamai does not return a list of supported hosts, so we use configuration instead
+        }
+    }
+}

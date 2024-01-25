@@ -17,3 +17,6 @@ This flag is responsible by enabling / disabling development mode for provider a
 
 ## Umbraco Configuration
 When using provider, it is highly recommend to use Culture and hostnames for each language.  If you don't have hostnames for each language, languages will be send to provider based on umbraco url(https://github.com/umbraco/Umbraco-CMS/blob/2e61d6449ae8e0c837dafa1e93ac950eda36c4f2/src/Umbraco.Web.Common/AspNetCore/AspNetCoreRequestAccessor.cs#L68) and this will cause issues in load balancing scenarios.
+```c#
+```
+{src="../../src/bielu.Umbraco.Cdn.Core/schema/appsettings-schema.bielucdnoptions.json"  }

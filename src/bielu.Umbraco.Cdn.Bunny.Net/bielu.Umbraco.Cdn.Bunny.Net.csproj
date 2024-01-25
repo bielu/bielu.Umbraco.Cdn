@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <IsPackable>true</IsPackable>
@@ -11,7 +11,7 @@
         <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
         <EmbedRazorGenerateSources>true</EmbedRazorGenerateSources>
 
-        <PackageTags>umbraco-marketplace;umbraco;akamai;</PackageTags>
+        <PackageTags>umbraco-marketplace;umbraco;bunny.net;</PackageTags>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="bielu.SchemaGenerator.Core" Version="1.0.0-alpha.50" />
@@ -24,15 +24,15 @@
         <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\bielu.Umbraco.Cdn.Core\bielu.Umbraco.Cdn.Core.csproj" />
+        <ProjectReference Include="..\bielu.Umbraco.Cdn.Core\bielu.Umbraco.Cdn.Core.csproj" />
     </ItemGroup>
 
-    <Target Name="GenerateSdk" BeforeTargets="Build">
+    <Target Name="GenerateBunnyApi" BeforeTargets="Build">
         <PropertyGroup>
-            <OpenAPIDocument>AkamaiFastPurge.json</OpenAPIDocument>
+            <OpenAPIDocument>bunny.net.json</OpenAPIDocument>
             <NSwagConfiguration>nswag.json</NSwagConfiguration>
-            <SdkNamespace>$(RootNamespace).FastPurge</SdkNamespace>       
-            <SdkName>AkamaiFastPurge</SdkName>
+            <SdkNamespace>$(RootNamespace).Api</SdkNamespace>
+            <SdkName>BunnyNetApi</SdkName>
             <GeneratedInterfaceFile>$(SdkName).Interface.g.cs</GeneratedInterfaceFile>
             <GeneratedServiceFile>$(SdkName).Service.g.cs</GeneratedServiceFile>
 
@@ -41,12 +41,26 @@
         <Error Text="The NSwag configuration '$(NSwagConfiguration)' does not exists!" Condition="!Exists('$(NSwagConfiguration)')" />
         <Exec Command="$(NSwagExe_Net60) run $(NSwagConfiguration) /variables:Configuration=$(Configuration),InputDocument=$(OpenAPIDocument),SdkName=$(SdkName),SdkNamespace=$(SdkNamespace),GeneratedClientFile=$(GeneratedServiceFile),GeneratedContractFile=$(GeneratedInterfaceFile)" />
     </Target>
-    <Target Name="GenerateCCUSdk" BeforeTargets="Build">
+    <Target Name="GenerateBunnyEdgeApi" BeforeTargets="Build">
         <PropertyGroup>
-            <OpenAPIDocument>AkamaieCcu.json</OpenAPIDocument>
+            <OpenAPIDocument>bunny.net.edge.json</OpenAPIDocument>
             <NSwagConfiguration>nswag.json</NSwagConfiguration>
             <SdkNamespace>$(RootNamespace).CCU</SdkNamespace>
-            <SdkName>AkamaiCcu</SdkName>
+            <SdkName>BunnyNetEdgeApi</SdkName>
+            <GeneratedInterfaceFile>$(SdkName).Interface.g.cs</GeneratedInterfaceFile>
+            <GeneratedServiceFile>$(SdkName).Service.g.cs</GeneratedServiceFile>
+
+        </PropertyGroup>
+        <Error Text="The OpenAPI document '$(OpenAPIDocument)' does not exists!" Condition="!Exists('$(OpenAPIDocument)')" />
+        <Error Text="The NSwag configuration '$(NSwagConfiguration)' does not exists!" Condition="!Exists('$(NSwagConfiguration)')" />
+        <Exec Command="$(NSwagExe_Net60) run $(NSwagConfiguration) /variables:Configuration=$(Configuration),InputDocument=$(OpenAPIDocument),SdkName=$(SdkName),SdkNamespace=$(SdkNamespace),GeneratedClientFile=$(GeneratedServiceFile),GeneratedContractFile=$(GeneratedInterfaceFile)" />
+    </Target>
+    <Target Name="GenerateBunnyStreamApi" BeforeTargets="Build">
+        <PropertyGroup>
+            <OpenAPIDocument>bunny.net.stream.json</OpenAPIDocument>
+            <NSwagConfiguration>nswag.json</NSwagConfiguration>
+            <SdkNamespace>$(RootNamespace).CCU</SdkNamespace>
+            <SdkName>BunnyNetStreamApi</SdkName>
             <GeneratedInterfaceFile>$(SdkName).Interface.g.cs</GeneratedInterfaceFile>
             <GeneratedServiceFile>$(SdkName).Service.g.cs</GeneratedServiceFile>
 

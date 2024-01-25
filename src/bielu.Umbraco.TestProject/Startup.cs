@@ -74,7 +74,7 @@ namespace bielu.Umbraco.TestProject
 
                 // Add web UIs to interact with the document
                 // Available at: http://localhost:<port>/swagger
-                app.UseSwaggerUi3();
+                app.UseSwaggerUi();
             }
 
             app.UseUmbraco()
