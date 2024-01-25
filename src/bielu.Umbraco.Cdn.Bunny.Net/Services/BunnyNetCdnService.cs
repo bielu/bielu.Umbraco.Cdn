@@ -34,19 +34,27 @@ namespace bielu.Umbraco.Cdn.Akamai.Services
 
         public async Task<IEnumerable<Status>> PurgePages(IEnumerable<string> urls)
         {
-            var responses = urls.Select(x=> _bunnyNetApiClient.PurgePublic_IndexAsync(x, _options.AccessKey)).ToList();
-            await Task.WhenAll(responses);
-            return await ParseStatus(responses.Select(x=>x.));
-        }
+            var errors = new List<Errors>();
+            foreach (var VARIABLE in urls)
+            {
+                try
+                {
+                    await _bunnyNetApiClient.PurgePublic_IndexAsync(VARIABLE, null,null,true);
 
-        private async Task<IEnumerable<Status>> ParseStatus(Response6 response)
-        {
-            var finalResponse = new Status();
-            finalResponse.Success = response.HttpStatus == 201 || response.HttpStatus == 200;
-            finalResponse.Errors = finalResponse.Success
-                ? null
-                : new List<Errors>() { new Errors() { Message = response.Detail } };
-            return new[] { finalResponse };
+                }catch(Exception e)
+                {
+                    _logger.LogError(e, "Failed to purge page {url}", VARIABLE);
+                    errors.Add(new Errors() {Message = e.Message});
+                }
+            }
+            return new List<Status>()
+            {
+                new Status()
+                {
+                    Success = errors.Count == 0,
+                    Errors = errors
+                }
+            };
         }
 
         public async Task<IEnumerable<Status>> PurgeAll()
@@ -64,43 +72,27 @@ namespace bielu.Umbraco.Cdn.Akamai.Services
 
             using (var contextReference = _factory.EnsureUmbracoContext())
             {
-                var umbracoDomains = contextReference.UmbracoContext.Domains.GetAll(false)
-                    .Where(x => domains.Contains(x.Name));
-
-                foreach (var domain in domains)
-                {
-                    var response = await _akamaiCcuClient.PostRequestAsync(new Body()
-                    {
-                        Metadata =
-                            "<?xml version=\\\"1.0\\\"?>\\n <eccu>\\n  " +
-                            "<match:recursive-dirs value=\\\"/\\\">\\n    " +
-                            "     <revalidate>now</revalidate>\\n  " +
-                            " </match:recursive-dirs>\\n</eccu>",
-                        PropertyName = domain,
-                        RequestName = "Invalidate " + domain,
-                    }, _options.SwitchKey);
-                    statuses.Add(await ParseStatus(response));
-                    ;
-                }
+             
 
 
                 return statuses;
             }
         }
 
-        private async Task<Status> ParseStatus(Response3 response)
-        {
-            var finalResponse = new Status();
-            finalResponse.Success = response.Status == Response3Status.SUCCEEDED ;
-            finalResponse.Errors = finalResponse.Success
-                ? null
-                : new List<Errors>() { new Errors() { Message = response.ExtendedStatusMessage } };
-            return finalResponse;
-        }
 
         public async Task<IList<string>> GetSupportedHostnames()
         {
-            return _options.SupportedHosts; // Akamai does not return a list of supported hosts, so we use configuration instead
+            var response = (await _bunnyNetApiClient.PullZonePublic_IndexAsync(0, 1000,null,true));
+            var items = response.Items.ToList();
+            var hasNext = response.HasMoreItems;
+            while (hasNext)
+            {
+                response = (await _bunnyNetApiClient.PullZonePublic_IndexAsync(items.Count, 1000,null,true));
+                items.AddRange(response.Items);
+                hasNext = response.HasMoreItems;
+            }
+          
+            return items.SelectMany(x => x.Hostnames).Select(x=>x.Value).ToList();
         }
     }
 }
