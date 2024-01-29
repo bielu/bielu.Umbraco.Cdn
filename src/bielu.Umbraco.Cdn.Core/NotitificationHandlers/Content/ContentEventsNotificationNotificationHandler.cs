@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using bielu.Umbraco.Cdn.Core.Configuration;
+using bielu.Umbraco.Cdn.Core.Logging;
 using bielu.Umbraco.Cdn.Core.Services;
 using bielu.Umbraco.Cdn.Services;
 using Lucene.Net.Util;
@@ -47,7 +48,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
 
         public async Task HandleAsync(ContentMovingNotification notification, CancellationToken cancellationToken)
         {
-            var pages = new List<string>();
+            var pages = new List<string?>();
             foreach (var content in notification.MoveInfoCollection)
             {
                 pages.AddRange(await GetPages(content.Entity));
@@ -65,7 +66,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
                     {
                         if (resultStatus.MessageType == EventMessageType.Error)
                         {
-                            _logger.LogError(resultStatus.Exception, resultStatus.Message);
+                            _logger.LogErrors(resultStatus.Exception, resultStatus.Message);
                             errors = true;
                         }
                     }
@@ -102,7 +103,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
         }
         public async Task HandleAsync(ContentDeletingNotification notification, CancellationToken cancellationToken)
         {
-            var pages = new List<string>();
+            var pages = new List<string?>();
 
             foreach (var content in notification.DeletedEntities)
             {
@@ -123,11 +124,11 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
                     {
                         if (resultStatus.MessageType == EventMessageType.Error)
                         {
-                            _logger.LogError(resultStatus.Exception, resultStatus.Message);
+                            _logger.LogErrors(resultStatus.Exception, resultStatus.Message);
                         }
                         else
                         {
-                            _logger.LogInformation(resultStatus.Message);
+                            _logger.LogInfo(resultStatus.Message);
                         }
                     }
 
@@ -146,7 +147,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
                 }
                 catch (Exception e)
                 {
-                    _logger.LogError(e, "Exception on sending request to api");
+                    _logger.LogErrors(e, "Exception on sending request to api");
                 }
             }
         }
@@ -173,11 +174,11 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
                     {
                         if (resultStatus.MessageType == EventMessageType.Error)
                         {
-                            _logger.LogError(resultStatus.Exception, resultStatus.Message);
+                            _logger.LogErrors(resultStatus.Exception, resultStatus.Message);
                         }
                         else
                         {
-                            _logger.LogInformation(resultStatus.Message);
+                            _logger.LogInfo(resultStatus.Message);
                         }
                     }
 
@@ -196,14 +197,14 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
                 }
                 catch (Exception e)
                 {
-                    _logger.LogError(e, "Exception on sending request to api");
+                    _logger.LogErrors(e, "Exception on sending request to api");
                 }
             }
         }
 
         public async Task HandleAsync(ContentPublishedNotification notification, CancellationToken cancellationToken)
         {
-            var pages = new List<string>();
+            var pages = new List<string?>();
             foreach (var content in notification.PublishedEntities)
             {
                 pages.AddRange(await GetPages(content));
@@ -221,11 +222,11 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
                     {
                         if (resultStatus.MessageType == EventMessageType.Error)
                         {
-                            _logger.LogError(resultStatus.Exception, resultStatus.Message);
+                            _logger.LogErrors(resultStatus.Exception, resultStatus.Message);
                         }
                         else
                         {
-                            _logger.LogInformation(resultStatus.Message);
+                            _logger.LogInfo(resultStatus.Message);
                         }
                     }
 
@@ -245,7 +246,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "failed on handling publish ");
+                _logger.LogErrors(e, "failed on handling publish ");
             }
         }
 
@@ -291,7 +292,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
 
             try
             {
-                var pages = new List<string>();
+                var pages = new List<string?>();
                    foreach (var content in notification.SavedEntities)
                 {
                     if (content.Published)
@@ -309,11 +310,11 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
                     {
                         if (resultStatus.MessageType == EventMessageType.Error)
                         {
-                            _logger.LogError(resultStatus.Exception, resultStatus.Message);
+                            _logger.LogErrors(resultStatus.Exception, resultStatus.Message);
                         }
                         else
                         {
-                            _logger.LogInformation(resultStatus.Message);
+                            _logger.LogInfoWithHeading("Refresh Status",resultStatus.Message);
                         }
                     }
 

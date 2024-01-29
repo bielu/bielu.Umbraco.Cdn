@@ -14,8 +14,8 @@ namespace bielu.Umbraco.Cdn.NginxProxy.Services
 {
     public class NginxProxyClient : INginxProxyClient
     {
-      
-        private async Task<HttpResponseMessage> SendRequest(HttpMethod method, string url, object data)
+
+        private static async Task<HttpResponseMessage> SendRequest(HttpMethod method, string url, object data)
         {
             using (var client = new HttpClient())
             {
@@ -28,14 +28,14 @@ namespace bielu.Umbraco.Cdn.NginxProxy.Services
             }
         }
 
-     
+
 
         public async Task<IEnumerable<Zone>> GetZones(string? domainName = null)
         {
             throw new NotImplementedException("Not implemented yet");
         }
 
-        public async Task<Status> PurgeCache(Zone zone, IEnumerable<string> urls, bool purgeEverything = false)
+        public async Task<Status> PurgeCache(Zone zone, IEnumerable<string?> urls, bool purgeEverything = false)
         {
             throw new NotImplementedException("Not implemented yet");
         }

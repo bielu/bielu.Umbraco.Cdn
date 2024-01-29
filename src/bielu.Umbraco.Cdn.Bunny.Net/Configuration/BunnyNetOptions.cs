@@ -9,9 +9,7 @@ public class BunnyNetOptions : ConfigurationBaseOptions
 {
     [SchemaPrefix]
     [JsonIgnore]
-    public static string SectionName = $"{CdnConstants.CdnConfigSectionName}:Bunny:Net";
-
-    public List<string> SupportedHosts { get; set; } = new List<string>();
+    public static readonly string SectionName = $"{CdnConstants.CdnConfigSectionName}:Bunny:Net";
     public string SwitchKey { get; set; }
     public string? AccessKey { get; set; }
 }

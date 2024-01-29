@@ -1,0 +1,5 @@
+<Project>
+	<ItemGroup>
+		<UmbracoJsonSchemaFiles Include="$(MSBuildThisFileDirectory)..\Schema\appsettings-schema.BunnyNetOptions.json"  />
+	</ItemGroup>
+</Project>

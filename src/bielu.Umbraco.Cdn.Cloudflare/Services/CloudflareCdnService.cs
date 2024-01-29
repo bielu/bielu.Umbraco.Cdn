@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using bielu.Umbraco.Cdn.Cloudflare.Configuration;
+using bielu.Umbraco.Cdn.Core.Logging;
 using bielu.Umbraco.Cdn.Models;
 using bielu.Umbraco.Cdn.Services;
 using Microsoft.Extensions.Logging;
@@ -30,7 +31,7 @@ namespace bielu.Umbraco.Cdn.Cloudflare.Services
         {
             return !_options.Disabled;
         }
-        public async Task<IEnumerable<Status>> PurgePages(IEnumerable<string> urls)
+        public async Task<IEnumerable<Status>> PurgePages(IEnumerable<string?> urls)
         {
             var zones = (await _cloudflare.GetZones());
             var statuses = new List<Status>();
@@ -41,7 +42,7 @@ namespace bielu.Umbraco.Cdn.Cloudflare.Services
                 if(!requestUrls.Any()) continue;
                 var request = await _cloudflare.PurgeCache(domain,
                     requestUrls);
-                _logger.LogInformation("Cache refreshed, domains: {urls} for zone(id: {id}): {name}", string.Join(",",requestUrls),domain.Id,domain.Name);
+                _logger.LogInfo($"Cache refreshed, domains: {string.Join(",",requestUrls)} for zone(id: {domain.Id}): {domain.Name}");
                 statuses.Add( request);
             }
             return statuses;

@@ -18,6 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "configuration", "configurat
 	ProjectSection(SolutionItems) = preProject
 		directory.build.props = directory.build.props
 		..\version.props = ..\version.props
+		..\.editorconfig = ..\.editorconfig
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bielu.Umbraco.Cdn.AuthenticationProvider", "bielu.Umbraco.Cdn.AuthenticationProvider\bielu.Umbraco.Cdn.AuthenticationProvider.csproj", "{D374E000-BB1C-40D4-AE85-BE23D3D9E8F4}"

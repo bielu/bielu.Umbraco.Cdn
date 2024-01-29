@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using bielu.Umbraco.Cdn.Core.Logging;
 using bielu.Umbraco.Cdn.Core.Services;
 using bielu.Umbraco.Cdn.Services;
 using Microsoft.Extensions.Logging;
@@ -42,7 +43,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Domain
                     notification.Messages.Add(message);
                     if (resultStatus.MessageType == EventMessageType.Error)
                     {
-                        _logger.LogError(resultStatus.Exception, resultStatus.Message);
+                        _logger.LogErrors(resultStatus.Exception, resultStatus.Message);
                     }
                 }
             }
@@ -56,14 +57,14 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Domain
             {
                 //todo: split on / as umbraco is dump to count / as part of domain
                 var result = await cdnServices.PurgeByAssignedHostnames(
-                        notification.DeletedEntities.Select(x => x.DomainName)); 
+                        notification.DeletedEntities.Select(x => x.DomainName));
                 foreach (var resultStatus in result)
                 {
                     var message = new EventMessage("CDN", resultStatus.Message, resultStatus.MessageType ?? EventMessageType.Warning);
                     notification.Messages.Add(message);
                     if (resultStatus.MessageType == EventMessageType.Error)
                     {
-                        _logger.LogError(resultStatus.Exception, resultStatus.Message);
+                        _logger.LogErrors(resultStatus.Exception, resultStatus.Message);
                     }
                 }
             }

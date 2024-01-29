@@ -14,7 +14,7 @@
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="AWSSDK.CloudFront" Version="3.7.301.21" />
-        <PackageReference Include="bielu.SchemaGenerator.Core" Version="1.0.0-alpha.50" />
+        <PackageReference Include="bielu.SchemaGenerator.Core" Version="1.0.1-beta.638420568066212877" />
         <PackageReference Include="Scrutor" Version="3.3.0"/>
         <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0"/>
         <PackageReference Include="Umbraco.Cms.Core" Version="10.7.0" />

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using bielu.Umbraco.Cdn.Core.Helpers;
+using bielu.Umbraco.Cdn.Core.Logging;
 using bielu.Umbraco.Cdn.Services;
 using Microsoft.Extensions.Logging;
 using Umbraco.Cms.Core.Events;
@@ -41,11 +42,11 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Media
             _accessor = accessor;
         }
 
-       
+
         public async Task HandleAsync(MediaSavedNotification notification, CancellationToken cancellationToken)
         {
             var domains = GetDomains();
-            var nodesToRefresh = new List<string>();
+            var nodesToRefresh = new List<string?>();
            using (var context = _context.EnsureUmbracoContext().UmbracoContext){
                var currentUser = _accessor.BackOfficeSecurity.CurrentUser;
 
@@ -63,7 +64,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Media
                     {
                         nodesToRefresh.Add($"{(domain.Contains("http")? "": "https://")}{host.Value}");
                     }
-                   
+
                 }
                 //todo: optimize as now we dont valide which domains is valid for either of cdns
                 foreach (var cdnServices in _cdnServices.Where(x=>x.IsEnabled()))
@@ -78,11 +79,11 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Media
                         notification.Messages.Add(message);
                         if (resultStatus.MessageType == EventMessageType.Error)
                         {
-                            _logger.LogError(resultStatus.Exception, resultStatus.Message);
+                            _logger.LogErrors(resultStatus.Exception, resultStatus.Message);
                         }
                         if (resultStatus.MessageType == EventMessageType.Info)
                         {
-                            _logger.LogInformation(resultStatus.Message);
+                            _logger.LogInfo(resultStatus.Message);
                         }
                     }
                 }}
@@ -93,7 +94,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Media
         {
             var cleanedDomains = new List<string>();
             var domains = _domainService.GetAll(false);
-            
+
             foreach (var domain in domains)
             {
                 var domainName = domain.DomainName;

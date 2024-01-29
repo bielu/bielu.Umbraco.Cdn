@@ -14,7 +14,7 @@
         <PackageTags>umbraco-marketplace;umbraco;akamai;</PackageTags>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="bielu.SchemaGenerator.Core" Version="1.0.0-alpha.50" />
+        <PackageReference Include="bielu.SchemaGenerator.Core" Version="1.0.1-beta.638420568066212877" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="NSwag.MSBuild" Version="14.0.2">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

@@ -1,5 +1,6 @@
 ﻿using bielu.Umbraco.Cdn.Akamai.Configuration;
 using bielu.Umbraco.Cdn.Bunny.Net.Api.Interface;
+using bielu.Umbraco.Cdn.Core.Logging;
 using bielu.Umbraco.Cdn.Models;
 using bielu.Umbraco.Cdn.Services;
 using Microsoft.Extensions.Logging;
@@ -32,18 +33,18 @@ namespace bielu.Umbraco.Cdn.Akamai.Services
             return !_options.Disabled;
         }
 
-        public async Task<IEnumerable<Status>> PurgePages(IEnumerable<string> urls)
+        public async Task<IEnumerable<Status>> PurgePages(IEnumerable<string?> urls)
         {
             var errors = new List<Errors>();
-            foreach (var VARIABLE in urls)
+            foreach (var url in urls)
             {
                 try
                 {
-                    await _bunnyNetApiClient.PurgePublic_IndexAsync(VARIABLE, null,null,true);
+                    await _bunnyNetApiClient.PurgePublic_IndexAsync(url, null,null,true);
 
                 }catch(Exception e)
                 {
-                    _logger.LogError(e, "Failed to purge page {url}", VARIABLE);
+                    _logger.LogErrors(e, $"Failed to purge page {url}");
                     errors.Add(new Errors() {Message = e.Message});
                 }
             }
@@ -72,7 +73,7 @@ namespace bielu.Umbraco.Cdn.Akamai.Services
 
             using (var contextReference = _factory.EnsureUmbracoContext())
             {
-             
+
 
 
                 return statuses;
@@ -91,7 +92,7 @@ namespace bielu.Umbraco.Cdn.Akamai.Services
                 items.AddRange(response.Items);
                 hasNext = response.HasMoreItems;
             }
-          
+
             return items.SelectMany(x => x.Hostnames).Select(x=>x.Value).ToList();
         }
     }
