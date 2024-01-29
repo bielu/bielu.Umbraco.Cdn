@@ -4,6 +4,7 @@ using Azure.ResourceManager.FrontDoor.Models;
 using bielu.Umbraco.Cdn.Azure.Common.Models;
 using bielu.Umbraco.Cdn.Azure.Configuration;
 using bielu.Umbraco.Cdn.Azure.Models;
+using bielu.Umbraco.Cdn.Core.Logging;
 using bielu.Umbraco.Cdn.Models;
 using bielu.Umbraco.Cdn.Services;
 using Microsoft.Extensions.Logging;
@@ -29,7 +30,7 @@ namespace bielu.Umbraco.Cdn.Azure.Services
             });
         }
 
-        public async Task<IEnumerable<Status>> PurgePages(IEnumerable<string> urls)
+        public async Task<IEnumerable<Status>> PurgePages(IEnumerable<string?> urls)
         {
             var zones = _client.Data.FrontendEndpoints.Select(x => new Zone()
             {
@@ -44,8 +45,7 @@ namespace bielu.Umbraco.Cdn.Azure.Services
                 if(!requestUrls.Any()) continue;
                 var request =
                     await _client.PurgeContentAsync(WaitUntil.Started, new FrontDoorEndpointPurgeContent(requestUrls));
-                _logger.LogInformation("Cache refreshed, domains: {urls} for zone(id: {id}): {name}",
-                    string.Join(",", requestUrls), domain.Id, domain.Name);
+                _logger.LogInfo($"Cache refreshed, domains: {string.Join(",", requestUrls)} for zone(id: {domain.Id}): {domain.Name}");
                 var status = await request.UpdateStatusAsync();
                 statuses.Add(new Status()
                 {
@@ -79,7 +79,7 @@ namespace bielu.Umbraco.Cdn.Azure.Services
 
                 var request = await _client.PurgeContentAsync(WaitUntil.Started,
                     new FrontDoorEndpointPurgeContent(new List<string>() { "/*" }));
-                _logger.LogInformation("Cache refreshed, domains for zone(id: {id}): {name}", domain.Id, domain.Name);
+                _logger.LogInfo($"Cache refreshed, domains for zone(id: {domain.Id}): {domain.Name}");
                 var status = await request.UpdateStatusAsync();
                 statuses.Add(new Status()
                 {
@@ -120,7 +120,7 @@ namespace bielu.Umbraco.Cdn.Azure.Services
 
             var request = await _client.PurgeContentAsync(WaitUntil.Started,
                 new FrontDoorEndpointPurgeContent(new List<string>() { "/*" }));
-            _logger.LogInformation("Cache refreshed, domains for zone(id: {id}): {name}", domain.Id, domain.Name);
+            _logger.LogInfo($"Cache refreshed, domains for zone(id: {domain.Id}): {domain.Name}");
             var status = await request.UpdateStatusAsync();
             statuses.Add(new Status()
             {

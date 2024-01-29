@@ -2,6 +2,7 @@
 using Azure.ResourceManager.Cdn;
 using Azure.ResourceManager.Cdn.Models;
 using bielu.Umbraco.Cdn.Azure.Cdn.Configuration;
+using bielu.Umbraco.Cdn.Core.Logging;
 using bielu.Umbraco.Cdn.Models;
 using bielu.Umbraco.Cdn.Services;
 using Microsoft.Extensions.Logging;
@@ -27,22 +28,21 @@ namespace bielu.Umbraco.Cdn.Azure.Cdn.Services
             });
         }
 
-        public async Task<IEnumerable<Status>> PurgePages(IEnumerable<string> urls)
+        public async Task<IEnumerable<Status>> PurgePages(IEnumerable<string?> urls)
         {
             var endpoints = await GetEndpoints();
             var statuses = new List<Status>();
             foreach (var endpoint in endpoints)
             {
                 var requestUrls = urls
-                    .Where(x => Uri.TryCreate(x, UriKind.Absolute, out var targetUri) && 
+                    .Where(x => Uri.TryCreate(x, UriKind.Absolute, out var targetUri) &&
                                 targetUri.Host.Equals(endpoint.Data.HostName, StringComparison.OrdinalIgnoreCase))
                     .Select(x => new Uri(x, UriKind.Absolute).AbsolutePath)
                     .Distinct();
                 if(!requestUrls.Any()) continue;
                 var request =
                     await endpoint.PurgeContentAsync(WaitUntil.Started, new FrontDoorPurgeContent(requestUrls));
-                _logger.LogInformation("Cache refreshed, domains: {urls} for endpoint(id: {id}): {name}",
-                    string.Join(",", requestUrls), endpoint.Id, endpoint.Data.Name);
+                _logger.LogInfo($"Cache refreshed, domains: {string.Join(",", requestUrls)} for endpoint(id: { endpoint.Id}): {endpoint.Data.Name}");
                 var status = await request.UpdateStatusAsync();
                 statuses.Add(new Status()
                 {
@@ -71,7 +71,7 @@ namespace bielu.Umbraco.Cdn.Azure.Cdn.Services
             {
                 var request = await endpoint.PurgeContentAsync(WaitUntil.Started,
                     new FrontDoorPurgeContent(new List<string>() { "/*" }));
-                _logger.LogInformation("Cache refreshed, domains for zone(id: {id}): {name}", endpoint.Id, endpoint.Data.Name);
+                _logger.LogInfo($"Cache refreshed, domains for zone(id: {endpoint.Id}): { endpoint.Data.Name}");
                 var status = await request.UpdateStatusAsync();
                 statuses.Add(new Status()
                 {

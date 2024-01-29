@@ -21,7 +21,7 @@ public class CdnManager : ICdnManager
             {
                 var umbracoDomains = contextReference.UmbracoContext.Domains.GetAll(false);
 
-         
+
                     return _services.Select(x => new Provider()
                     {
                         Name = x.GetType().Name,
@@ -47,13 +47,13 @@ public class CdnManager : ICdnManager
     {
         _services = services;
         _contextFactory = contextFactory;
-      
+
     }
-    
-    
-    public async Task<IEnumerable<Provider>> GetProviders(int guid)
+
+
+    public async Task<IEnumerable<Provider>> GetProviders(int id)
     {
-        
+
         return _providers;
     }
 

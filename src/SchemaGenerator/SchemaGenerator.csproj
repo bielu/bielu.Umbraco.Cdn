@@ -14,13 +14,14 @@
       <ProjectReference Include="..\bielu.Umbraco.Cdn.Aws.CloudFront\bielu.Umbraco.Cdn.Aws.CloudFront.csproj" />
       <ProjectReference Include="..\bielu.Umbraco.Cdn.Azure.Cdn\bielu.Umbraco.Cdn.Azure.Cdn.csproj" />
       <ProjectReference Include="..\bielu.Umbraco.Cdn.Azure.FrontDoor\bielu.Umbraco.Cdn.Azure.FrontDoor.csproj" />
+      <ProjectReference Include="..\bielu.Umbraco.Cdn.Bunny.Net\bielu.Umbraco.Cdn.Bunny.Net.csproj" />
       <ProjectReference Include="..\bielu.Umbraco.Cdn.Cloudflare\bielu.Umbraco.Cdn.Cloudflare.csproj" />
       <ProjectReference Include="..\bielu.Umbraco.Cdn.Core\bielu.Umbraco.Cdn.Core.csproj" />
       <ProjectReference Include="..\bielu.Umbraco.Cdn.NginxProxy\bielu.Umbraco.Cdn.NginxProxy.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="bielu.SchemaGenerator.Build" Version="1.0.0-alpha.50" />
+        <PackageReference Include="bielu.SchemaGenerator.Build" Version="1.0.1-beta.638420568066212877" />
         <PackageReference Include="NJsonSchema" Version="10.9.0" />
         <PackageReference Include="CommandLineParser" Version="2.9.1" />
     </ItemGroup>

@@ -39,7 +39,7 @@ namespace bielu.Umbraco.Cdn.Cloudflare.Extensions
                 case AuthenticationType.Custom:
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new InvalidOperationException("Authentication type not supported");
             }
             return builder;
         }

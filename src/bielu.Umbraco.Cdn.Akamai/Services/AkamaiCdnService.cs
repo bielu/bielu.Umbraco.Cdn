@@ -38,7 +38,7 @@ namespace bielu.Umbraco.Cdn.Akamai.Services
             return !_options.Disabled;
         }
 
-        public async Task<IEnumerable<Status>> PurgePages(IEnumerable<string> urls)
+        public async Task<IEnumerable<Status>> PurgePages(IEnumerable<string?> urls)
         {
             var response = await _akamaiFastPurgeClient.PostInvalidateUrlAsync(new Body6()
             {
@@ -48,7 +48,7 @@ namespace bielu.Umbraco.Cdn.Akamai.Services
             return await ParseStatus(response);
         }
 
-        private async Task<IEnumerable<Status>> ParseStatus(Response6 response)
+        private static async Task<IEnumerable<Status>> ParseStatus(Response6 response)
         {
             var finalResponse = new Status();
             finalResponse.Success = response.HttpStatus == 201 || response.HttpStatus == 200;
@@ -97,7 +97,7 @@ namespace bielu.Umbraco.Cdn.Akamai.Services
             }
         }
 
-        private async Task<Status> ParseStatus(Response3 response)
+        private static async Task<Status> ParseStatus(Response3 response)
         {
             var finalResponse = new Status();
             finalResponse.Success = response.Status == Response3Status.SUCCEEDED ;

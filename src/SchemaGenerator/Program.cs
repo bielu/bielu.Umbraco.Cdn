@@ -14,7 +14,7 @@ namespace SchemageGerator;
 
 internal class Program
 {
-    static readonly IList<Assembly> Assemblies = new List<Assembly>()
+    static readonly IList<Assembly> _assemblies = new List<Assembly>()
     {
         typeof(CloudFrontOptions).Assembly,
         typeof(CloudflareOptions).Assembly,
@@ -23,6 +23,7 @@ internal class Program
         typeof(AzureCdnOptions).Assembly,
         typeof(BieluCdnOptions).Assembly,
         typeof(AkamaiOptions).Assembly,
+        typeof(BunnyNetOptions).Assembly,
     };
 
     public static async Task Main(string[] args)
@@ -42,11 +43,11 @@ internal class Program
     private static async Task Execute(Options options)
     {
         Console.WriteLine("Schema generator v {0}", typeof(SchemaGeneratorService).Assembly.GetName().Version?.ToString());
-      
-            
+
+
         var schemaGenerator = new SchemaGeneratorService(new SchemaGenerator(), options);
-        schemaGenerator.GenerateSchema(Assemblies);
-   
+        schemaGenerator.GenerateSchema(_assemblies);
+
         Console.WriteLine("Schema generator v {0}", typeof(SchemaGeneratorService).Assembly.GetName().Version?.ToString());
 
     }

@@ -14,5 +14,5 @@ public class BieluCdnOptions
     [JsonIgnore]
     public static string SectionName { get; set; } = $"{CdnConstants.CdnConfigSectionName}";
 
-    public bool ReferencePurge { get; set; } = false;
+    public bool ReferencePurge { get; set; }
 }
