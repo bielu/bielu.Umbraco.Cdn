@@ -9,6 +9,7 @@ public class BieluCdnOptions
 {
     public bool DevMode { get; set; }
     public bool Auditing { get; set; } = true;
+    public bool DisableContentApp = true;
     public bool Preview { get; set; }
     [SchemaPrefix]
     [JsonIgnore]
