@@ -30,7 +30,7 @@ namespace bielu.Umbraco.Cdn.Core.Composition
             composition.Services.AddSingleton<ICdnAuditService, CdnAuditService>();
             //content
             composition
-                .AddNotificationAsyncHandler<ContentMovingNotification,ContentEventsNotificationNotificationHandler>()
+                .AddNotificationAsyncHandler<ContentMovedNotification,ContentEventsNotificationNotificationHandler>()
                 .AddNotificationAsyncHandler<ContentSavedNotification,ContentEventsNotificationNotificationHandler>()
                 .AddNotificationAsyncHandler<ContentDeletingNotification,ContentEventsNotificationNotificationHandler>()
                 .AddNotificationAsyncHandler<ContentUnpublishingNotification,ContentEventsNotificationNotificationHandler>()
