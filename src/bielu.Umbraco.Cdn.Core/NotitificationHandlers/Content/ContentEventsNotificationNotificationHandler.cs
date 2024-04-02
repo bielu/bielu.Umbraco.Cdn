@@ -183,12 +183,12 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
 
                     if (result.Any(x => !x.Success))
                     {
-                        message = new EventMessage("CDN", result.FirstOrDefault(x => !x.Success).Message,
+                        message = new EventMessage("CDN", result.FirstOrDefault(x => !x.Success)?.Message,
                             EventMessageType.Error);
                     }
                     else
                     {
-                        message = new EventMessage("CDN", result.FirstOrDefault(x => x.Success).Message,
+                        message = new EventMessage("CDN", result.FirstOrDefault(x => x.Success)?.Message,
                             EventMessageType.Info);
                     }
 
@@ -231,12 +231,12 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
 
                     if (result.Any(x => !x.Success))
                     {
-                        message = new EventMessage("CDN", result.FirstOrDefault(x => !x.Success).Message,
+                        message = new EventMessage("CDN", result.FirstOrDefault(x => !x.Success)?.Message,
                             EventMessageType.Error);
                     }
                     else
                     {
-                        message = new EventMessage("CDN", result.FirstOrDefault(x => x.Success).Message,
+                        message = new EventMessage("CDN", result.FirstOrDefault(x => x.Success)?.Message,
                             EventMessageType.Info);
                     }
 
@@ -302,7 +302,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
 
                 foreach (var cdnServices in _cdnServices.Where(x=>x.IsEnabled()))
                 {
-                    var result = Task.Run(async () => { return await cdnServices.PurgePages(pages); }).Result;
+                    var result = Task.Run(async () => { return await cdnServices.PurgePages(pages); }).Result.ToList();
                     EventMessage message;
 
                     foreach (var resultStatus in result)
@@ -319,12 +319,12 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
 
                     if (result.Any(x => !x.Success))
                     {
-                        message = new EventMessage("CDN", result.FirstOrDefault(x => !x.Success).Message,
+                        message = new EventMessage("CDN", result.FirstOrDefault(x => !x.Success)?.Message ?? "Some urls failed to purge",
                             EventMessageType.Error);
                     }
                     else
                     {
-                        message = new EventMessage("CDN", result.FirstOrDefault(x => x.Success).Message,
+                        message = new EventMessage("CDN", result.FirstOrDefault(x => x.Success)?.Message ?? "All urls purged",
                             EventMessageType.Info);
                     }
 
@@ -333,6 +333,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
             }
             catch (Exception e)
             {
+                _logger.LogError(e, "failed on handling saving ");
             }
         }
     }
