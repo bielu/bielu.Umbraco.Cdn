@@ -18,7 +18,7 @@ using Umbraco.Cms.Core.Services;
 
 namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
 {
-    public class ContentEventsNotificationNotificationHandler : INotificationAsyncHandler<ContentMovingNotification>,
+    public class ContentEventsNotificationNotificationHandler : INotificationAsyncHandler<ContentMovedNotification>,
         INotificationAsyncHandler<ContentSavedNotification>,
         INotificationAsyncHandler<ContentDeletingNotification>,
         INotificationAsyncHandler<ContentPublishingNotification>,
@@ -30,7 +30,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
         private readonly IEnumerable<ICdnService> _cdnServices;
         private readonly ILogger<ContentEventsNotificationNotificationHandler> _logger;
         private readonly ICdnAuditService _auditService;
-        private  BieluCdnOptions _configuration;
+        private BieluCdnOptions _configuration;
 
         public ContentEventsNotificationNotificationHandler(IUmbracoUrlDeliveryService umbracoUrlDeliveryService,
             IEnumerable<ICdnService> cdnServices, ILogger<ContentEventsNotificationNotificationHandler> logger,
@@ -42,45 +42,51 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
             _auditService = auditService;
             _configuration = configuration.CurrentValue;
             configuration.OnChange((options, name) => { _configuration = options; });
-
         }
 
-        public async Task HandleAsync(ContentMovingNotification notification, CancellationToken cancellationToken)
+        public async Task HandleAsync(ContentMovedNotification notification, CancellationToken cancellationToken)
         {
-            var pages = new List<string>();
-            foreach (var content in notification.MoveInfoCollection)
+            try
             {
-                pages.AddRange(await GetPages(content.Entity));
-            }
-
-            //todo: optimize as now we dont valide which domains is valid for either of cdns
-            foreach (var cdnServices in _cdnServices.Where(x=>x.IsEnabled()))
-            {
-                var result = Task.Run(async () => { return await cdnServices.PurgePages(pages); }).Result;
-                var errors = false;
-                EventMessage message;
-                if (result.Any(x => !x.Success))
+                var pages = new List<string>();
+                foreach (var content in notification.MoveInfoCollection)
                 {
-                    foreach (var resultStatus in result.Where(x => !x.Success))
+                    pages.AddRange(await GetPages(content.Entity));
+                }
+
+                //todo: optimize as now we dont valide which domains is valid for either of cdns
+                foreach (var cdnServices in _cdnServices.Where(x => x.IsEnabled()))
+                {
+                    var result = Task.Run(async () => { return await cdnServices.PurgePages(pages); }).Result;
+                    var errors = false;
+                    EventMessage message;
+                    if (result.Any(x => !x.Success))
                     {
-                        if (resultStatus.MessageType == EventMessageType.Error)
+                        foreach (var resultStatus in result.Where(x => !x.Success))
                         {
-                            _logger.LogError(resultStatus.Exception, resultStatus.Message);
-                            errors = true;
+                            if (resultStatus.MessageType == EventMessageType.Error)
+                            {
+                                _logger.LogError(resultStatus.Exception, resultStatus.Message);
+                                errors = true;
+                            }
                         }
+
+
+                        message = new EventMessage("CDN", result.FirstOrDefault(x => !x.Success).Message,
+                            EventMessageType.Error);
+                    }
+                    else
+                    {
+                        message = new EventMessage("CDN", result.FirstOrDefault(x => x.Success).Message,
+                            EventMessageType.Info);
                     }
 
-
-                    message = new EventMessage("CDN", result.FirstOrDefault(x => !x.Success).Message,
-                        EventMessageType.Error);
+                    notification.Messages.Add(message);
                 }
-                else
-                {
-                    message = new EventMessage("CDN", result.FirstOrDefault(x => x.Success).Message,
-                        EventMessageType.Info);
-                }
-
-                notification.Messages.Add(message);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Exception on refreshing on move");
             }
         }
 
@@ -89,7 +95,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
             var pages = new List<string>();
             if (_configuration.Auditing)
             {
-             await _auditService.LogRefresh( content.Id);
+                await _auditService.LogRefresh(content.Id);
             }
 
             pages.AddRange(_umbracoUrlDeliveryService.GetUrlsByContent(content));
@@ -100,6 +106,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
 
             return pages;
         }
+
         public async Task HandleAsync(ContentDeletingNotification notification, CancellationToken cancellationToken)
         {
             var pages = new List<string>();
@@ -110,7 +117,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
             }
 
             //todo: optimize as now we dont valide which domains is valid for either of cdns
-            foreach (var cdnServices in _cdnServices.Where(x=>x.IsEnabled()))
+            foreach (var cdnServices in _cdnServices.Where(x => x.IsEnabled()))
             {
                 try
                 {
@@ -206,15 +213,25 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
             var pages = new List<string>();
             foreach (var content in notification.PublishedEntities)
             {
-                pages.AddRange(await GetPages(content));
+                try
+                {
+                    pages.AddRange(await GetPages(content));
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e, "failed to get url for {Id}", content.Id);
+                }
             }
 
-            try
+
+            //todo: optimize as now we dont valide which domains is valid for either of cdns
+            foreach (var cdnServices in _cdnServices.Where(x => x.IsEnabled()))
             {
-                //todo: optimize as now we dont valide which domains is valid for either of cdns
-                foreach (var cdnServices in _cdnServices.Where(x=>x.IsEnabled()))
+                try
                 {
                     var result = Task.Run(async () => { return await cdnServices.PurgePages(pages); }).Result;
+                    if (result == null)
+                        continue;
                     EventMessage message;
 
                     foreach (var resultStatus in result)
@@ -240,12 +257,13 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
                             EventMessageType.Info);
                     }
 
+
                     notification.Messages.Add(message);
                 }
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, "failed on handling publish ");
+                catch (Exception e)
+                {
+                    _logger.LogError(e, "failed on handling publish with {Provider}", cdnServices.GetType().Name);
+                }
             }
         }
 
@@ -264,7 +282,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
         {
             try
             {
-              var pages = new List<string>();
+                var pages = new List<string>();
 
 
                 foreach (var content in notification.PublishedEntities)
@@ -292,7 +310,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
             try
             {
                 var pages = new List<string>();
-                   foreach (var content in notification.SavedEntities)
+                foreach (var content in notification.SavedEntities)
                 {
                     if (content.Published)
                     {
@@ -300,7 +318,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
                     }
                 }
 
-                foreach (var cdnServices in _cdnServices.Where(x=>x.IsEnabled()))
+                foreach (var cdnServices in _cdnServices.Where(x => x.IsEnabled()))
                 {
                     var result = Task.Run(async () => { return await cdnServices.PurgePages(pages); }).Result.ToList();
                     EventMessage message;
@@ -319,12 +337,14 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Content
 
                     if (result.Any(x => !x.Success))
                     {
-                        message = new EventMessage("CDN", result.FirstOrDefault(x => !x.Success)?.Message ?? "Some urls failed to purge",
+                        message = new EventMessage("CDN",
+                            result.FirstOrDefault(x => !x.Success)?.Message ?? "Some urls failed to purge",
                             EventMessageType.Error);
                     }
                     else
                     {
-                        message = new EventMessage("CDN", result.FirstOrDefault(x => x.Success)?.Message ?? "All urls purged",
+                        message = new EventMessage("CDN",
+                            result.FirstOrDefault(x => x.Success)?.Message ?? "All urls purged",
                             EventMessageType.Info);
                     }
 
