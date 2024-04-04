@@ -16,7 +16,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="generated\" />
       <Folder Include="src\umbraco\" />
     </ItemGroup>
 
@@ -28,6 +27,13 @@
       <_ContentIncludedByDefault Remove="wwwroot\App_Plugins\bielu.cdn.ui\bielu.cdn.ui\lang\en-US.xml\en-US.xml" />
       <_ContentIncludedByDefault Remove="wwwroot\App_Plugins\bielu.cdn.ui\bielu.cdn.ui\RefreshNodeEditor.html\RefreshNodeEditor.html" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="wwwroot\App_Plugins\bielu.cdn.ui\.gitkeep" />
+      <None Include="wwwroot\App_Plugins\bielu.cdn.ui\.gitkeep" />
+    </ItemGroup>
+
+    
     <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
         <Exec Command="npm run bundle" />
     </Target>
