@@ -12,10 +12,10 @@
         <EmbedRazorGenerateSources>true</EmbedRazorGenerateSources>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="bielu.SchemaGenerator.Core" Version="1.0.0-alpha.50" />
-        <PackageReference Include="Scrutor" Version="3.3.0"/>
-        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0"/>
-        <PackageReference Include="Umbraco.Cms.Core" Version="10.7.0" />
+        <PackageReference Include="bielu.SchemaGenerator.Core" />
+        <PackageReference Include="Scrutor" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" />
+        <PackageReference Include="Umbraco.Cms.Core" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\bielu.Umbraco.Cdn.Abstraction\bielu.Umbraco.Cdn.Abstraction.csproj" />

@@ -28,7 +28,7 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Domain
         public async Task HandleAsync(DomainSavedNotification notification, CancellationToken cancellationToken)
         {
             //todo: optimize as now we dont valide which domains is valid for either of cdns
-            foreach (var cdnServices in _cdnServices.Where(x=>x.IsEnabled()))
+            foreach (var cdnServices in _cdnServices.Where(x => x.IsEnabled()))
             {
                 //todo: split on / as umbraco is dump to count / as part of domain
                 var result = Task.Run(async () =>
@@ -38,7 +38,8 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Domain
                 }).Result;
                 foreach (var resultStatus in result)
                 {
-                    var message = new EventMessage("CDN", resultStatus.Message, resultStatus.MessageType ?? EventMessageType.Warning);
+                    var message = new EventMessage("CDN", resultStatus.Message,
+                        resultStatus.MessageType ?? EventMessageType.Warning);
                     notification.Messages.Add(message);
                     if (resultStatus.MessageType == EventMessageType.Error)
                     {
@@ -52,18 +53,20 @@ namespace bielu.Umbraco.Cdn.Core.NotitificationHandlers.Domain
         public async Task HandleAsync(DomainDeletedNotification notification, CancellationToken cancellationToken)
         {
             //todo: optimize as now we dont valide which domains is valid for either of cdns
-            foreach (var cdnServices in _cdnServices.Where(x=>x.IsEnabled() ))
+            foreach (var cdnServices in _cdnServices.Where(x => x.IsEnabled()))
             {
                 //todo: split on / as umbraco is dump to count / as part of domain
                 var result = await cdnServices.PurgeByAssignedHostnames(
-                        notification.DeletedEntities.Select(x => x.DomainName)); 
+                    notification.DeletedEntities.Select(x => x.DomainName));
                 foreach (var resultStatus in result)
                 {
-                    var message = new EventMessage("CDN", resultStatus.Message, resultStatus.MessageType ?? EventMessageType.Warning);
+                    var message = new EventMessage("CDN", resultStatus.Message ?? "Something went Wrong",
+                        resultStatus.MessageType ?? EventMessageType.Warning);
                     notification.Messages.Add(message);
                     if (resultStatus.MessageType == EventMessageType.Error)
                     {
-                        _logger.LogError(resultStatus.Exception, resultStatus.Message);
+                        _logger.LogError(resultStatus.Exception,
+                            resultStatus.Message ?? resultStatus.Exception?.Message ?? "Something went Wrong");
                     }
                 }
             }

@@ -44,7 +44,7 @@ namespace bielu.Umbraco.Cdn.Azure.Services
                 if(!requestUrls.Any()) continue;
                 var request =
                     await _client.PurgeContentAsync(WaitUntil.Started, new FrontDoorEndpointPurgeContent(requestUrls));
-                _logger.LogInformation("Cache refreshed, domains: {urls} for zone(id: {id}): {name}",
+                _logger.LogInformation("Cache refreshed, domains: {Urls} for zone(id: {Id}): {Name}",
                     string.Join(",", requestUrls), domain.Id, domain.Name);
                 var status = await request.UpdateStatusAsync();
                 statuses.Add(new Status()
@@ -79,7 +79,7 @@ namespace bielu.Umbraco.Cdn.Azure.Services
 
                 var request = await _client.PurgeContentAsync(WaitUntil.Started,
                     new FrontDoorEndpointPurgeContent(new List<string>() { "/*" }));
-                _logger.LogInformation("Cache refreshed, domains for zone(id: {id}): {name}", domain.Id, domain.Name);
+                _logger.LogInformation("Cache refreshed, domains for zone(id: {Id}): {Name}", domain.Id, domain.Name);
                 var status = await request.UpdateStatusAsync();
                 statuses.Add(new Status()
                 {
@@ -120,7 +120,7 @@ namespace bielu.Umbraco.Cdn.Azure.Services
 
             var request = await _client.PurgeContentAsync(WaitUntil.Started,
                 new FrontDoorEndpointPurgeContent(new List<string>() { "/*" }));
-            _logger.LogInformation("Cache refreshed, domains for zone(id: {id}): {name}", domain.Id, domain.Name);
+            _logger.LogInformation("Cache refreshed, domains for zone(id: {Id}): {Name}", domain.Id, domain.Name);
             var status = await request.UpdateStatusAsync();
             statuses.Add(new Status()
             {

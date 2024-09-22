@@ -14,8 +14,8 @@ namespace bielu.Umbraco.Cdn.NginxProxy.Services
 {
     public class NginxProxyClient : INginxProxyClient
     {
-      
-        private async Task<HttpResponseMessage> SendRequest(HttpMethod method, string url, object data)
+
+        private static async Task<HttpResponseMessage> SendRequest(HttpMethod method, string url, object data)
         {
             using (var client = new HttpClient())
             {
@@ -28,7 +28,7 @@ namespace bielu.Umbraco.Cdn.NginxProxy.Services
             }
         }
 
-     
+
 
         public async Task<IEnumerable<Zone>> GetZones(string? domainName = null)
         {

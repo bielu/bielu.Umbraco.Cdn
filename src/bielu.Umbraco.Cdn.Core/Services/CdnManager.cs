@@ -51,7 +51,7 @@ public class CdnManager : ICdnManager
     }
     
     
-    public async Task<IEnumerable<Provider>> GetProviders(int guid)
+    public async Task<IEnumerable<Provider>> GetProviders(int id)
     {
         
         return _providers;

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using bielu.Umbraco.Cdn.Aws.Configuration;
 using bielu.Umbraco.Cdn.Aws.Services;
 using bielu.Umbraco.Cdn.Services;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Umbraco.Cms.Core.DependencyInjection;
 
@@ -21,7 +23,8 @@ namespace bielu.Umbraco.Cdn.Aws.Extensions
                     .AsImplementedInterfaces()
                     .WithTransientLifetime());
             builder.Services.AddSingleton<IAmazonCloudFrontClientFactory, AmazonCloudFrontClientFactory>();
-
+            var positionOptions = new CloudFrontOptions();
+            builder.Config.GetSection(CloudFrontOptions.SectionName).Bind(positionOptions);
             return builder;
         }
     }

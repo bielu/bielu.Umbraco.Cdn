@@ -13,19 +13,19 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\bielu.Umbraco.Cdn.Abstraction\bielu.Umbraco.Cdn.Abstraction.csproj"/>
-        <ProjectReference Include="..\bielu.Umbraco.Cdn.Core\bielu.Umbraco.Cdn.Core.csproj"/>
+        <ProjectReference Include="..\bielu.Umbraco.Cdn.Abstraction\bielu.Umbraco.Cdn.Abstraction.csproj" />
+        <ProjectReference Include="..\bielu.Umbraco.Cdn.Core\bielu.Umbraco.Cdn.Core.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="bielu.SchemaGenerator.Core" Version="1.0.0-alpha.50"/>
-        <PackageReference Include="Scrutor" Version="3.3.0"/>
-        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0"/>
-        <PackageReference Include="Umbraco.Cms.Core" Version="10.7.0"/>
+        <PackageReference Include="bielu.SchemaGenerator.Core" />
+        <PackageReference Include="Scrutor" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" />
+        <PackageReference Include="Umbraco.Cms.Core" />
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="__Content\"/>
+        <Folder Include="__Content\" />
     </ItemGroup>
 
 </Project>

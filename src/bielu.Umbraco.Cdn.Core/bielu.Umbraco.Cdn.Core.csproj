@@ -11,10 +11,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="bielu.SchemaGenerator.Core" Version="1.0.0-alpha.50" />
-      <PackageReference Include="Umbraco.Cms.Core" Version="10.7.0" />
-      <PackageReference Include="Umbraco.Cms.Infrastructure" Version="10.7.0" />
-      <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="10.7.0" />
+      <PackageReference Include="bielu.SchemaGenerator.Core" />
+      <PackageReference Include="Umbraco.Cms.Core" />
+      <PackageReference Include="Umbraco.Cms.Infrastructure" />
+      <PackageReference Include="Umbraco.Cms.Web.BackOffice" />
     </ItemGroup>
 
     <ItemGroup>

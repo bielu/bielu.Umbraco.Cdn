@@ -41,7 +41,7 @@ namespace bielu.Umbraco.Cdn.Cloudflare.Services
                 if(!requestUrls.Any()) continue;
                 var request = await _cloudflare.PurgeCache(domain,
                     requestUrls);
-                _logger.LogInformation("Cache refreshed, domains: {urls} for zone(id: {id}): {name}", string.Join(",",requestUrls),domain.Id,domain.Name);
+                _logger.LogInformation("Cache refreshed, domains: {Urls} for zone(id: {Id}): {Name}", string.Join(",",requestUrls),domain.Id,domain.Name);
                 statuses.Add( request);
             }
             return statuses;

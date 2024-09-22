@@ -1,0 +1,30 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>false</CentralPackageTransitivePinningEnabled>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="AWSSDK.CloudFront" Version="3.7.301.21" />
+    <PackageVersion Include="Azure.Identity" Version="1.10.4" />
+    <PackageVersion Include="Azure.ResourceManager" Version="1.9.0" />
+    <PackageVersion Include="Azure.ResourceManager.Cdn" Version="1.2.0" />
+    <PackageVersion Include="Azure.ResourceManager.FrontDoor" Version="1.2.0" />
+    <PackageVersion Include="bielu.SchemaGenerator.Build" Version="1.0.0-alpha.50" />
+    <PackageVersion Include="bielu.SchemaGenerator.Core" Version="1.0.0-alpha.50" />
+    <PackageVersion Include="CommandLineParser" Version="2.9.1" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
+    <PackageVersion Include="Microsoft.ICU.ICU4C.Runtime" Version="68.2.0.9" />
+    <PackageVersion Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageVersion Include="NJsonSchema" Version="10.9.0" />
+    <PackageVersion Include="NSwag.AspNetCore" Version="13.20.0" />
+    <PackageVersion Include="NSwag.CodeGeneration" Version="13.20.0" />
+    <PackageVersion Include="NSwag.MSBuild" Version="13.20.0" />
+    <PackageVersion Include="Scrutor" Version="4.2.2" />
+    <PackageVersion Include="System.ComponentModel.Annotations" Version="5.0.0" />
+    <PackageVersion Include="Umbraco.Cms" Version="10.7.0" />
+    <PackageVersion Include="Umbraco.Cms.Core" Version="10.7.0" />
+    <PackageVersion Include="Umbraco.Cms.Infrastructure" Version="10.7.0" />
+    <PackageVersion Include="Umbraco.Cms.Web.BackOffice" Version="10.7.0" />
+    <PackageVersion Include="Umbraco.Cms.Web.Common" Version="10.7.0" />
+  </ItemGroup>
+</Project>

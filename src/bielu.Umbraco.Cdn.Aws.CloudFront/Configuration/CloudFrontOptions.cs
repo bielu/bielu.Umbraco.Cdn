@@ -9,7 +9,7 @@ namespace bielu.Umbraco.Cdn.Aws.Configuration;
 public class CloudFrontOptions : ConfigurationBaseOptions
 {
     [SchemaPrefix] [JsonIgnore]
-    public static string SectionName = $"{CdnConstants.CdnConfigSectionName}:AWS:CloudFront";
+    public static readonly string SectionName = $"{CdnConstants.CdnConfigSectionName}:AWS:CloudFront";
 
     [JsonIgnore]
     public RegionEndpoint Region

@@ -18,7 +18,7 @@ namespace bielu.Umbraco.Cdn.Cloudflare.Services
 {
     public class CloudflareClient : ICloudflareClient
     {
-        public const string CLOUDFLARE_API_BASE_URL = "https://api.cloudflare.com/client/v4/";
+        public const string CloudflareApiBaseUrl = "https://api.cloudflare.com/client/v4/";
         private readonly IClouflareAuthentication _authentication;
         private  CloudflareOptions _configuration;
         private readonly ILogger<CloudflareClient> _logger;
@@ -32,7 +32,7 @@ namespace bielu.Umbraco.Cdn.Cloudflare.Services
             {
                 _configuration = options;
             });
-           
+
         }
 
         private async Task<HttpResponseMessage> SendRequest(HttpMethod method, string url, object data)
@@ -62,7 +62,7 @@ namespace bielu.Umbraco.Cdn.Cloudflare.Services
 
         public async Task<IEnumerable<Zone>> GetZones(string? domainName = null)
         {
-            string url = CLOUDFLARE_API_BASE_URL + "zones";
+            string url = CloudflareApiBaseUrl + "zones";
             var uri = new Uri(url);
             var uriBuilder = new UriBuilder(url);
             var query = HttpUtility.ParseQueryString(uriBuilder.Query);
@@ -85,7 +85,7 @@ namespace bielu.Umbraco.Cdn.Cloudflare.Services
 
         public async Task<Status> PurgeCache(Zone zone, IEnumerable<string> urls, bool purgeEverything = false)
         {
-            var url = CLOUDFLARE_API_BASE_URL + "zones/" + zone.Id + "/purge_cache";
+            var url = CloudflareApiBaseUrl + "zones/" + zone.Id + "/purge_cache";
             var result = (await SendRequest(HttpMethod.Post, url, new PurgeRequest()
             {
                 Files = urls.ToList(),
@@ -112,8 +112,8 @@ namespace bielu.Umbraco.Cdn.Cloudflare.Services
                 };
             }
 
-            var url = CLOUDFLARE_API_BASE_URL + "zones/" + zone.Id + "/purge_cache";
-            
+            var url = CloudflareApiBaseUrl + "zones/" + zone.Id + "/purge_cache";
+
             var result = await SendRequest(HttpMethod.Post, url, new PurgeRequest()
             {
                 Hosts = _configuration.Enterprise ? new List<string?>()  {domains  } : null,

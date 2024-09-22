@@ -9,6 +9,6 @@ public class FrontDoorOptions : AzureBaseOptions
 {
     [SchemaPrefix]
     [JsonIgnore]
-    public static string SectionName = $"{CdnConstants.CdnConfigSectionName}:Azure:FrontDoor";
+    public static readonly string SectionName = $"{CdnConstants.CdnConfigSectionName}:Azure:FrontDoor";
     public string FrontDoorName { get; set; }
 }

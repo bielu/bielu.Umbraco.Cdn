@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Amazon.CloudFront;
@@ -53,7 +54,7 @@ public class CloudFrontCdnService : ICdnService
                 oRequest.DistributionId = domain.Id;
                 oRequest.InvalidationBatch = new InvalidationBatch
                 {
-                    CallerReference = DateTime.Now.Ticks.ToString(),
+                    CallerReference = DateTime.Now.Ticks.ToString(CultureInfo.InvariantCulture),
                     Paths = new Paths
                     {
                         Items = urls.ToList<string>(),
@@ -79,7 +80,7 @@ public class CloudFrontCdnService : ICdnService
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Error purging cache for zone(id: {id}): {name}", domain.Id, domain.Name);
+                _logger.LogError(e, "Error purging cache for zone(id: {Id}): {Name}", domain.Id, domain.Name);
                 statuses.Add(new Status()
                 {
                     Success = false,
@@ -120,10 +121,10 @@ public class CloudFrontCdnService : ICdnService
                         Items = new List<string> { "/*" },
                         Quantity = 1
                     },
-                    CallerReference = DateTime.Now.Ticks.ToString()
+                    CallerReference = DateTime.Now.Ticks.ToString(CultureInfo.InvariantCulture)
                 }
             });
-            _logger.LogInformation("Cache refreshed, domains for zone(id: {id}): {name}", domain.Id, domain.Name);
+            _logger.LogInformation("Cache refreshed, domains for zone(id: {Id}): {Name}", domain.Id, domain.Name);
             var isError = oResponse.HttpStatusCode == System.Net.HttpStatusCode.OK;
             var status = oResponse.ResponseMetadata;
 

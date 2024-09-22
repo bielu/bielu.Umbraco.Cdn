@@ -9,11 +9,11 @@ public class BieluCdnOptions
 {
     public bool DevMode { get; set; }
     public bool Auditing { get; set; } = true;
-    public bool DisableContentApp = true;
+    public bool DisableContentApp { get; set; } = true;
     public bool Preview { get; set; }
     [SchemaPrefix]
     [JsonIgnore]
     public static string SectionName { get; set; } = $"{CdnConstants.CdnConfigSectionName}";
 
-    public bool ReferencePurge { get; set; } = false;
+    public bool ReferencePurge { get; set; }
 }

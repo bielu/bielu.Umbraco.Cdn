@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Models.PublishedContent;
@@ -47,7 +48,7 @@ namespace bielu.Umbraco.Cdn.Core.Services
             return GetUrlFromReferencePage(content.Id);
         }
 
-        public List<string> GetUrlsByContent(IPublishedContent content, bool includeDescendants = false, bool includeReferences = true)
+        public List<string> GetUrlsByContent(IPublishedContent? content, bool includeDescendants = false, bool includeReferences = true)
         {
             List<string> urls = new List<string>();
             if (content == null)
@@ -96,37 +97,40 @@ namespace bielu.Umbraco.Cdn.Core.Services
             List<string> urls = new List<string>();
             using (var contextReference = _contextFactory.EnsureUmbracoContext())
             {
-                foreach (var relationItem in referencesItems)
+                if (referencesItems != null)
                 {
-                    IPublishedContent item = null;
-                    switch (relationItem.NodeUdi.EntityType)
+                    foreach (var relationItem in referencesItems)
                     {
-                        case global::Umbraco.Cms.Core.Constants.UdiEntityType.DocumentType:
-                            item = contextReference.UmbracoContext.Content.GetById(relationItem.NodeId);
+                        IPublishedContent? item = null;
+                        switch (relationItem.NodeUdi.EntityType)
+                        {
+                            case global::Umbraco.Cms.Core.Constants.UdiEntityType.DocumentType:
+                                item = contextReference.UmbracoContext.Content.GetById(relationItem.NodeId);
 
-                            break;
-                        case global::Umbraco.Cms.Core.Constants.UdiEntityType.Media:
-                            item = contextReference.UmbracoContext.Media.GetById(relationItem.NodeId);
+                                break;
+                            case global::Umbraco.Cms.Core.Constants.UdiEntityType.Media:
+                                item = contextReference.UmbracoContext.Media.GetById(relationItem.NodeId);
 
-                            break;
+                                break;
+                        }
+
+                        if (item == null) continue;
+                        urls.AddRange(BuildDomainUrls(new List<string>() { item.Url(mode: UrlMode.Absolute) },
+                            GetDomains(item)));
                     }
-
-                    if (item == null) continue;
-                    urls.AddRange(BuildDomainUrls(new List<string>() { item.Url(mode: UrlMode.Absolute) },
-                        GetDomains(item)));
                 }
             }
 
             return urls;
         }
 
-        private IEnumerable<string> BuildDomainUrls(List<string> urls, List<IDomain> assignedDomains)
+        private IEnumerable<string> BuildDomainUrls(List<string>? urls, List<IDomain>? assignedDomains)
         {
             var list = new List<string>();
             if (urls == null || urls.All(x => string.IsNullOrWhiteSpace(x))) return list;
             if (assignedDomains == null || !assignedDomains.Any())
             {
-                var domain = (_requestAccessor as AspNetCoreRequestAccessor).GetApplicationUrl()
+                var domain = (_requestAccessor as AspNetCoreRequestAccessor)?.GetApplicationUrl()
                     .GetLeftPart(UriPartial.Authority);
                 foreach (var url in urls.Where(x => !string.IsNullOrWhiteSpace(x)))
                 {
@@ -138,14 +142,14 @@ namespace bielu.Umbraco.Cdn.Core.Services
             {
                 foreach (var domain in assignedDomains)
                 {
-                    list.Add(CombinePaths(domain.DomainName, url.Replace(domain.RootContentId.ToString(), "")));
+                    list.Add(CombinePaths(domain.DomainName, url.Replace(domain.RootContentId?.ToString(CultureInfo.InvariantCulture) ?? string.Empty, "")));
                 }
             }
 
             return list;
         }
 
-        private List<IDomain> GetDomains(IContent content)
+        private List<IDomain>? GetDomains(IContent? content)
         {
             var list = new List<IDomain>();
             //Termination case
@@ -184,7 +188,7 @@ namespace bielu.Umbraco.Cdn.Core.Services
 
             foreach (var id in path.Split(','))
             {
-                var numericId = int.Parse(id);
+                var numericId = int.Parse(id, CultureInfo.InvariantCulture);
                 if (numericId < 0)
                 {
                     continue;
@@ -199,7 +203,7 @@ namespace bielu.Umbraco.Cdn.Core.Services
             return list;
         }
 
-        private List<IDomain> GetDomains(IPublishedContent content)
+        private List<IDomain>? GetDomains(IPublishedContent? content)
         {
             var list = new List<IDomain>();
             //Termination case
@@ -225,7 +229,7 @@ namespace bielu.Umbraco.Cdn.Core.Services
                 {
                     urls.Add(route);
                 }
-                urls.Add(content.Id.ToString());
+                urls.Add(content.Id.ToString(CultureInfo.InvariantCulture));
                 foreach (var culture in content.EditedCultures)
                 {
                     urls.Add(contextReference.UmbracoContext.Content.GetRouteById(false, content.Id, culture));
@@ -235,10 +239,10 @@ namespace bielu.Umbraco.Cdn.Core.Services
             }
         }
 
-        private List<string> GetUrl(IPublishedContent content)
+        private static List<string> GetUrl(IPublishedContent? content)
         {
             var urls = new List<string>();
-            urls.Add(content.Id.ToString());
+            urls.Add(content.Id.ToString(CultureInfo.InvariantCulture));
             foreach (var culture in content.Cultures)
             {
                 urls.Add(content.Url(mode: UrlMode.Absolute, culture: culture.Key));
@@ -247,21 +251,21 @@ namespace bielu.Umbraco.Cdn.Core.Services
             return urls;
         }
 
-        public string CombinePaths(string domain, string url)
+        public static string CombinePaths(string? domain, string url)
         {
             if (url.Contains(domain))
             {
                 return url;
             }
 
-            if (domain.EndsWith("/") && url.StartsWith("/"))
+            if (domain.EndsWith("/", true, CultureInfo.InvariantCulture) && url.StartsWith("/", true, CultureInfo.InvariantCulture))
             {
                 //strip the first / so they aren't doubled up when we combine them.
                 domain = domain.TrimEnd('/');
             }
-            else if (!domain.EndsWith("/") && !url.StartsWith("/"))
+            else if (!domain.EndsWith("/", true, CultureInfo.InvariantCulture) && !url.StartsWith("/",true, CultureInfo.InvariantCulture))
             {
-                //neight of them had a / so we have to add one. 
+                //neight of them had a / so we have to add one.
                 domain = domain + "/";
             }
 

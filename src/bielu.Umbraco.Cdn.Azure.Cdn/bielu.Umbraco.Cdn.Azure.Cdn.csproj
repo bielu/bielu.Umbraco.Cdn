@@ -13,15 +13,15 @@
         
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Azure.Identity" Version="1.10.4" />
-        <PackageReference Include="Azure.ResourceManager.Cdn" Version="1.2.0" />
-        <PackageReference Include="bielu.SchemaGenerator.Core" Version="1.0.0-alpha.50" />
-        <PackageReference Include="Scrutor" Version="3.3.0"/>
-        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0"/>
-        <PackageReference Include="Umbraco.Cms.Core" Version="10.7.0" />
+        <PackageReference Include="Azure.Identity" />
+        <PackageReference Include="Azure.ResourceManager.Cdn" />
+        <PackageReference Include="bielu.SchemaGenerator.Core" />
+        <PackageReference Include="Scrutor" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" />
+        <PackageReference Include="Umbraco.Cms.Core" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\bielu.Umbraco.Cdn.Abstraction\bielu.Umbraco.Cdn.Abstraction.csproj"/>
+        <ProjectReference Include="..\bielu.Umbraco.Cdn.Abstraction\bielu.Umbraco.Cdn.Abstraction.csproj" />
         <ProjectReference Include="..\bielu.Umbraco.Cdn.Azure.Common\bielu.Umbraco.Cdn.Azure.Common.csproj" />
         <ProjectReference Include="..\bielu.Umbraco.Cdn.Core\bielu.Umbraco.Cdn.Core.csproj" />
     </ItemGroup>

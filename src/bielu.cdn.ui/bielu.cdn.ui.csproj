@@ -12,7 +12,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Umbraco.Cms.Core" Version="10.7.0" />
+      <PackageReference Include="Umbraco.Cms.Core" />
     </ItemGroup>
 
     <ItemGroup>
@@ -38,14 +38,13 @@
         <Exec Command="npm run bundle" />
     </Target>
 
-    <Target Name="BieluCdnBeforeBuild"  BeforeTargets="PreBuildEvent">
+    <Target Name="BieluCdnBeforeBuild" BeforeTargets="PreBuildEvent">
         <CreateItem Include="$(MSBuildProjectDirectory)\App_Plugins\**\*.*">
             <Output TaskParameter="Include" ItemName="YourFilesToCopy" />
         </CreateItem>
   
-        <Message Text="Adding base files for backoffice - @(YourFilesToCopy->Count()) files"  Importance="high" />
-        <Copy SourceFiles="@(YourFilesToCopy)"
-              DestinationFiles="@(YourFilesToCopy->'$(MSBuildProjectDirectory)\wwwroot\App_Plugins\%(RecursiveDir)%(Filename)%(Extension)')" />
+        <Message Text="Adding base files for backoffice - @(YourFilesToCopy-&gt;Count()) files" Importance="high" />
+        <Copy SourceFiles="@(YourFilesToCopy)" DestinationFiles="@(YourFilesToCopy-&gt;'$(MSBuildProjectDirectory)\wwwroot\App_Plugins\%(RecursiveDir)%(Filename)%(Extension)')" />
       
     </Target>
 </Project>

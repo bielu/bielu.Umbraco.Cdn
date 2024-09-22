@@ -14,14 +14,14 @@
         <PackageTags>umbraco-marketplace;umbraco;akamai;</PackageTags>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="bielu.SchemaGenerator.Core" Version="1.0.0-alpha.50" />
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-        <PackageReference Include="NSwag.MSBuild" Version="13.20.0">
+        <PackageReference Include="bielu.SchemaGenerator.Core" />
+        <PackageReference Include="Newtonsoft.Json" />
+        <PackageReference Include="NSwag.MSBuild">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="Scrutor" Version="4.2.2" />
-        <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+        <PackageReference Include="Scrutor" />
+        <PackageReference Include="System.ComponentModel.Annotations" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\bielu.Umbraco.Cdn.Core\bielu.Umbraco.Cdn.Core.csproj" />

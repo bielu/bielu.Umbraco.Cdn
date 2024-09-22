@@ -19,17 +19,17 @@ namespace bielu.Umbraco.Cdn.Core.Composition
 {
     public class CdnComposition : IComposer
     {
-        public void Compose(IUmbracoBuilder composition)
+        public void Compose(IUmbracoBuilder builder)
         {
-            composition.Services.AddOptions<BieluCdnOptions>().BindConfiguration(BieluCdnOptions.SectionName);
-            composition.ManifestFilters().Append<BieluCdnUIManifestFilter>();
-            composition.ContentApps().Append<BieluCdnApp>();
+            builder.Services.AddOptions<BieluCdnOptions>().BindConfiguration(BieluCdnOptions.SectionName);
+            builder.ManifestFilters().Append<BieluCdnUIManifestFilter>();
+            builder.ContentApps().Append<BieluCdnApp>();
             //services
-            composition.Services.AddTransient(typeof(IUmbracoUrlDeliveryService), typeof(UmbracoUrlDeliveryService));
-            composition.Services.AddSingleton<ICdnManager, CdnManager>();
-            composition.Services.AddSingleton<ICdnAuditService, CdnAuditService>();
+            builder.Services.AddTransient(typeof(IUmbracoUrlDeliveryService), typeof(UmbracoUrlDeliveryService));
+            builder.Services.AddSingleton<ICdnManager, CdnManager>();
+            builder.Services.AddSingleton<ICdnAuditService, CdnAuditService>();
             //content
-            composition
+            builder
                 .AddNotificationAsyncHandler<ContentMovedNotification,ContentEventsNotificationNotificationHandler>()
                 .AddNotificationAsyncHandler<ContentSavedNotification,ContentEventsNotificationNotificationHandler>()
                 .AddNotificationAsyncHandler<ContentDeletingNotification,ContentEventsNotificationNotificationHandler>()
@@ -37,18 +37,18 @@ namespace bielu.Umbraco.Cdn.Core.Composition
                 .AddNotificationAsyncHandler<ContentPublishingNotification,ContentEventsNotificationNotificationHandler>()
                 .AddNotificationAsyncHandler<ContentPublishedNotification,ContentEventsNotificationNotificationHandler>()
                 .AddNotificationAsyncHandler<ContentUnpublishedNotification,ContentEventsNotificationNotificationHandler>();
-        
+
             //domain
-            composition
-                .AddNotificationAsyncHandler<DomainSavedNotification,DomainEventNotificationNotificationHandler>() 
+            builder
+                .AddNotificationAsyncHandler<DomainSavedNotification,DomainEventNotificationNotificationHandler>()
                 .AddNotificationAsyncHandler<DomainDeletedNotification,DomainEventNotificationNotificationHandler>();
             //media
-            composition
+            builder
                 .AddNotificationAsyncHandler<MediaSavedNotification,MediaEventsNotificationNotificationHandler>();
             //Menu
-            composition
+            builder
                 .AddNotificationAsyncHandler<MenuRenderingNotification,TreeRenderingNotification>();
         }
     }
-    
+
 }

@@ -7,9 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Azure.Identity" Version="1.10.4" />
-      <PackageReference Include="Azure.ResourceManager" Version="1.9.0" />
-      <PackageReference Include="Scrutor" Version="3.3.0"/>
+      <PackageReference Include="Azure.Identity" />
+      <PackageReference Include="Azure.ResourceManager" />
+      <PackageReference Include="Scrutor" />
     </ItemGroup>
 
     <ItemGroup>
